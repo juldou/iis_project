@@ -1,0 +1,2 @@
+SecretKey: 123
+DatabaseURI: host=localhost port=5432 user=postgres_iis dbname=food_delivery password=secret123 sslmode=disable

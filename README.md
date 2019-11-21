@@ -1,1 +1,9 @@
-# iis_project
+# Run postgres DB in docker
+1. install docker
+2. run `docker run --name postgres-iis -e POSTGRES_DB=food_delivery -e POSTGRES_USER=postgres_iis -e POSTGRES_PASSWORD=secret123 -d -p 5432:5432 postgres`
+
+# How to build server
+- `go build -o server .`
+
+# How to run server
+- `./server serve` 
