@@ -15,5 +15,6 @@ func New(config *Config) (*Database, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to connect to database")
 	}
+	db.SingularTable(true)
 	return &Database{db}, nil
 }

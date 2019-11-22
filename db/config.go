@@ -19,4 +19,3 @@ func InitConfig() (*Config, error) {
 	}
 	return config, nil
 }
-

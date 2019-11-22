@@ -6,7 +6,7 @@ import (
 )
 
 type App struct {
-	Config *Config
+	Config   *Config
 	Database *db.Database
 }
 
@@ -38,4 +38,21 @@ func New() (app *App, err error) {
 
 func (a *App) Close() error {
 	return a.Database.Close()
+}
+
+type ValidationError struct {
+	Message string `json:"message"`
+}
+
+func (e *ValidationError) Error() string {
+	return e.Message
+}
+
+type UserError struct {
+	Message    string `json:"message"`
+	StatusCode int    `json:"-"`
+}
+
+func (e *UserError) Error() string {
+	return e.Message
 }
