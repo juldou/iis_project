@@ -21,3 +21,8 @@ POST
 ```
 api/restaurants/
 ```
+PATCH
+```
+api/restaurants/{id}/
+```
+
