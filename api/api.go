@@ -2,13 +2,13 @@ package api
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"runtime/debug"
 	"strings"
 	"time"
 
-	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 
@@ -42,7 +42,11 @@ func New(a *app.App) (api *API, err error) {
 }
 
 func (a *API) Init(r *mux.Router) {
-	r.Handle("/hello", gziphandler.GzipHandler(a.handler(a.RootHandler))).Methods("GET")
+	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.RootHandler))).Methods("GET")
+
+	// restaurant methods
+	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
+	restaurantsRouter.Handle("/", a.handler(a.GetRestaurants)).Methods("GET")
 }
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {
@@ -59,6 +63,27 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 
 		ctx := a.App.NewContext().WithRemoteAddress(a.IPAddressForRequest(r))
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
+
+		if username, password, ok := r.BasicAuth(); ok {
+			user, err := a.App.GetUserByEmail(username)
+
+			if user == nil || err != nil {
+				if err != nil {
+					ctx.Logger.WithError(err).Error("unable to get user")
+				}
+				http.Error(w, "invalid credentials", http.StatusForbidden)
+				return
+			}
+
+			if ok := user.CheckPassword(password); !ok {
+				http.Error(w, "invalid credentials", http.StatusForbidden)
+				return
+			}
+
+			ctx = ctx.WithUser(user)
+		}
+
+		ctx = ctx.WithDatabase(a.App.Database)
 
 		defer func() {
 			statusCode := w.(*statusCodeRecorder).StatusCode
@@ -85,9 +110,32 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		w.Header().Set("Content-Type", "application/json")
 
 		if err := f(ctx, w, r); err != nil {
-			ctx.Logger.Error(err)
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
+			if verr, ok := err.(*app.ValidationError); ok {
+				data, err := json.Marshal(verr)
+				if err == nil {
+					w.WriteHeader(http.StatusBadRequest)
+					_, err = w.Write(data)
+				}
+
+				if err != nil {
+					ctx.Logger.Error(err)
+					http.Error(w, "internal server error", http.StatusInternalServerError)
+				}
+			} else if uerr, ok := err.(*app.UserError); ok {
+				data, err := json.Marshal(uerr)
+				if err == nil {
+					w.WriteHeader(uerr.StatusCode)
+					_, err = w.Write(data)
+				}
+
+				if err != nil {
+					ctx.Logger.Error(err)
+					http.Error(w, "internal server error", http.StatusInternalServerError)
+				}
+			} else {
+				ctx.Logger.Error(err)
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+			}
 		}
 	})
 }
