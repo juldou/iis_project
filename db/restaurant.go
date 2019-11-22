@@ -23,3 +23,7 @@ func (db *Database) GetAllRestaurants() ([]*model.Restaurant, error) {
 	var restaurants []*model.Restaurant
 	return restaurants, errors.Wrap(db.Find(&restaurants).Error, "unable to get all restaurants")
 }
+
+func (db *Database) CreateRestaurant(restaurant *model.Restaurant) error {
+	return db.Create(restaurant).Error
+}

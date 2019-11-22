@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/iis_project/api"
 	"github.com/iis_project/app"
+	"github.com/iis_project/model"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"net/http"
@@ -81,6 +82,11 @@ var serveCmd = &cobra.Command{
 			defer cancel()
 			serveAPI(ctx, api)
 		}()
+
+		user := &model.User{Email: "julo.marko@gmail.com", UserType: "admin"}
+		password := "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
 
 		wg.Wait()
 		return nil

@@ -18,6 +18,7 @@ type User struct {
 
 	Email          string
 	HashedPassword []byte
+	UserType string
 }
 
 func (u *User) SetPassword(password string) error {

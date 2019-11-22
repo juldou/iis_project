@@ -3,9 +3,8 @@ package model
 type Restaurant struct {
 	Model
 
-	Category      string
-	Name          string
-	Description   string
-	PictureUrl    string
-	PriceCategory string
+	Category      string  `json:"category"`
+	Name          string  `json:"name"`
+	Description   string  `json:"description"`
+	PictureUrl    string  `json:"picture_url"`
 }

@@ -1,6 +1,8 @@
 package app
 
-import "github.com/iis_project/model"
+import (
+	"github.com/iis_project/model"
+)
 
 func (ctx *Context) GetRestaurantByName(name string) (*model.Restaurant, error) {
 	if ctx.User == nil {
@@ -13,4 +15,12 @@ func (ctx *Context) GetRestaurantByName(name string) (*model.Restaurant, error) 
 	}
 
 	return restaurant, nil
+}
+
+func (ctx *Context) CreateRestaurant(restaurant *model.Restaurant) error {
+	//if ctx.User.UserType == "admin" || ctx.User.UserType == "operator" {
+		return ctx.Database.CreateRestaurant(restaurant)
+	//} else {
+	//	return ctx.AuthorizationError()
+	//}
 }
