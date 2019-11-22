@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/iis_project/api"
 	"github.com/iis_project/app"
+	"github.com/iis_project/model"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"net/http"
@@ -56,6 +57,7 @@ var serveCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		defer app.Close()
 
 		api, err := api.New(app)
 		if err != nil {
@@ -80,6 +82,19 @@ var serveCmd = &cobra.Command{
 			defer cancel()
 			serveAPI(ctx, api)
 		}()
+
+		// create user
+		app.Database.CreateUser(&model.User{Email: "foo@example.com"})
+		user, err := app.Database.GetUserByEmail("foo@example.com")
+		if err != nil {
+			logrus.Warn("couldn't get user by email from db")
+		} else {
+			password := "heslo123"
+			user.SetPassword(password)
+			if user.CheckPassword(password) {
+				logrus.Info("password verified")
+			}
+		}
 
 		wg.Wait()
 		return nil
