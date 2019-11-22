@@ -6,4 +6,18 @@
 - `go build -o server .`
 
 # How to run server
-- `./server serve` 
+- `./server serve`
+
+# How to create/drop tables
+- check sql/ directory, run scripts against your db 
+
+# API
+GET
+```
+api/restaurants/
+api/restaurants/categories/
+```
+POST
+```
+api/restaurants/
+```

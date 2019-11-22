@@ -48,6 +48,7 @@ func (a *API) Init(r *mux.Router) {
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
 	restaurantsRouter.Handle("/", a.handler(a.GetRestaurants)).Methods("GET")
 	restaurantsRouter.Handle("/", a.handler(a.CreateRestaurant)).Methods("POST")
+	restaurantsRouter.Handle("/categories", a.handler(a.GetRestaurantCategories)).Methods("GET")
 }
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {

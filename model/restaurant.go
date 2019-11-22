@@ -8,3 +8,9 @@ type Restaurant struct {
 	Description   string  `json:"description"`
 	PictureUrl    string  `json:"picture_url"`
 }
+
+type RestaurantCategory struct {
+	Model
+
+	Name          string  `json:"name"`
+}

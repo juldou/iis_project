@@ -19,9 +19,14 @@ func (db *Database) GetRestaurantByName(name string) (*model.Restaurant, error) 
 	return &restaurant, nil
 }
 
-func (db *Database) GetAllRestaurants() ([]*model.Restaurant, error) {
+func (db *Database) GetRestaurants() ([]*model.Restaurant, error) {
 	var restaurants []*model.Restaurant
 	return restaurants, errors.Wrap(db.Find(&restaurants).Error, "unable to get all restaurants")
+}
+
+func (db *Database) GetRestaurantCategories() ([]*model.RestaurantCategory, error) {
+	var restaurantCategories []*model.RestaurantCategory
+	return restaurantCategories, errors.Wrap(db.Find(&restaurantCategories).Error, "unable to get all restaurants")
 }
 
 func (db *Database) CreateRestaurant(restaurant *model.Restaurant) error {

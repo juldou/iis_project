@@ -32,7 +32,7 @@ ALTER TABLE address
 CREATE TABLE food
 (
     id               serial PRIMARY KEY,
-    category             character varying(100),
+    category         character varying(100),
     name             character varying(100),
     description      text,
     picture_link     character varying(100),
@@ -76,6 +76,15 @@ CREATE TABLE rel_order_contains_food
 ALTER TABLE "rel_order_contains_food"
     OWNER TO postgres_iis;
 
+
+CREATE TABLE restaurant_category
+(
+    id              serial PRIMARY KEY,
+    name    text,
+    created_at       TIMESTAMP NOT NULL,
+    updated_at       TIMESTAMP NOT NULL,
+    deleted_at       TIMESTAMP
+);
 
 CREATE TABLE restaurant
 (
@@ -139,3 +148,18 @@ values ('vietnam',
         'fake_link',
         current_timestamp,
         current_timestamp);
+
+insert into restaurant_category(name, created_at, updated_at)
+values ('vietnam', current_timestamp, current_timestamp);
+
+insert into restaurant_category(name, created_at, updated_at)
+values ('india', current_timestamp, current_timestamp);
+
+insert into restaurant_category(name, created_at, updated_at)
+values ('ceska', current_timestamp, current_timestamp);
+
+insert into restaurant_category(name, created_at, updated_at)
+values ('azia', current_timestamp, current_timestamp);
+
+insert into restaurant_category(name, created_at, updated_at)
+values ('pizza', current_timestamp, current_timestamp);

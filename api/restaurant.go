@@ -2,19 +2,35 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/iis_project/app"
 	"github.com/iis_project/model"
 	"io/ioutil"
 	"net/http"
-	"github.com/iis_project/app"
 )
 
 func (a *API) GetRestaurants(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	restaurants, err := ctx.Database.GetAllRestaurants()
+	restaurants, err := ctx.Database.GetRestaurants()
 	if err != nil {
 		return err
 	}
 
 	data, err := json.Marshal(restaurants)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
+func (a *API) GetRestaurantCategories(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	restaurantCategories, err := ctx.Database.GetRestaurantCategories()
+
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(restaurantCategories)
 	if err != nil {
 		return err
 	}
