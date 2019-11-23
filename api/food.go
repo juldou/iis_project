@@ -71,7 +71,7 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		Name:           input.Name,
 		Description:    input.Description,
 		PictureUrl:     input.PictureUrl,
-		FkRestaurantId: id,
+		RestaurantId: id,
 	}
 
 	if err := ctx.CreateFood(food); err != nil {
@@ -128,7 +128,7 @@ func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 		existingFood.PictureUrl = *input.PictureUrl
 	}
 	if input.RestaurantId != nil {
-		existingFood.FkRestaurantId = *input.RestaurantId
+		existingFood.RestaurantId = *input.RestaurantId
 	}
 
 	err = ctx.UpdateFood(existingFood)

@@ -36,7 +36,7 @@ CREATE TABLE food
     name             character varying(100),
     description      text,
     picture_url     character varying(100),
-    fk_restaurant_id integer   NOT NULL,
+    restaurant_id integer   NOT NULL,
     created_at       TIMESTAMP NOT NULL,
     updated_at       TIMESTAMP NOT NULL,
     deleted_at       TIMESTAMP
@@ -51,8 +51,8 @@ CREATE TABLE "order"
     id               serial PRIMARY KEY,
     ordered_at       timestamp NOT NULL,
     delivered_at     timestamp,
-    fk_address_id    integer   NOT NULL,
-    fk_restaurant_id integer   NOT NULL,
+    address_id    integer   NOT NULL,
+    restaurant_id integer   NOT NULL,
     created_at       TIMESTAMP NOT NULL,
     updated_at       TIMESTAMP NOT NULL,
     deleted_at       TIMESTAMP
@@ -65,8 +65,8 @@ ALTER TABLE "order"
 CREATE TABLE rel_order_contains_food
 (
     id          serial PRIMARY KEY,
-    fk_order_id integer   NOT NULL,
-    fk_food_id  integer   NOT NULL,
+    order_id integer   NOT NULL,
+    food_id  integer   NOT NULL,
     created_at  TIMESTAMP NOT NULL,
     updated_at  TIMESTAMP NOT NULL,
     deleted_at  TIMESTAMP
@@ -104,8 +104,8 @@ ALTER TABLE restaurant
 CREATE TABLE daily_menu
 (
     id               serial PRIMARY KEY,
-    fk_restaurant_id integer   NOT NULL,
-    fk_food_id       integer   NOT NULL,
+    restaurant_id integer   NOT NULL,
+    food_id       integer   NOT NULL,
     price            decimal,
     created_at       TIMESTAMP NOT NULL,
     updated_at       TIMESTAMP NOT NULL,
@@ -117,19 +117,19 @@ ALTER TABLE daily_menu
 
 
 ALTER TABLE ONLY food
-    ADD CONSTRAINT fk_food_reference_restaurant FOREIGN KEY (fk_restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+    ADD CONSTRAINT food_reference_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "order"
-    ADD CONSTRAINT fk_order_reference_address FOREIGN KEY (fk_address_id) REFERENCES address (id) ON DELETE CASCADE;
+    ADD CONSTRAINT order_reference_address FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "order"
-    ADD CONSTRAINT fk_order_reference_restaurant FOREIGN KEY (fk_restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+    ADD CONSTRAINT order_reference_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "rel_order_contains_food"
-    ADD CONSTRAINT fk_rel_order_contains_food_order_id FOREIGN KEY (fk_order_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+    ADD CONSTRAINT rel_order_has_order_id FOREIGN KEY (order_id) REFERENCES restaurant (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "rel_order_contains_food"
-    ADD CONSTRAINT fk_rel_order_contains_food_food_id FOREIGN KEY (fk_food_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+    ADD CONSTRAINT rel_order_has_food_id FOREIGN KEY (food_id) REFERENCES restaurant (id) ON DELETE CASCADE;
 
 insert into restaurant(category, name, description, picture_url, created_at, updated_at)
 values ('vegan',
@@ -178,7 +178,7 @@ values ('azia', current_timestamp, current_timestamp);
 insert into restaurant_category(name, created_at, updated_at)
 values ('pizza', current_timestamp, current_timestamp);
 
-insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+insert into food(category, name, description, picture_url, restaurant_id, created_at, updated_at)
 values ('vegetarianske',
         'Tofu',
         'Tofu s jednoduchou polevou',
@@ -187,7 +187,7 @@ values ('vegetarianske',
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+insert into food(category, name, description, picture_url, restaurant_id, created_at, updated_at)
 values ('vegetarianske',
         'Tofu',
         'Tofu s jednoduchou polevou',
@@ -196,7 +196,7 @@ values ('vegetarianske',
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+insert into food(category, name, description, picture_url, restaurant_id, created_at, updated_at)
 values ('veganske',
         'Salat',
         'Zdravy salat bez omacky',
@@ -205,7 +205,7 @@ values ('veganske',
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+insert into food(category, name, description, picture_url, restaurant_id, created_at, updated_at)
 values ('bezlepkove',
         'Ryza',
         'Ryza s paprikou',

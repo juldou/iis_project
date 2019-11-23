@@ -7,5 +7,6 @@ type Food struct {
 	Name           string     `json:"name"`
 	Description    string     `json:"description"`
 	PictureUrl     string     `json:"picture_url"`
-	FkRestaurantId uint       `json:"restaurant_id"`
+	Restaurant     Restaurant `gorm:"association_foreignkey:ID"`
+	RestaurantId   uint       `json:"restaurant_id"`
 }
