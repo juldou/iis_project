@@ -44,6 +44,7 @@ func (a *API) GetFoodsByRestaurantId(ctx *app.Context, w http.ResponseWriter, r 
 type FoodInput struct {
 	Category    string `json:"category"`
 	Name        string `json:"name"`
+	Price       uint   `json:"price"`
 	Description string `json:"description"`
 	PictureUrl  string `json:"picture_url"`
 }
@@ -66,11 +67,12 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		return err
 	}
 
-	food := &model.Food {
-		Category:       input.Category,
-		Name:           input.Name,
-		Description:    input.Description,
-		PictureUrl:     input.PictureUrl,
+	food := &model.Food{
+		Category:     input.Category,
+		Name:         input.Name,
+		Price:        input.Price,
+		Description:  input.Description,
+		PictureUrl:   input.PictureUrl,
 		RestaurantId: id,
 	}
 
@@ -88,11 +90,12 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 }
 
 type UpdateFoodInput struct {
-	Category    *string `json:"category"`
-	Name        *string `json:"name"`
-	Description *string `json:"description"`
-	PictureUrl  *string `json:"picture_url"`
-	RestaurantId  *uint `json:"restaurant_id"`
+	Category     *string `json:"category"`
+	Name         *string `json:"name"`
+	Price        *uint   `json:"price"`
+	Description  *string `json:"description"`
+	PictureUrl   *string `json:"picture_url"`
+	RestaurantId *uint   `json:"restaurant_id"`
 }
 
 func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -121,6 +124,9 @@ func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	if input.Name != nil {
 		existingFood.Name = *input.Name
 	}
+	if input.Price != nil {
+		existingFood.Price = *input.Price
+	}
 	if input.Description != nil {
 		existingFood.Description = *input.Description
 	}
@@ -144,15 +150,3 @@ func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	_, err = w.Write(data)
 	return err
 }
-
-//func getIdFromRequest(r *http.Request) uint {
-//	vars := mux.Vars(r)
-//	id := vars["id"]
-//
-//	intId, err := strconv.ParseInt(id, 10, 0)
-//	if err != nil {
-//		return 0
-//	}
-//
-//	return uint(intId)
-//}

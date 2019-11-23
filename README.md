@@ -16,8 +16,8 @@ GET
 ```
 api/restaurant/{id}
 api/restaurant/{id}/foods 
-api/restaurant/{id}/daily-menu TODO
-api/restaurant/{id}/permanent-menu TODO
+api/restaurant/{id}/menu?name=daily     (returns foods)
+api/restaurant/{id}/menu?name=permanent (returns foods)
 
 api/restaurants
 

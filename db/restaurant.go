@@ -45,9 +45,7 @@ func (db *Database) GetFoodsByRestaurantId(id uint) ([]*model.Food, error) {
 		return nil, err
 	}
 
-	a := db.Model(&restaurant).Related(&foods)
-	println(a)
-
+	db.Model(&restaurant).Related(&foods)
 	return foods, nil
 }
 
