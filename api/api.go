@@ -44,6 +44,9 @@ func New(a *app.App) (api *API, err error) {
 func (a *API) Init(r *mux.Router) {
 	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.NotImplementedHandler))).Methods("GET")
 
+	loginRouter := r.PathPrefix("/login").Subrouter()
+	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
+
 	// restaurant methods
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
 	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
@@ -92,6 +95,11 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				http.Error(w, "invalid credentials", http.StatusForbidden)
 				return
 			}
+
+			sess, err := a.App.GlobalSessions.SessionStart(w, r)
+			defer sess.SessionRelease(w)
+			username := sess.Get("username")
+			fmt.Println(username)
 
 			ctx = ctx.WithUser(user)
 		}

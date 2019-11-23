@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/astaxie/beego/session"
 	"github.com/iis_project/db"
 	"github.com/sirupsen/logrus"
 )
@@ -8,6 +9,7 @@ import (
 type App struct {
 	Config   *Config
 	Database *db.Database
+	GlobalSessions *session.Manager
 }
 
 func (a *App) NewContext() *Context {
@@ -32,6 +34,14 @@ func New() (app *App, err error) {
 	if err != nil {
 		return nil, err
 	}
+
+	cf := &session.ManagerConfig{
+		CookieName:              "gosessionid",
+		Gclifetime:              3600,
+	}
+	app.GlobalSessions, _ = session.NewManager("memory", cf)
+	go app.GlobalSessions.GC()
+
 
 	return app, err
 }
