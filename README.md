@@ -25,7 +25,8 @@ api/restaurant-categories
 ```
 POST
 ```
-api/restaurants
+api/restaurant
+api/restaurant/{id}/food
 ```
 PATCH
 ```
