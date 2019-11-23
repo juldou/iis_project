@@ -2,7 +2,7 @@ CREATE TABLE "user"
 (
     id              serial PRIMARY KEY,
     email           text UNIQUE NOT NULL,
-    user_type       text NOT NULL,
+    user_type       text        NOT NULL,
     hashed_password bytea       NOT NULL,
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
@@ -15,14 +15,14 @@ ALTER TABLE "user"
 
 CREATE TABLE address
 (
-    id            serial PRIMARY KEY,
-    street        character varying(100),
-    city          character varying(100),
-    number        integer,
-    postal_code   character(5),
-    created_at    TIMESTAMP NOT NULL,
-    updated_at    TIMESTAMP NOT NULL,
-    deleted_at    TIMESTAMP
+    id          serial PRIMARY KEY,
+    street      character varying(100),
+    city        character varying(100),
+    number      integer,
+    postal_code character(5),
+    created_at  TIMESTAMP NOT NULL,
+    updated_at  TIMESTAMP NOT NULL,
+    deleted_at  TIMESTAMP
 );
 
 ALTER TABLE address
@@ -35,8 +35,7 @@ CREATE TABLE food
     category         character varying(100),
     name             character varying(100),
     description      text,
-    picture_link     character varying(100),
-    price            decimal,
+    picture_url     character varying(100),
     fk_restaurant_id integer   NOT NULL,
     created_at       TIMESTAMP NOT NULL,
     updated_at       TIMESTAMP NOT NULL,
@@ -65,12 +64,12 @@ ALTER TABLE "order"
 
 CREATE TABLE rel_order_contains_food
 (
-    id               serial PRIMARY KEY,
-    fk_order_id      integer NOT NULL,
-    fk_food_id       integer NOT NULL,
-    created_at       TIMESTAMP NOT NULL,
-    updated_at       TIMESTAMP NOT NULL,
-    deleted_at       TIMESTAMP
+    id          serial PRIMARY KEY,
+    fk_order_id integer   NOT NULL,
+    fk_food_id  integer   NOT NULL,
+    created_at  TIMESTAMP NOT NULL,
+    updated_at  TIMESTAMP NOT NULL,
+    deleted_at  TIMESTAMP
 );
 
 ALTER TABLE "rel_order_contains_food"
@@ -79,26 +78,41 @@ ALTER TABLE "rel_order_contains_food"
 
 CREATE TABLE restaurant_category
 (
-    id              serial PRIMARY KEY,
-    name    text,
+    id         serial PRIMARY KEY,
+    name       text,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP
+);
+
+CREATE TABLE restaurant
+(
+    id          serial PRIMARY KEY,
+    category    character varying(100),
+    name        text UNIQUE NOT NULL,
+    description text,
+    picture_url character varying(100),
+    created_at  TIMESTAMP   NOT NULL,
+    updated_at  TIMESTAMP   NOT NULL,
+    deleted_at  TIMESTAMP
+);
+
+ALTER TABLE restaurant
+    OWNER TO postgres_iis;
+
+
+CREATE TABLE daily_menu
+(
+    id               serial PRIMARY KEY,
+    fk_restaurant_id integer   NOT NULL,
+    fk_food_id       integer   NOT NULL,
+    price            decimal,
     created_at       TIMESTAMP NOT NULL,
     updated_at       TIMESTAMP NOT NULL,
     deleted_at       TIMESTAMP
 );
 
-CREATE TABLE restaurant
-(
-    id             serial PRIMARY KEY,
-    category       character varying(100),
-    name           text UNIQUE NOT NULL,
-    description    text,
-    picture_url    character varying(100),
-    created_at     TIMESTAMP NOT NULL,
-    updated_at     TIMESTAMP NOT NULL,
-    deleted_at     TIMESTAMP
-);
-
-ALTER TABLE restaurant
+ALTER TABLE daily_menu
     OWNER TO postgres_iis;
 
 
@@ -163,3 +177,39 @@ values ('azia', current_timestamp, current_timestamp);
 
 insert into restaurant_category(name, created_at, updated_at)
 values ('pizza', current_timestamp, current_timestamp);
+
+insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+values ('vegetarianske',
+        'Tofu',
+        'Tofu s jednoduchou polevou',
+        'fake_link',
+        1,
+        current_timestamp,
+        current_timestamp);
+
+insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+values ('vegetarianske',
+        'Tofu',
+        'Tofu s jednoduchou polevou',
+        'fake_link',
+        2,
+        current_timestamp,
+        current_timestamp);
+
+insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+values ('veganske',
+        'Salat',
+        'Zdravy salat bez omacky',
+        'fake_link',
+        2,
+        current_timestamp,
+        current_timestamp);
+
+insert into food(category, name, description, picture_url, fk_restaurant_id, created_at, updated_at)
+values ('bezlepkove',
+        'Ryza',
+        'Ryza s paprikou',
+        'fake_link',
+        2,
+        current_timestamp,
+        current_timestamp);

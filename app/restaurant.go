@@ -5,22 +5,22 @@ import (
 )
 
 func (ctx *Context) GetRestaurantById(id uint) (*model.Restaurant, error) {
-	if ctx.User == nil {
-		return nil, ctx.AuthorizationError()
-	}
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
 
-	todo, err := ctx.Database.GetRestaurantById(id)
+	restaurant, err := ctx.Database.GetRestaurantById(id)
 	if err != nil {
 		return nil, err
 	}
 
-	return todo, nil
+	return restaurant, nil
 }
 
 func (ctx *Context) GetRestaurantByName(name string) (*model.Restaurant, error) {
-	if ctx.User == nil {
-		return nil, ctx.AuthorizationError()
-	}
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
 
 	restaurant, err := ctx.Database.GetRestaurantByName(name)
 	if err != nil {
@@ -38,10 +38,10 @@ func (ctx *Context) CreateRestaurant(restaurant *model.Restaurant) error {
 	//}
 }
 
-const maxTodoNameLength = 100
+const maxRestaurantNameLength = 100
 
 func (ctx *Context) validateRestaurant(restaurant *model.Restaurant) *ValidationError {
-	if len(restaurant.Name) > maxTodoNameLength {
+	if len(restaurant.Name) > maxRestaurantNameLength {
 		return &ValidationError{"name is too long"}
 	}
 

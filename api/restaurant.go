@@ -10,6 +10,22 @@ import (
 	"strconv"
 )
 
+func (a *API) GetRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	todo, err := ctx.GetRestaurantById(id)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(todo)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
 func (a *API) GetRestaurants(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	restaurants, err := ctx.Database.GetRestaurants()
 	if err != nil {
@@ -48,7 +64,7 @@ type RestaurantInput struct {
 	PictureUrl  string `json:"picture_url"`
 }
 
-type UserResponse struct {
+type RestaurantUserResponse struct {
 	Id uint `json:"id"`
 }
 
@@ -76,7 +92,7 @@ func (a *API) CreateRestaurant(ctx *app.Context, w http.ResponseWriter, r *http.
 		return err
 	}
 
-	data, err := json.Marshal(&UserResponse{Id: restaurant.ID})
+	data, err := json.Marshal(&RestaurantUserResponse{Id: restaurant.ID})
 	if err != nil {
 		return err
 	}

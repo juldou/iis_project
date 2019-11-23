@@ -14,15 +14,21 @@
 # API
 GET
 ```
-api/restaurants/
-api/restaurants/categories/
+api/restaurant/{id}
+api/restaurant/{id}/foods 
+api/restaurant/{id}/daily-menu TODO
+api/restaurant/{id}/permanent-menu TODO
+
+api/restaurants
+
+api/restaurant-categories
 ```
 POST
 ```
-api/restaurants/
+api/restaurants
 ```
 PATCH
 ```
-api/restaurants/{id}/
+api/restaurants/{id}
 ```
 

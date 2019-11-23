@@ -42,14 +42,24 @@ func New(a *app.App) (api *API, err error) {
 }
 
 func (a *API) Init(r *mux.Router) {
-	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.RootHandler))).Methods("GET")
+	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.NotImplementedHandler))).Methods("GET")
 
 	// restaurant methods
+	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
+	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
+	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.GetRestaurantById)).Methods("GET")
+	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateRestaurantById)).Methods("PATCH")
+	restaurantRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetFoods)).Methods("GET")
+	restaurantRouter.Handle("/{id:[0-9]+}/daily-menu", a.handler(a.NotImplementedHandler)).Methods("GET")
+	restaurantRouter.Handle("/{id:[0-9]+}/permanent-menu", a.handler(a.NotImplementedHandler)).Methods("GET")
+
+	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
-	restaurantsRouter.Handle("/", a.handler(a.GetRestaurants)).Methods("GET")
-	restaurantsRouter.Handle("/", a.handler(a.CreateRestaurant)).Methods("POST")
-	restaurantsRouter.Handle("/{id:[0-9]+}/", a.handler(a.UpdateRestaurantById)).Methods("PATCH")
-	restaurantsRouter.Handle("/categories", a.handler(a.GetRestaurantCategories)).Methods("GET")
+	restaurantsRouter.Handle("", a.handler(a.GetRestaurants)).Methods("GET")
+
+	// restaurant-categories methods
+	restaurantCategoriesRouter := r.PathPrefix("/restaurant-categories").Subrouter()
+	restaurantCategoriesRouter.Handle("", a.handler(a.GetRestaurantCategories)).Methods("GET")
 }
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {
@@ -143,8 +153,8 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 	})
 }
 
-func (a *API) RootHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	_, err := w.Write([]byte(`{"hello" : "world"}`))
+func (a *API) NotImplementedHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	_, err := w.Write([]byte(`{"Not" : "Implemented"}`))
 	return err
 }
 

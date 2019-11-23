@@ -7,16 +7,16 @@ import (
 )
 
 func (db *Database) GetRestaurantById(id uint) (*model.Restaurant, error) {
-	var todo model.Restaurant
+	var restaurant model.Restaurant
 
-	if err := db.First(&todo, id).Error; err != nil {
+	if err := db.First(&restaurant, id).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			return nil, nil
 		}
 		return nil, errors.Wrap(err, "unable to get restaurant by id")
 	}
 
-	return &todo, nil
+	return &restaurant, nil
 }
 
 func (db *Database) GetRestaurantByName(name string) (*model.Restaurant, error) {
