@@ -50,7 +50,7 @@ func (a *API) Init(r *mux.Router) {
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.GetRestaurantById)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateRestaurantById)).Methods("PATCH")
 	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.CreateFood)).Methods("POST")
-	restaurantRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetFoods)).Methods("GET")
+	restaurantRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetFoodsByRestaurantId)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}/daily-menu", a.handler(a.NotImplementedHandler)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}/permanent-menu", a.handler(a.NotImplementedHandler)).Methods("GET")
 

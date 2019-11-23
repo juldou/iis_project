@@ -37,6 +37,20 @@ func (db *Database) GetRestaurants() ([]*model.Restaurant, error) {
 	return restaurants, errors.Wrap(db.Find(&restaurants).Error, "unable to get restaurants")
 }
 
+func (db *Database) GetFoodsByRestaurantId(id uint) ([]*model.Food, error) {
+	var foods []*model.Food
+
+	restaurant, err := db.GetRestaurantById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	a := db.Model(&restaurant).Related(&foods)
+	println(a)
+
+	return foods, nil
+}
+
 func (db *Database) GetRestaurantCategories() ([]*model.RestaurantCategory, error) {
 	var restaurantCategories []*model.RestaurantCategory
 	return restaurantCategories, errors.Wrap(db.Find(&restaurantCategories).Error, "unable to get restaurant categories")

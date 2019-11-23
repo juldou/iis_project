@@ -24,8 +24,10 @@ func (a *API) GetFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	return err
 }
 
-func (a *API) GetFoods(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	foods, err := ctx.Database.GetFoods()
+func (a *API) GetFoodsByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+
+	foods, err := ctx.Database.GetFoodsByRestaurantId(id)
 	if err != nil {
 		return err
 	}
@@ -44,7 +46,6 @@ type FoodInput struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	PictureUrl  string `json:"picture_url"`
-	RestaurantId  uint `json:"restaurant_id"`
 }
 
 type FoodUserResponse struct {
@@ -52,6 +53,7 @@ type FoodUserResponse struct {
 }
 
 func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
 	var input FoodInput
 
 	defer r.Body.Close()
@@ -69,7 +71,7 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		Name:           input.Name,
 		Description:    input.Description,
 		PictureUrl:     input.PictureUrl,
-		FkRestaurantId: input.RestaurantId,
+		FkRestaurantId: id,
 	}
 
 	if err := ctx.CreateFood(food); err != nil {
