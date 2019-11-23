@@ -6,6 +6,8 @@ import (
 	"github.com/iis_project/app"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"time"
 )
 
 type LoginInput struct {
@@ -19,11 +21,11 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		return err
+		http.Error(w, "cannot read body data", http.StatusBadRequest)
 	}
 
 	if err := json.Unmarshal(body, &input); err != nil {
-		return err
+		http.Error(w, "cannot unmarshal login data", http.StatusBadRequest)
 	}
 
 	user, err := a.App.GetUserByEmail(input.Username)
@@ -44,5 +46,22 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	username := sess.Get(input.Username)
 	fmt.Println(username)
 
+	cookie := &http.Cookie{
+		Name:     "gosessionid",
+		Value:    url.QueryEscape(sess.SessionID()),
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   false,
+		Domain:   "random",
+	}
+	cookie.MaxAge = 3600
+	cookie.Expires = time.Now().Add(time.Duration(3600) * time.Second)
+	http.SetCookie(w, cookie)
+	r.AddCookie(cookie)
+
+	r.Header.Set("gosessionid", sess.SessionID())
+	w.Header().Set("gosessionid", sess.SessionID())
+
 	return err
+	//return err
 }
