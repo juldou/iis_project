@@ -22,6 +22,7 @@ func serveAPI(ctx context.Context, api *api.API) {
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "OPTIONS", "PATCH"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "Set-Cookie", "Gosessionid"}),
+		handlers.ExposedHeaders([]string{"Gosessionid, gosessionid", "Set-Cookie"}),
 	)
 
 	router := mux.NewRouter()
