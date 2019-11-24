@@ -138,3 +138,15 @@ func (a *API) UpdateOrderById(ctx *app.Context, w http.ResponseWriter, r *http.R
 	_, err = w.Write(data)
 	return err
 }
+
+func (a *API) DeleteOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingOrder, err := ctx.GetOrderById(id)
+	if err != nil || existingOrder == nil {
+		return err
+	}
+	if err := ctx.DeleteOrder(existingOrder); err != nil {
+		return err
+	}
+	return err
+}

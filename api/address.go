@@ -143,3 +143,15 @@ func (a *API) UpdateAddressById(ctx *app.Context, w http.ResponseWriter, r *http
 	_, err = w.Write(data)
 	return err
 }
+
+func (a *API) DeleteAddressById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingAddress, err := ctx.GetAddressById(id)
+	if err != nil || existingAddress == nil {
+		return err
+	}
+	if err := ctx.DeleteAddress(existingAddress); err != nil {
+		return err
+	}
+	return err
+}

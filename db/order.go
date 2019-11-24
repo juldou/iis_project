@@ -28,3 +28,11 @@ func (db *Database) UpdateOrder(order *model.Order) error {
 func (db *Database) CreateOrderFood(orderFood *model.OrderFood) error {
 	return db.Create(orderFood).Error
 }
+
+func (db *Database) DeleteOrder(order *model.Order) error {
+	return errors.Wrap(db.Delete(order).Error, "unable to delete order")
+}
+
+func (db *Database) DeleteOrderFood(orderFood *model.OrderFood) error {
+	return errors.Wrap(db.Delete(orderFood).Error, "unable to delete orderFood")
+}

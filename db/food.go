@@ -31,3 +31,7 @@ func (db *Database) CreateFood(food *model.Food) error {
 func (db *Database) UpdateFood(food *model.Food) error {
 	return errors.Wrap(db.Save(food).Error, "unable to update food")
 }
+
+func (db *Database) DeleteFood(food *model.Food) error {
+	return errors.Wrap(db.Delete(food).Error, "unable to delete food")
+}

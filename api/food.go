@@ -27,7 +27,7 @@ func (a *API) GetFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 func (a *API) GetFoodsByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	id := getIdFromRequest(r)
 
-	foods, err := ctx.Database.GetFoodsByRestaurantId(id)
+	foods, err := ctx.GetFoodsByRestaurantId(id)
 	if err != nil {
 		return err
 	}
@@ -148,5 +148,17 @@ func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	}
 
 	_, err = w.Write(data)
+	return err
+}
+
+func (a *API) DeleteFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingFood, err := ctx.GetFoodById(id)
+	if err != nil || existingFood == nil {
+		return err
+	}
+	if err := ctx.DeleteFood(existingFood); err != nil {
+		return err
+	}
 	return err
 }

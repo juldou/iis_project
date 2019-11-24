@@ -61,3 +61,7 @@ func (db *Database) CreateRestaurant(restaurant *model.Restaurant) error {
 func (db *Database) UpdateRestaurant(restaurant *model.Restaurant) error {
 	return errors.Wrap(db.Save(restaurant).Error, "unable to update restaurant")
 }
+
+func (db *Database) DeleteRestaurant(restaurant *model.Restaurant) error {
+	return errors.Wrap(db.Delete(restaurant).Error, "unable to delete restaurant")
+}
