@@ -2,12 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/iis_project/app"
 	"github.com/iis_project/model"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 func (a *API) GetRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -27,7 +25,9 @@ func (a *API) GetRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http
 }
 
 func (a *API) GetRestaurants(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	restaurants, err := ctx.Database.GetRestaurants()
+	category := r.FormValue("category")
+
+	restaurants, err := ctx.GetRestaurants(category)
 	if err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (a *API) GetRestaurants(ctx *app.Context, w http.ResponseWriter, r *http.Re
 }
 
 func (a *API) GetRestaurantCategories(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	restaurantCategories, err := ctx.Database.GetRestaurantCategories()
+	restaurantCategories, err := ctx.GetRestaurantCategories()
 
 	if err != nil {
 		return err
@@ -155,14 +155,14 @@ func (a *API) UpdateRestaurantById(ctx *app.Context, w http.ResponseWriter, r *h
 	return err
 }
 
-func getIdFromRequest(r *http.Request) uint {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	intId, err := strconv.ParseInt(id, 10, 0)
-	if err != nil {
-		return 0
+func (a *API) DeleteRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingRestaurant, err := ctx.GetRestaurantById(id)
+	if err != nil || existingRestaurant == nil {
+		return err
 	}
-
-	return uint(intId)
+	if err := ctx.DeleteRestaurant(existingRestaurant); err != nil {
+		return err
+	}
+	return err
 }

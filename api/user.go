@@ -24,6 +24,21 @@ func (a *API) GetUserById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	return err
 }
 
+func (a *API) GetUsers(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	users, err := ctx.GetUsers()
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(users)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
 type UserInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -114,5 +129,17 @@ func (a *API) UpdateUserById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	}
 
 	_, err = w.Write(data)
+	return err
+}
+
+func (a *API) DeleteUserById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingUser, err := ctx.GetUserById(id)
+	if err != nil || existingUser == nil {
+		return err
+	}
+	if err := ctx.DeleteUser(existingUser); err != nil {
+		return err
+	}
 	return err
 }

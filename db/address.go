@@ -39,3 +39,7 @@ func (db *Database) CreateAddress(food *model.Address) error {
 func (db *Database) UpdateAddress(food *model.Address) error {
 	return errors.Wrap(db.Save(food).Error, "unable to update food")
 }
+
+func (db *Database) DeleteAddress(address *model.Address) error {
+	return errors.Wrap(db.Delete(address).Error, "unable to delete address")
+}

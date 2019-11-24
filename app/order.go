@@ -31,3 +31,10 @@ func (ctx *Context) UpdateOrder(order *model.Order) error {
 func (ctx *Context) CreateOrderFood(orderFood *model.OrderFood) error {
 	return ctx.Database.CreateOrderFood(orderFood)
 }
+
+func (ctx *Context) DeleteOrder(order *model.Order) error {
+	//if ctx.User == nil {
+	//	return ctx.AuthorizationError()
+	//}
+	return ctx.Database.DeleteOrder(order)
+}

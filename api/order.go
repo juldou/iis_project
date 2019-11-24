@@ -43,7 +43,7 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 type OrderInput struct {
 	AddressId        uint       `json:"address_id"`
 	UserId           uint       `json:"user_id"`
-	RestaurantId     uint     `json:"restaurant_id"`
+	//RestaurantId     uint     `json:"restaurant_id"`
 	FoodIds			 []uint   `json:"food_ids"`
 }
 
@@ -68,8 +68,6 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 		State:            "new",
 		UserId:           input.UserId,
 		AddressId:        input.AddressId,
-		RestaurantId:     input.RestaurantId,
-
 	}
 
 	if err := ctx.CreateOrder(order); err != nil {
@@ -138,5 +136,17 @@ func (a *API) UpdateOrderById(ctx *app.Context, w http.ResponseWriter, r *http.R
 	}
 
 	_, err = w.Write(data)
+	return err
+}
+
+func (a *API) DeleteOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	existingOrder, err := ctx.GetOrderById(id)
+	if err != nil || existingOrder == nil {
+		return err
+	}
+	if err := ctx.DeleteOrder(existingOrder); err != nil {
+		return err
+	}
 	return err
 }

@@ -17,6 +17,19 @@ func (ctx *Context) GetFoodById(id uint) (*model.Food, error) {
 	return food, nil
 }
 
+func (ctx *Context) GetFoodsByRestaurantId(id uint) ([]*model.Food, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+
+	food, err := ctx.Database.GetFoodsByRestaurantId(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return food, nil
+}
+
 func (ctx *Context) CreateFood(food *model.Food) error {
 	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
 		return ctx.Database.CreateFood(food)
@@ -50,4 +63,11 @@ func (ctx *Context) UpdateFood(food *model.Food) error {
 	}
 
 	return ctx.Database.UpdateFood(food)
+}
+
+func (ctx *Context) DeleteFood(food *model.Food) error {
+	//if ctx.User == nil {
+	//	return ctx.AuthorizationError()
+	//}
+	return ctx.Database.DeleteFood(food)
 }

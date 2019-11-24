@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"time"
 
@@ -42,23 +43,33 @@ func New(a *app.App) (api *API, err error) {
 }
 
 func (a *API) Init(r *mux.Router) {
-
+	// user methods
 	userRouter := r.PathPrefix("/user").Subrouter()
 	userRouter.Handle("", a.handler(a.CreateUser)).Methods("POST")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetUserById)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateUserById)).Methods("PATCH")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteUserById)).Methods("DELETE")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.GetAllAddressesByUserId)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.CreateAddress)).Methods("POST")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.UpdateAddressById)).Methods("PATCH")
+	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.DeleteAddressById)).Methods("DELETE")
 
+	// users methods
+	usersRouter := r.PathPrefix("/users").Subrouter()
+	usersRouter.Handle("", a.handler(a.GetUsers)).Methods("GET")
+
+	// order methods
 	orderRouter := r.PathPrefix("/order").Subrouter()
 	orderRouter.Handle("", a.handler(a.CreateOrder)).Methods("POST")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetOrderById)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateOrderById)).Methods("PATCH")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
 
+	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
 	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
 
+	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
 	refreshRouter.Handle("", a.handler(a.RefreshHandler)).Methods("GET")
 
@@ -67,9 +78,13 @@ func (a *API) Init(r *mux.Router) {
 	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.GetRestaurantById)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateRestaurantById)).Methods("PATCH")
+	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteRestaurantById)).Methods("DELETE")
 	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.CreateFood)).Methods("POST")
+	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.UpdateFoodById)).Methods("PATCH")
+	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.DeleteFoodById)).Methods("DELETE")
 	restaurantRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetFoodsByRestaurantId)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}/menu", a.handler(a.GetMenuByRestaurantId)).Methods("GET")
+	restaurantRouter.Handle("/{id:[0-9]+}/menu", a.handler(a.CreateMenu)).Methods("POST")
 
 	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
@@ -94,6 +109,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 
 		ctx := a.App.NewContext().WithRemoteAddress(a.IPAddressForRequest(r))
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
+		ctx = ctx.WithDatabase(a.App.Database)
 
 		// We can obtain the session token from the requests cookies, which come with every request
 		c, err := r.Cookie("gosessionid")
@@ -130,53 +146,6 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 			ctx.Logger.Info(fmt.Sprintf("successfully loaded session token for %s", response))
 			ctx = ctx.WithUser(user)
 		}
-
-
-
-		//cookie, err := r.Cookie("gosessionid")
-		//if err != nil {
-		//	if err == http.ErrNoCookie {
-		//		ctx.Logger.Info("cookies not found in request")
-		//	}
-		//} else {
-		//	if a.App.GlobalSessions.GetProvider().SessionExist(cookie.Value) {
-		//		user, err := a.App.GetUserBySid(cookie.Value)
-		//		if user == nil || err != nil {
-		//			if err != nil {
-		//				ctx.Logger.WithError(err).Error("unable to get user")
-		//			}
-		//			http.Error(w, "invalid credentials", http.StatusForbidden)
-		//			return
-		//		}
-		//		ctx = ctx.WithUser(user)
-		//	}
-		//}
-
-		//if username, password, ok := r.BasicAuth(); ok {
-		//	user, err := a.App.GetUserByEmail(username)
-		//
-		//	if user == nil || err != nil {
-		//		if err != nil {
-		//			ctx.Logger.WithError(err).Error("unable to get user")
-		//		}
-		//		http.Error(w, "invalid credentials", http.StatusForbidden)
-		//		return
-		//	}
-		//
-		//	if ok := user.CheckPassword(password); !ok {
-		//		http.Error(w, "invalid credentials", http.StatusForbidden)
-		//		return
-		//	}
-		//
-		//	sess, err := a.App.GlobalSessions.SessionStart(w, r)
-		//	defer sess.SessionRelease(w)
-		//	username := sess.Get("username")
-		//	fmt.Println(username)
-		//
-		//	ctx = ctx.WithUser(user)
-		//}
-
-		ctx = ctx.WithDatabase(a.App.Database)
 
 		//defer func() {
 		func() {
@@ -253,4 +222,16 @@ func (a *API) IPAddressForRequest(r *http.Request) string {
 		}
 	}
 	return strings.Split(strings.TrimSpace(addr), ":")[0]
+}
+
+func getIdFromRequest(r *http.Request) uint {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	intId, err := strconv.ParseInt(id, 10, 0)
+	if err != nil {
+		return 0
+	}
+
+	return uint(intId)
 }

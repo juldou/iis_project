@@ -21,6 +21,19 @@ func (ctx *Context) GetUserById(id uint) (*model.User, error) {
 	return user, nil
 }
 
+func (ctx *Context) GetUsers() ([]*model.User, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+
+	user, err := ctx.Database.GetUsers()
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (ctx *Context) CreateUser(user *model.User, password string) error {
 	if err := ctx.validateUser(user, password); err != nil {
 		return err
@@ -57,4 +70,11 @@ func (ctx *Context) UpdateUser(user *model.User) error {
 	}
 
 	return ctx.Database.UpdateUser(user)
+}
+
+func (ctx *Context) DeleteUser(user *model.User) error {
+	//if ctx.User == nil {
+	//	return ctx.AuthorizationError()
+	//}
+	return ctx.Database.DeleteUser(user)
 }

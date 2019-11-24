@@ -53,7 +53,6 @@ CREATE TABLE "order"
     id            serial PRIMARY KEY,
     state         text,
     address_id    integer   NOT NULL,
-    restaurant_id integer   NOT NULL,
     user_id  integer,
     courier_id  integer,
     created_at    TIMESTAMP NOT NULL,
@@ -108,7 +107,6 @@ CREATE TABLE menu
 (
     id            serial PRIMARY KEY,
     name          text      NOT NULL,
-    restaurant_id integer   NOT NULL,
     food_id       integer   NOT NULL,
     created_at    TIMESTAMP NOT NULL,
     updated_at    TIMESTAMP NOT NULL,
@@ -125,11 +123,8 @@ ALTER TABLE ONLY food
 ALTER TABLE ONLY "order"
     ADD CONSTRAINT order_has_address FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY "order"
-    ADD CONSTRAINT order_belongs_to_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "order"
-    ADD CONSTRAINT order_has_orderer FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY "order"
+--     ADD CONSTRAINT order_has_orderer FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY order_food
     ADD CONSTRAINT food_belongs_to_order FOREIGN KEY (order_id) REFERENCES "order" (id) ON DELETE CASCADE;
@@ -138,8 +133,8 @@ ALTER TABLE ONLY order_food
     ADD CONSTRAINT order_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
 
 
-ALTER TABLE ONLY "menu"
-    ADD CONSTRAINT menu_belongs_to_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY "menu"
+--     ADD CONSTRAINT menu_belongs_to_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "menu"
     ADD CONSTRAINT menu_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
@@ -232,30 +227,26 @@ values ('bezlepkove',
         current_timestamp);
 
 
-insert into menu(name, restaurant_id, food_id, created_at, updated_at)
+insert into menu(name, food_id, created_at, updated_at)
 values ('daily',
-        1,
         1,
         current_timestamp,
         current_timestamp);
 
-insert into menu(name, restaurant_id, food_id, created_at, updated_at)
+insert into menu(name, food_id, created_at, updated_at)
 values ('daily',
-        2,
         2,
         current_timestamp,
         current_timestamp);
 
-insert into menu(name, restaurant_id, food_id, created_at, updated_at)
+insert into menu(name, food_id, created_at, updated_at)
 values ('permanent',
-        2,
         3,
         current_timestamp,
         current_timestamp);
 
-insert into menu(name, restaurant_id, food_id, created_at, updated_at)
+insert into menu(name, food_id, created_at, updated_at)
 values ('daily',
-        2,
         4,
         current_timestamp,
         current_timestamp);

@@ -17,6 +17,11 @@ func (db *Database) GetUserById(id uint) (*model.User, error) {
 	return &user, nil
 }
 
+func (db *Database) GetUsers() ([]*model.User, error) {
+	var users []*model.User
+	return users, errors.Wrap(db.Find(&users).Error, "unable to get users")
+}
+
 func (db *Database) GetUserByEmail(email string) (*model.User, error) {
 	var user model.User
 	if err := db.First(&user, model.User{Email: email}).Error; err != nil {
@@ -34,4 +39,8 @@ func (db *Database) CreateUser(user *model.User) error {
 
 func (db *Database) UpdateUser(user *model.User) error {
 	return errors.Wrap(db.Save(user).Error, "unable to update user")
+}
+
+func (db *Database) DeleteUser(user *model.User) error {
+	return errors.Wrap(db.Delete(user).Error, "unable to delete user")
 }

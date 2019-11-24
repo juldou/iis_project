@@ -45,3 +45,10 @@ func (ctx *Context) UpdateAddress(address *model.Address) error {
 
 	return ctx.Database.UpdateAddress(address)
 }
+
+func (ctx *Context) DeleteAddress(address *model.Address) error {
+	//if ctx.User == nil {
+	//	return ctx.AuthorizationError()
+	//}
+	return ctx.Database.DeleteAddress(address)
+}
