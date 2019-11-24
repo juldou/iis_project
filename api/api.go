@@ -47,6 +47,9 @@ func (a *API) Init(r *mux.Router) {
 	loginRouter := r.PathPrefix("/login").Subrouter()
 	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
 
+	refreshRouter := r.PathPrefix("/refresh").Subrouter()
+	refreshRouter.Handle("", a.handler(a.RefreshHandler)).Methods("GET")
+
 	// restaurant methods
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
 	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
@@ -163,6 +166,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 
 		ctx = ctx.WithDatabase(a.App.Database)
 
+		//defer func() {
 		defer func() {
 			statusCode := w.(*statusCodeRecorder).StatusCode
 			if statusCode == 0 {
@@ -178,7 +182,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 			logger.Info(r.Method + " " + r.URL.RequestURI())
 		}()
 
-		defer func() {
+		func() {
 			if r := recover(); r != nil {
 				ctx.Logger.Error(fmt.Errorf("%v: %s", r, debug.Stack()))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
