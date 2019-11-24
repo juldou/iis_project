@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 
-class AddMeal extends Component {
+class AddRestaurant extends Component {
     constructor(props) {
         super(props);
 
@@ -43,9 +43,9 @@ class AddMeal extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
-                Name:
-                <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-            </label>
+                    Name:
+                    <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+                </label>
                 <label>
                     Type:
                     <input type="text" value={this.state.type} onChange={this.handleTypeChange} />
@@ -66,8 +66,7 @@ class AddMeal extends Component {
     }
 
     async sendData() {
-        var url = this.config.ADD_MEAL_URL + "/" + this.state.restaurant_id + "/food"
-        fetch(url, {
+        fetch(this.config.ADD_RESTAURANT_URL, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -84,10 +83,9 @@ class AddMeal extends Component {
                 alert(response.status);
                 console.log(response.message);
             } else {
-                alert("ADDED MEAL");
+                alert("ADDED restaurant");
             }
             return response.json();
         })
-        //TODO handle error
     }
-} export default AddMeal;
+} export default AddRestaurant;

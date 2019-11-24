@@ -12,7 +12,6 @@ class Homescreen extends React.Component {
   render() {
     return (
         <div className="Application">
-            <Header/>
             <section>
               <RestaurantList ref={list => this.list = list}/>
               <Categories onClick={this.triggerCategoryChange.bind(this)}/>

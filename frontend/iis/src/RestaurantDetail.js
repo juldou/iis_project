@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Configuration from "./Configuration";
+import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {NavLink} from "react-router-dom";
 

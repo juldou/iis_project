@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './index.css';
-import Configuration from "./Configuration";
+import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 
 class Categories extends Component {

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
+import {login} from "./Network/Authentication";
+import {NavLink, Redirect} from "react-router-dom";
 
 export default class Login extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ export default class Login extends Component {
         };
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            toHomescreen: false
         };
     }
 
@@ -28,26 +30,36 @@ export default class Login extends Component {
         this.setState({
             [event.target.id]: event.target.value
         });
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
-    }
+        login(this.state.name, this.state.password).then(response => {
+            this.setState({toHomescreen: true});
+        }
+    );
+    };
 
     render() {
+        if(this.state.toHomescreen === true) {
+            return <Redirect to='/#' />
+        }
         return (
             <div className="Login">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
+                        <Form.Label> Email </Form.Label>
+
                         <Form.Control
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
-                            type="email"
+                            type="text"
                             value={this.state.email}
                             onChange={this.handleChange}
                         />
                     </Form.Group>
                     <Form.Group controlId="password" bsSize="large">
+                        <Form.Label> Password </Form.Label>
                         <Form.Control
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
@@ -55,6 +67,7 @@ export default class Login extends Component {
                             type="password"
                         />
                     </Form.Group>
+
                     <Button
                         block
                         bsSize="large"

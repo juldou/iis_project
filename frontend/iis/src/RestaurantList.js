@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {NavLink, useHistory} from "react-router-dom";
 import NetworkService from "./Network/NetworkService";
-import Configuration from "./Configuration";
+import Configuration from "./Network/Configuration";
+import {isAuthenticated} from "./Network/Authentication";
 
 
 class RestaurantList extends  Component {
@@ -52,12 +53,24 @@ class RestaurantList extends  Component {
                     {listItems}
                 </ul>
                 <br/>
-                <button type="button" name="button" >New Item</button>
                 <br/>
-
+                {this.addButton()}
             </div>
         );
     }
+
+    addButton() {
+        if(isAuthenticated()) {
+            return(
+                <NavLink to="/addrestaurant/" className="link">
+                <button type="button" name="button">New Item</button>
+                </NavLink>
+            );
+        }
+
+        return ("");
+    }
+
     getItems(idCategory) {
         let url = this.config.RESTAURANT_LIST_URL;
         if(idCategory !== "") {
