@@ -124,11 +124,8 @@ ALTER TABLE ONLY food
 ALTER TABLE ONLY "order"
     ADD CONSTRAINT order_has_address FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY "order"
-    ADD CONSTRAINT order_belongs_to_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "order"
-    ADD CONSTRAINT order_has_orderer FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE;
+-- ALTER TABLE ONLY "order"
+--     ADD CONSTRAINT order_has_orderer FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY order_food
     ADD CONSTRAINT food_belongs_to_order FOREIGN KEY (order_id) REFERENCES "order" (id) ON DELETE CASCADE;
