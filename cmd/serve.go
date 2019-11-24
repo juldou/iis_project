@@ -20,9 +20,9 @@ import (
 func serveAPI(ctx context.Context, api *api.API) {
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "OPTIONS", "PATCH"}),
-		handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "Set-Cookie", "Gosessionid"}),
-		handlers.ExposedHeaders([]string{"Gosessionid, gosessionid", "Set-Cookie"}),
+		handlers.AllowedMethods([]string{"*","GET", "HEAD", "POST", "OPTIONS", "PATCH"}),
+		handlers.AllowedHeaders([]string{"*","Content-Type", "Authorization", "Set-Cookie", "Gosessionid", "Gosessionid, gosessionid", "Set-Cookie", "set-cookie", "Set-cookie", "cookie", "Cookie"}),
+		handlers.ExposedHeaders([]string{"*","Gosessionid, gosessionid", "Set-Cookie", "set-cookie", "Set-cookie", "cookie", "Cookie"}),
 	)
 
 	router := mux.NewRouter()
@@ -86,6 +86,21 @@ var serveCmd = &cobra.Command{
 
 		user := &model.User{Email: "julo.marko@gmail.com", Role: "admin"}
 		password := "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
+		user = &model.User{Email: "jan.zauska@gmail.com", Role: "operator"}
+		password = "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
+		user = &model.User{Email: "martin.rockar@gmail.com", Role: "courier"}
+		password = "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
+		user = &model.User{Email: "adam.kucera@gmail.com", Role: "customer"}
+		password = "heslo123"
 		user.SetPassword(password)
 		app.Database.CreateUser(user)
 
