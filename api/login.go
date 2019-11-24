@@ -126,6 +126,7 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 		Name:    "gosessionid",
 		Value:   sessionToken,
 		Expires: time.Now().Add(3600 * time.Second),
+		Domain: "78.128.250.217",
 	}
 
 	http.SetCookie(w, cookie)
