@@ -167,7 +167,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx = ctx.WithDatabase(a.App.Database)
 
 		//defer func() {
-		defer func() {
+		func() {
 			statusCode := w.(*statusCodeRecorder).StatusCode
 			if statusCode == 0 {
 				statusCode = 200
