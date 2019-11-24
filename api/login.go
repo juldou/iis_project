@@ -118,7 +118,7 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	cookie := &http.Cookie{
 		Name:    "gosessionid",
 		Value:   sessionToken,
-		Expires: time.Now().Add(120 * time.Second),
+		Expires: time.Now().Add(3600 * time.Second),
 	}
 
 	http.SetCookie(w, cookie)

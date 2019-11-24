@@ -90,7 +90,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				//return
 			} else {
 				// For any other type of error, return a bad request status
-				//w.WriteHeader(http.StatusBadRequest)
+				w.WriteHeader(http.StatusBadRequest)
 				return
 			}
 		} else {
