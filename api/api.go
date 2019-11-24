@@ -80,24 +80,63 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx := a.App.NewContext().WithRemoteAddress(a.IPAddressForRequest(r))
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 
-		cookie, err := r.Cookie("gosessionid")
+		// We can obtain the session token from the requests cookies, which come with every request
+		c, err := r.Cookie("gosessionid")
 		if err != nil {
 			if err == http.ErrNoCookie {
+				// If the cookie is not set, return an unauthorized status
+				//w.WriteHeader(http.StatusUnauthorized)
 				ctx.Logger.Info("cookies not found in request")
+				//return
+			} else {
+				// For any other type of error, return a bad request status
+				//w.WriteHeader(http.StatusBadRequest)
+				return
 			}
 		} else {
-			if a.App.GlobalSessions.GetProvider().SessionExist(cookie.Value) {
-				user, err := a.App.GetUserBySid(cookie.Value)
-				if user == nil || err != nil {
-					if err != nil {
-						ctx.Logger.WithError(err).Error("unable to get user")
-					}
-					http.Error(w, "invalid credentials", http.StatusForbidden)
-					return
-				}
-				ctx = ctx.WithUser(user)
+			sessionToken := c.Value
+			// We then get the name of the user from our cache, where we set the session token
+			response, err := a.App.RedisCache.Do("GET", sessionToken)
+			if err != nil {
+				// If there is an error fetching from cache, return an internal server error status
+				w.WriteHeader(http.StatusInternalServerError)
+				return
 			}
+			if response == nil {
+				// If the session token is not present in cache, return an unauthorized error
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			} else {
+
+			}
+			// Finally, return the welcome message to the user
+			user, err := a.App.GetUserByEmail(fmt.Sprintf("%s", response))
+			if err != nil {
+				ctx.Logger.Info("user not found by email")
+			}
+			ctx = ctx.WithUser(user)
 		}
+
+
+
+		//cookie, err := r.Cookie("gosessionid")
+		//if err != nil {
+		//	if err == http.ErrNoCookie {
+		//		ctx.Logger.Info("cookies not found in request")
+		//	}
+		//} else {
+		//	if a.App.GlobalSessions.GetProvider().SessionExist(cookie.Value) {
+		//		user, err := a.App.GetUserBySid(cookie.Value)
+		//		if user == nil || err != nil {
+		//			if err != nil {
+		//				ctx.Logger.WithError(err).Error("unable to get user")
+		//			}
+		//			http.Error(w, "invalid credentials", http.StatusForbidden)
+		//			return
+		//		}
+		//		ctx = ctx.WithUser(user)
+		//	}
+		//}
 
 		if username, password, ok := r.BasicAuth(); ok {
 			user, err := a.App.GetUserByEmail(username)
