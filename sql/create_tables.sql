@@ -53,7 +53,6 @@ CREATE TABLE "order"
     id            serial PRIMARY KEY,
     state         text,
     address_id    integer   NOT NULL,
-    restaurant_id integer   NOT NULL,
     user_id  integer,
     courier_id  integer,
     created_at    TIMESTAMP NOT NULL,

@@ -43,7 +43,7 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 type OrderInput struct {
 	AddressId        uint       `json:"address_id"`
 	UserId           uint       `json:"user_id"`
-	RestaurantId     uint     `json:"restaurant_id"`
+	//RestaurantId     uint     `json:"restaurant_id"`
 	FoodIds			 []uint   `json:"food_ids"`
 }
 
@@ -68,8 +68,6 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 		State:            "new",
 		UserId:           input.UserId,
 		AddressId:        input.AddressId,
-		RestaurantId:     input.RestaurantId,
-
 	}
 
 	if err := ctx.CreateOrder(order); err != nil {

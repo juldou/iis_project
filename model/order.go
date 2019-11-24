@@ -10,8 +10,6 @@ type Order struct {
 	CourierId        uint       `json:"courier_id"`
 	Address          Address    `gorm:"association_foreignkey:ID"`
 	AddressId        uint       `json:"address_id"`
-	Restaurant       Restaurant `gorm:"association_foreignkey:ID"`
-	RestaurantId     uint       `json:"restaurant_id"`
 }
 
 type OrderFood struct {
