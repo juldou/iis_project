@@ -42,7 +42,19 @@ func New(a *app.App) (api *API, err error) {
 }
 
 func (a *API) Init(r *mux.Router) {
-	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.NotImplementedHandler))).Methods("GET")
+
+	userRouter := r.PathPrefix("/user").Subrouter()
+	userRouter.Handle("", a.handler(a.CreateUser)).Methods("POST")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetUserById)).Methods("GET")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateUserById)).Methods("PATCH")
+	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.GetAllAddressesByUserId)).Methods("GET")
+	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.CreateAddress)).Methods("POST")
+	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.UpdateAddressById)).Methods("PATCH")
+
+	orderRouter := r.PathPrefix("/order").Subrouter()
+	orderRouter.Handle("", a.handler(a.CreateOrder)).Methods("POST")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetOrderById)).Methods("GET")
+	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateOrderById)).Methods("PATCH")
 
 	loginRouter := r.PathPrefix("/login").Subrouter()
 	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
@@ -111,7 +123,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				return
 			}
 			// Finally, return the welcome message to the user
-			user, err := a.App.GetUserByEmail(fmt.Sprintf("%s", response))
+			user, err := a.App.Database.GetUserByEmail(fmt.Sprintf("%s", response))
 			if err != nil {
 				ctx.Logger.Info("user not found by email")
 			}

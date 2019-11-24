@@ -8,8 +8,17 @@ import (
 	"github.com/iis_project/model"
 )
 
-func (a *App) GetUserByEmail(email string) (*model.User, error) {
-	return a.Database.GetUserByEmail(email)
+func (ctx *Context) GetUserById(id uint) (*model.User, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+
+	user, err := ctx.Database.GetUserById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (ctx *Context) CreateUser(user *model.User, password string) error {
@@ -35,4 +44,17 @@ func (ctx *Context) validateUser(user *model.User, password string) *ValidationE
 	}
 
 	return nil
+}
+
+func (ctx *Context) UpdateUser(user *model.User) error {
+	//if ctx.User == nil {
+	//	return ctx.AuthorizationError()
+	//}
+
+	// TODO: validate user for updating
+	if !strings.Contains(user.Email, "@") {
+		return &ValidationError{"invalid email"}
+	}
+
+	return ctx.Database.UpdateUser(user)
 }

@@ -25,14 +25,28 @@ api/restaurant/{id}/menu?name=permanent (returns foods)
 api/restaurants
 
 api/restaurant-categories
+
+api/user/{id}
+api/user/{id}/address   // returns array of addresses
+
+api/order/{id}
 ```
 POST
 ```
 api/restaurant
 api/restaurant/{id}/food
+
+api/user
+api/user/{id}/address
+
+api/order
 ```
 PATCH
 ```
 api/restaurants/{id}
+
+api/user/{id}/address
+
+api/order/{id}
 ```
 

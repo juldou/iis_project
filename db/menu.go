@@ -16,6 +16,7 @@ func (db *Database) GetMenuByRestaurantIdAndMenuName(id uint, name string) ([]*m
 	for _, menu := range menus {
 		if menu.Name == name {
 			db.Model(&menu).Related(&menu.Food)
+			db.Model(&menu.Food).Related(&menu.Food.Restaurant)
 			foods = append(foods, &menu.Food)
 		}
 	}

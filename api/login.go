@@ -95,7 +95,7 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 		return err
 	}
 
-	user, err := a.App.GetUserByEmail(input.Username)
+	user, err := a.App.Database.GetUserByEmail(input.Username)
 	if user == nil || err != nil {
 		if err != nil {
 			ctx.Logger.WithError(err).Error("unable to get user")
@@ -134,7 +134,7 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	r.Header.Set("gosessionid", sessionToken)
 	w.Header().Set("gosessionid", sessionToken)
 
-	user, err = a.App.GetUserByEmail(input.Username)
+	user, err = a.App.Database.GetUserByEmail(input.Username)
 	if user == nil || err != nil {
 		if err != nil {
 			ctx.Logger.WithError(err).Error("unable to get user")

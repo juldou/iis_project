@@ -89,6 +89,21 @@ var serveCmd = &cobra.Command{
 		user.SetPassword(password)
 		app.Database.CreateUser(user)
 
+		user = &model.User{Email: "jan.zauska@gmail.com", Role: "operator"}
+		password = "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
+		user = &model.User{Email: "martin.rockar@gmail.com", Role: "courier"}
+		password = "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
+		user = &model.User{Email: "adam.kucera@gmail.com", Role: "customer"}
+		password = "heslo123"
+		user.SetPassword(password)
+		app.Database.CreateUser(user)
+
 		wg.Wait()
 		return nil
 	},
