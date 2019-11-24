@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/iis_project/app"
 	"io/ioutil"
 	"net/http"
@@ -43,8 +42,6 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 
 	sess, err := a.App.GlobalSessions.SessionStart(w, r)
 	defer sess.SessionRelease(w)
-	username := sess.Get(input.Username)
-	fmt.Println(username)
 
 	cookie := &http.Cookie{
 		Name:     "gosessionid",
@@ -58,10 +55,24 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	cookie.Expires = time.Now().Add(time.Duration(3600) * time.Second)
 	http.SetCookie(w, cookie)
 	r.AddCookie(cookie)
-
 	r.Header.Set("gosessionid", sess.SessionID())
 	w.Header().Set("gosessionid", sess.SessionID())
 
+	err = ctx.Database.UpdateUserSid(input.Username, sess.SessionID())
+
+	user, err = a.App.GetUserByEmail(input.Username)
+	if user == nil || err != nil {
+		if err != nil {
+			ctx.Logger.WithError(err).Error("unable to get user")
+		}
+		return err
+	}
+
+	data, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
+	_, err = w.Write(data)
+
 	return err
-	//return err
 }

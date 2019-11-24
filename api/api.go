@@ -80,6 +80,25 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx := a.App.NewContext().WithRemoteAddress(a.IPAddressForRequest(r))
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 
+		cookie, err := r.Cookie("gosessionid")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				ctx.Logger.Info("cookies not found in request")
+			}
+		} else {
+			if a.App.GlobalSessions.GetProvider().SessionExist(cookie.Value) {
+				user, err := a.App.GetUserBySid(cookie.Value)
+				if user == nil || err != nil {
+					if err != nil {
+						ctx.Logger.WithError(err).Error("unable to get user")
+					}
+					http.Error(w, "invalid credentials", http.StatusForbidden)
+					return
+				}
+				ctx = ctx.WithUser(user)
+			}
+		}
+
 		if username, password, ok := r.BasicAuth(); ok {
 			user, err := a.App.GetUserByEmail(username)
 

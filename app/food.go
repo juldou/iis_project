@@ -18,7 +18,7 @@ func (ctx *Context) GetFoodById(id uint) (*model.Food, error) {
 }
 
 func (ctx *Context) CreateFood(food *model.Food) error {
-	//if ctx.User.UserType == "admin" || ctx.User.UserType == "operator" {
+	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
 		return ctx.Database.CreateFood(food)
 	//} else {
 	//	return ctx.AuthorizationError()

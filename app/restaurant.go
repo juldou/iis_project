@@ -31,7 +31,7 @@ func (ctx *Context) GetRestaurantByName(name string) (*model.Restaurant, error) 
 }
 
 func (ctx *Context) CreateRestaurant(restaurant *model.Restaurant) error {
-	//if ctx.User.UserType == "admin" || ctx.User.UserType == "operator" {
+	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
 		return ctx.Database.CreateRestaurant(restaurant)
 	//} else {
 	//	return ctx.AuthorizationError()

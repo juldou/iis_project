@@ -84,7 +84,7 @@ var serveCmd = &cobra.Command{
 			serveAPI(ctx, api)
 		}()
 
-		user := &model.User{Email: "julo.marko@gmail.com", UserType: "admin"}
+		user := &model.User{Email: "julo.marko@gmail.com", Role: "admin"}
 		password := "heslo123"
 		user.SetPassword(password)
 		app.Database.CreateUser(user)

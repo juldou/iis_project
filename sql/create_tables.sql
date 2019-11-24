@@ -2,7 +2,8 @@ CREATE TABLE "user"
 (
     id              serial PRIMARY KEY,
     email           text UNIQUE NOT NULL,
-    user_type       text        NOT NULL,
+    role       text        NOT NULL,
+    sid             text,
     hashed_password bytea       NOT NULL,
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
