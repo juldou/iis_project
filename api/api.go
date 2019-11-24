@@ -44,6 +44,9 @@ func New(a *app.App) (api *API, err error) {
 func (a *API) Init(r *mux.Router) {
 	//r.Handle("/hello/", gziphandler.GzipHandler(a.handler(a.NotImplementedHandler))).Methods("GET")
 
+	loginRouter := r.PathPrefix("/login").Subrouter()
+	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
+
 	// restaurant methods
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
 	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
@@ -77,6 +80,25 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx := a.App.NewContext().WithRemoteAddress(a.IPAddressForRequest(r))
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 
+		cookie, err := r.Cookie("gosessionid")
+		if err != nil {
+			if err == http.ErrNoCookie {
+				ctx.Logger.Info("cookies not found in request")
+			}
+		} else {
+			if a.App.GlobalSessions.GetProvider().SessionExist(cookie.Value) {
+				user, err := a.App.GetUserBySid(cookie.Value)
+				if user == nil || err != nil {
+					if err != nil {
+						ctx.Logger.WithError(err).Error("unable to get user")
+					}
+					http.Error(w, "invalid credentials", http.StatusForbidden)
+					return
+				}
+				ctx = ctx.WithUser(user)
+			}
+		}
+
 		if username, password, ok := r.BasicAuth(); ok {
 			user, err := a.App.GetUserByEmail(username)
 
@@ -92,6 +114,11 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				http.Error(w, "invalid credentials", http.StatusForbidden)
 				return
 			}
+
+			sess, err := a.App.GlobalSessions.SessionStart(w, r)
+			defer sess.SessionRelease(w)
+			username := sess.Get("username")
+			fmt.Println(username)
 
 			ctx = ctx.WithUser(user)
 		}

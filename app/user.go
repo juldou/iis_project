@@ -12,6 +12,14 @@ func (a *App) GetUserByEmail(email string) (*model.User, error) {
 	return a.Database.GetUserByEmail(email)
 }
 
+func (a *App) GetUserBySid(sid string) (*model.User, error) {
+	return a.Database.GetUserByEmail(sid)
+}
+
+func (a *App) UpdateUserSid(email string, sid string) error {
+	return a.Database.UpdateUserSid(email, sid)
+}
+
 func (ctx *Context) CreateUser(user *model.User, password string) error {
 	if err := ctx.validateUser(user, password); err != nil {
 		return err

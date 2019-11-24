@@ -20,8 +20,9 @@ import (
 func serveAPI(ctx context.Context, api *api.API) {
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "OPTIONS"}),
-		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "OPTIONS", "PATCH"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "Set-Cookie", "Gosessionid"}),
+		handlers.ExposedHeaders([]string{"Gosessionid, gosessionid", "Set-Cookie"}),
 	)
 
 	router := mux.NewRouter()
@@ -83,7 +84,7 @@ var serveCmd = &cobra.Command{
 			serveAPI(ctx, api)
 		}()
 
-		user := &model.User{Email: "julo.marko@gmail.com", UserType: "admin"}
+		user := &model.User{Email: "julo.marko@gmail.com", Role: "admin"}
 		password := "heslo123"
 		user.SetPassword(password)
 		app.Database.CreateUser(user)
