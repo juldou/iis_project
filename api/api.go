@@ -106,14 +106,13 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				// If the session token is not present in cache, return an unauthorized error
 				w.WriteHeader(http.StatusUnauthorized)
 				return
-			} else {
-
 			}
 			// Finally, return the welcome message to the user
 			user, err := a.App.GetUserByEmail(fmt.Sprintf("%s", response))
 			if err != nil {
 				ctx.Logger.Info("user not found by email")
 			}
+			ctx.Logger.Info(fmt.Sprintf("successfully loaded session token for %s", response))
 			ctx = ctx.WithUser(user)
 		}
 
@@ -138,29 +137,29 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		//	}
 		//}
 
-		if username, password, ok := r.BasicAuth(); ok {
-			user, err := a.App.GetUserByEmail(username)
-
-			if user == nil || err != nil {
-				if err != nil {
-					ctx.Logger.WithError(err).Error("unable to get user")
-				}
-				http.Error(w, "invalid credentials", http.StatusForbidden)
-				return
-			}
-
-			if ok := user.CheckPassword(password); !ok {
-				http.Error(w, "invalid credentials", http.StatusForbidden)
-				return
-			}
-
-			sess, err := a.App.GlobalSessions.SessionStart(w, r)
-			defer sess.SessionRelease(w)
-			username := sess.Get("username")
-			fmt.Println(username)
-
-			ctx = ctx.WithUser(user)
-		}
+		//if username, password, ok := r.BasicAuth(); ok {
+		//	user, err := a.App.GetUserByEmail(username)
+		//
+		//	if user == nil || err != nil {
+		//		if err != nil {
+		//			ctx.Logger.WithError(err).Error("unable to get user")
+		//		}
+		//		http.Error(w, "invalid credentials", http.StatusForbidden)
+		//		return
+		//	}
+		//
+		//	if ok := user.CheckPassword(password); !ok {
+		//		http.Error(w, "invalid credentials", http.StatusForbidden)
+		//		return
+		//	}
+		//
+		//	sess, err := a.App.GlobalSessions.SessionStart(w, r)
+		//	defer sess.SessionRelease(w)
+		//	username := sess.Get("username")
+		//	fmt.Println(username)
+		//
+		//	ctx = ctx.WithUser(user)
+		//}
 
 		ctx = ctx.WithDatabase(a.App.Database)
 

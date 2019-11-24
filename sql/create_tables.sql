@@ -2,8 +2,7 @@ CREATE TABLE "user"
 (
     id              serial PRIMARY KEY,
     email           text UNIQUE NOT NULL,
-    role       text        NOT NULL,
-    sid             text,
+    role            text        NOT NULL,
     hashed_password bytea       NOT NULL,
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
@@ -106,7 +105,7 @@ ALTER TABLE restaurant
 CREATE TABLE menu
 (
     id            serial PRIMARY KEY,
-    name          text NOT NULL,
+    name          text      NOT NULL,
     restaurant_id integer   NOT NULL,
     food_id       integer   NOT NULL,
     created_at    TIMESTAMP NOT NULL,

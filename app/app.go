@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/astaxie/beego/session"
+	//"github.com/astaxie/beego/session"
 	"github.com/iis_project/db"
 	"github.com/sirupsen/logrus"
 	"github.com/gomodule/redigo/redis"
@@ -10,7 +10,7 @@ import (
 type App struct {
 	Config   *Config
 	Database *db.Database
-	GlobalSessions *session.Manager
+	//GlobalSessions *session.Manager
 	RedisCache redis.Conn
 }
 
@@ -37,12 +37,12 @@ func New() (app *App, err error) {
 		return nil, err
 	}
 
-	cf := &session.ManagerConfig{
-		CookieName:              "gosessionid",
-		Gclifetime:              3600,
-	}
-	app.GlobalSessions, _ = session.NewManager("memory", cf)
-	go app.GlobalSessions.GC()
+	//cf := &session.ManagerConfig{
+	//	CookieName:              "gosessionid",
+	//	Gclifetime:              3600,
+	//}
+	//app.GlobalSessions, _ = session.NewManager("memory", cf)
+	//go app.GlobalSessions.GC()
 
 	// Initialize the redis connection to a redis instance running on your local machine
 	conn, err := redis.DialURL("redis://localhost:6379")
