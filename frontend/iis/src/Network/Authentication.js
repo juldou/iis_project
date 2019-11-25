@@ -49,17 +49,21 @@ export function login(username, password) {
             return response.json()
             }
 
-        ).then(user => {
-            localStorage.setItem("user", user.id);
-            localStorage.setItem("user_type", user.role);
+        ).then(response => {
+            localStorage.setItem("user", response.User.id);
+            localStorage.setItem("user_type", response.User.role);
+            localStorage.setItem("access_token", response.AuthToken.access_token);
+            localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
         });
 }
 
 export function logout() {
     // remove user from local storage to log user out
-    Cookies.remove('access_token')
-    localStorage.removeItem("user")
-    localStorage.removeItem("user_type")
+    Cookies.remove('access_token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("user_type");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("access_token_expires_in");
 }
 
 // function getAll() {
