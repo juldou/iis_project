@@ -6,7 +6,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/iis_project/app"
 	"github.com/mitchellh/mapstructure"
-	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -90,58 +89,6 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 		Token:     tokenString,
 		TokenType: "Bearer",
 		ExpiresIn: expirationTime.Unix(),
-	})
-
-	return err
-}
-
-func (a *API) RefreshHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	c, err := r.Cookie("gosessionid")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			//http.Error(w, "oihih", http.StatusUnauthorized)
-			ctx.Logger.WithError(err).Error("no cookie in request")
-		} else {
-			ctx.Logger.Error(err)
-		}
-		return err
-	}
-
-	sessionToken := c.Value
-
-	response, err := a.App.RedisCache.Do("GET", sessionToken)
-	if err != nil {
-		//http.Error(w, "", http.StatusInternalServerError)
-		ctx.Logger.Error(err)
-		return err
-	}
-	if response == nil {
-		http.Error(w, "", http.StatusUnauthorized)
-		return ctx.AuthorizationError()
-	}
-
-	// Now, create a new session token for the current user
-	newSessionToken := uuid.NewV4().String()
-	_, err = a.App.RedisCache.Do("SETEX", newSessionToken, "120", fmt.Sprintf("%s",response))
-	if err != nil {
-		//http.Error(w, "", http.StatusInternalServerError)
-		ctx.Logger.Error(err)
-		return err
-	}
-
-	// Delete the older session token
-	_, err = a.App.RedisCache.Do("DEL", sessionToken)
-	if err != nil {
-		//http.Error(w, "", http.StatusInternalServerError)
-		ctx.Logger.Error(err)
-		return err
-	}
-
-	// Set the new token as the users `session_token` cookie
-	http.SetCookie(w, &http.Cookie{
-		Name:    "gosessionid",
-		Value:   newSessionToken,
-		Expires: time.Now().Add(3600 * time.Second),
 	})
 
 	return err

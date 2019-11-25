@@ -73,7 +73,7 @@ func (a *API) Init(r *mux.Router) {
 
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
-	refreshRouter.Handle("", a.handler(a.RefreshHandler)).Methods("GET")
+	refreshRouter.Handle("", a.handler(a.NotImplementedHandler)).Methods("GET")
 
 	// restaurant methods
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
