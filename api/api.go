@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/mitchellh/mapstructure"
 	"net/http"
 	"runtime/debug"
 	"strconv"
@@ -67,7 +69,7 @@ func (a *API) Init(r *mux.Router) {
 
 	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
-	loginRouter.Handle("", a.handler(a.LoginHandler)).Methods("POST")
+	loginRouter.Handle("", a.handler(a.loginHandler)).Methods("POST")
 
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
@@ -111,41 +113,43 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 		ctx = ctx.WithDatabase(a.App.Database)
 
-		// We can obtain the session token from the requests cookies, which come with every request
-		c, err := r.Cookie("gosessionid")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				// If the cookie is not set, return an unauthorized status
-				//w.WriteHeader(http.StatusUnauthorized)
-				ctx.Logger.Info("cookies not found in request")
-				//return
-			} else {
-				// For any other type of error, return a bad request status
-				w.WriteHeader(http.StatusBadRequest)
-				return
+		authorization := r.Header.Get("Authorization")
+		if authorization != "" {
+			splitAuthorization := strings.Split(authorization, "Bearer")
+			if len(splitAuthorization) == 2 {
+				tokenString := strings.TrimSpace(splitAuthorization[1])
+				claims := jwt.MapClaims{}
+				token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+					return jwtKey, nil
+				})
+				if err != nil {
+					ctx.Logger.WithError(err).Warn("couldn't parse jwt token with claims")
+					return
+				}
+
+				if token.Valid {
+					var claims Claims
+					err := mapstructure.Decode(token.Claims, &claims)
+					if err != nil {
+						ctx.Logger.WithError(err).Warn("couldn't decode claims")
+						return
+					}
+
+					user, err := a.App.Database.GetUserByEmail(claims.Username)
+					if err != nil {
+						ctx.Logger.Warn("user not found by email")
+					}
+
+					ctx.Logger.Info(fmt.Sprintf("successfully verified jwt token for user %s", claims.Username))
+					ctx = ctx.WithUser(user)
+				} else {
+					w.WriteHeader(http.StatusUnauthorized)
+					return
+				}
 			}
-		} else {
-			sessionToken := c.Value
-			// We then get the name of the user from our cache, where we set the session token
-			response, err := a.App.RedisCache.Do("GET", sessionToken)
-			if err != nil {
-				// If there is an error fetching from cache, return an internal server error status
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			if response == nil {
-				// If the session token is not present in cache, return an unauthorized error
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
-			// Finally, return the welcome message to the user
-			user, err := a.App.Database.GetUserByEmail(fmt.Sprintf("%s", response))
-			if err != nil {
-				ctx.Logger.Info("user not found by email")
-			}
-			ctx.Logger.Info(fmt.Sprintf("successfully loaded session token for %s", response))
-			ctx = ctx.WithUser(user)
 		}
+
+		ctx = ctx.WithDatabase(a.App.Database)
 
 		//defer func() {
 		func() {
@@ -163,7 +167,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 			logger.Info(r.Method + " " + r.URL.RequestURI())
 		}()
 
-		func() {
+		defer func() {
 			if r := recover(); r != nil {
 				ctx.Logger.Error(fmt.Errorf("%v: %s", r, debug.Stack()))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
