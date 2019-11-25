@@ -71,6 +71,7 @@ class AddRestaurant extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
             },
             body: JSON.stringify({
                 name: this.state.name,
