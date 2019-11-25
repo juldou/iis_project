@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 import Configuration from "./Configuration";
 
-export const getAccessToken = () => Cookies.get('access_token');
+export const getAccessToken = () => localStorage.getItem('access_token');
 export const getUserID = () => localStorage.getItem("user");
 export const isAuthenticated = () => !!getUserID();
 
@@ -11,7 +11,7 @@ export const getUserType = () => localStorage.getItem("user_type");
 export function authHeader() {
     // return authorization header with basic auth credentials
     if (isAuthenticated()) {
-        return { 'Authorization': 'Basic ' + getAccessToken() };
+        return { 'Authorization': 'Bearer ' + getAccessToken() };
     } else {
         return {};
     }
@@ -42,8 +42,6 @@ export function login(username, password) {
                 // store user details and basic auth credentials in local storage
                 // to keep user logged in between page refreshes
 
-            Cookies.set("access_token", response.headers.get("gosessionid"));
-
             return response;
         }).then(response => {
             return response.json()
@@ -51,7 +49,7 @@ export function login(username, password) {
 
         ).then(response => {
             localStorage.setItem("user", response.User.id);
-            localStorage.setItem("user_type", response.User.role);
+            localStorage.setItem("user_type", response.User.Role);
             localStorage.setItem("access_token", response.AuthToken.access_token);
             localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
         });

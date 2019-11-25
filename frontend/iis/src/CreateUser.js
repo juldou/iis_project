@@ -6,14 +6,9 @@ import {NavLink, Redirect} from "react-router-dom";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
+import {usertypes} from "./EditUSer";
 
-export const usertypes = [
-    { label: "admin", value: "admin" },
-    { label: "operator", value: "operator" },
-    { label: "courier", value: "courier" },
-    { label: "customer", value: "customer" },
-];
-export default class EditUser extends Component {
+export default class CreateUser extends Component {
     constructor(props) {
         super(props);
         this.config = new Configuration();
@@ -33,13 +28,6 @@ export default class EditUser extends Component {
     }
 
     componentDidMount() {
-        this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
-                this.setState({
-                    email: user.Email,
-                    type: user.Role
-                });
-            }
-        );
     }
 
     validateForm() {
@@ -65,21 +53,15 @@ export default class EditUser extends Component {
         event.preventDefault();
         let data = JSON.stringify({
             email: this.state.email,
+            password: this.state.password,
             role: this.state.type
         });
-        this.api.post(this.config.EDIT_USER, data).then(response => {
+        this.api.post(this.config.GET_USER_URL, data).then(response => {
                 this.setState({toHomescreen: true});
             }
         );
     };
 
-    deleteUser() {
-
-        this.api.delete(this.config.DELETE_USER_URL + "/" + this.id).then(response => {
-                this.setState({toHomescreen: true});
-            }
-        );
-    }
     render() {
         if(this.state.toHomescreen === true) {
             return <Redirect to='/#' />
@@ -98,25 +80,27 @@ export default class EditUser extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
+                    <Form.Group controlId="password" bsSize="large">
+                        <Form.Label> Password </Form.Label>
+                        <Form.Control
+                            className= {this.errors.password ? "error" : ""}
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                            type="password"
+                        />
+                    </Form.Group>
 
                     <label> Type </label>
-                    <Select id="type" options = {usertypes} onChange={this.typeChange} value = {this.state.type} />
+                    <Select id="type" options = {usertypes} onChange={this.typeChange}  />
                     <Button
                         block
                         bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        CHANGE
+                        CREATE
                     </Button>
 
-                    <Button
-                        block
-                        bsSize="large"
-                        onClick = { this.deleteUser}
-                    >
-                        DELETE
-                    </Button>
                 </Form>
             </div>
         );

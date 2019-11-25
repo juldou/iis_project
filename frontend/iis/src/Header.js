@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import React, { Component } from 'react';
 import './index.css';
 import Register from "./Register";
-import {isAuthenticated, logout} from "./Network/Authentication";
+import {getUserType, isAuthenticated, logout} from "./Network/Authentication";
 
 class Header extends Component {
 
@@ -21,13 +21,24 @@ class Header extends Component {
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/cart">Cart</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    {this.adminItems()}
+
                     <li><a href="#about">About</a></li>
                      {this.getUserState()}
                 </ul>
 
             </nav>
         );
+    }
+
+    adminItems() {
+        let userType = getUserType();
+        if(isAuthenticated() && userType === 'admin') {
+            return(
+                <li><a href="/users">Users</a></li>
+            );
+        }
+        return '';
     }
 
     getUserState() {

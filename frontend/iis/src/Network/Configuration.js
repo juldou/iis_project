@@ -12,5 +12,7 @@ class Configuration {
     ORDER_URL = this.API_URL + "/order";
     EDIT_USER = this.API_URL + "/user";
     GET_USER_URL = this.API_URL + "/user";
+    GET_ALL_USERS_URL = this.API_URL + "/users";
+    DELETE_USER_URL = this.API_URL + "/user"
 }
 export default Configuration;
