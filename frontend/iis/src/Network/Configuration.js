@@ -1,13 +1,16 @@
 class Configuration {
-    RESTAURANT_LIST_URL = "http://78.128.250.217:9092/api/restaurants";
-    RESTAURANT_DETAIL_URL = "http://78.128.250.217:9092/api/restaurant";
-    MEALS_BY_RESTAURANT = "http://78.128.250.217:9092/api/restaurant";
-    ADD_MEAL_URL = "http://78.128.250.217:9092/api/restaurant";
-    ADD_RESTAURANT_URL = "http://78.128.250.217:9092/api/restaurant";
-    CATEGORIES_URL = "http://78.128.250.217:9092/api/restaurant-categories";
-    LOGIN_URL = "http://78.128.250.217:9092/api/login";
-    ORDER_URL = "http://78.128.250.217:9092/api/order";
-    EDIT_USER = "http://78.128.250.217:9092/api/user";
-    GET_USER_URL = "http://78.128.250.217:9092/api/user";
+    SERVER_API_URL = "http://78.128.250.217:9092/api";
+    LOCAL_API_URL = "http://localhost:9092/api";
+    API_URL = this.SERVER_API_URL;
+    RESTAURANT_LIST_URL = this.API_URL + "/restaurants";
+    RESTAURANT_DETAIL_URL = this.API_URL + "/restaurant";
+    MEALS_BY_RESTAURANT = this.API_URL + "/restaurant";
+    ADD_MEAL_URL = this.API_URL + "/restaurant";
+    ADD_RESTAURANT_URL = this.API_URL + "/restaurant";
+    CATEGORIES_URL = this.API_URL + "/restaurant-categories";
+    LOGIN_URL = this.API_URL + "/login";
+    ORDER_URL = this.API_URL + "/order";
+    EDIT_USER = this.API_URL + "/user";
+    GET_USER_URL = this.API_URL + "/user";
 }
 export default Configuration;

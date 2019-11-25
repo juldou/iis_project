@@ -34,7 +34,7 @@ export default class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        login(this.state.name, this.state.password).then(response => {
+        login(this.state.email, this.state.password).then(response => {
             this.setState({toHomescreen: true});
         }
     );

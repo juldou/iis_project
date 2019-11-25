@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type LoginInput struct {
@@ -147,6 +148,80 @@ func (a *API) LoginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 		return err
 	}
 	_, err = w.Write(data)
+
+	return err
+}
+
+// User ...
+// Custom object which can be stored in the claims
+type User struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+// AuthToken ...
+// This is what is retured to the user
+type AuthToken struct {
+	TokenType string `json:"token_type"`
+	Token     string `json:"access_token"`
+	ExpiresIn int64  `json:"expires_in"`
+}
+
+// AuthTokenClaim ...
+// This is the cliam object which gets parsed from the authorization header
+type AuthTokenClaim struct {
+	*jwt.StandardClaims
+	User
+}
+
+func (a *API) loginJwtHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	var input LoginInput
+
+	defer r.Body.Close()
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		ctx.Logger.WithError(err).Error("cannot read body data")
+		return err
+	}
+
+	if err := json.Unmarshal(body, &input); err != nil {
+		ctx.Logger.WithError(err).Error("cannot unmarshal login data")
+		return err
+	}
+
+	user, err := a.App.Database.GetUserByEmail(input.Username)
+	if user == nil || err != nil {
+		if err != nil {
+			ctx.Logger.WithError(err).Error("unable to get user")
+		}
+		return err
+	}
+
+	if ok := user.CheckPassword(input.Password); !ok {
+		ctx.Logger.WithError(err).Error("password check failed")
+		return ctx.AuthorizationError()
+	}
+
+	expiresAt := time.Now().Add(time.Minute * 10).Unix()
+	token := jwt.New(jwt.SigningMethodHS256)
+	token.Claims = &AuthTokenClaim{
+		&jwt.StandardClaims{
+			ExpiresAt: expiresAt,
+		},
+		User{input.Username, input.Password},
+	}
+
+	tokenString, err := token.SignedString([]byte("secret"))
+	if err != nil {
+		return err
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(AuthToken{
+		Token:     tokenString,
+		TokenType: "Bearer",
+		ExpiresIn: expiresAt,
+	})
 
 	return err
 }
