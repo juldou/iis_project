@@ -2,7 +2,11 @@ import Cookies from 'js-cookie'
 import Configuration from "./Configuration";
 
 export const getAccessToken = () => Cookies.get('access_token');
-export const isAuthenticated = () => !!getAccessToken();
+export const getUserID = () => localStorage.getItem("user");
+export const isAuthenticated = () => !!getUserID();
+
+export const getUserType = () => localStorage.getItem("user_type");
+
 
 export function authHeader() {
     // return authorization header with basic auth credentials
@@ -19,7 +23,6 @@ export function login(username, password) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-
 
         body: JSON.stringify({ username, password })
     };
@@ -42,12 +45,21 @@ export function login(username, password) {
             Cookies.set("access_token", response.headers.get("gosessionid"));
 
             return response;
+        }).then(response => {
+            return response.json()
+            }
+
+        ).then(user => {
+            localStorage.setItem("user", user.id);
+            localStorage.setItem("user_type", user.role);
         });
 }
 
 export function logout() {
     // remove user from local storage to log user out
     Cookies.remove('access_token')
+    localStorage.removeItem("user")
+    localStorage.removeItem("user_type")
 }
 
 // function getAll() {
