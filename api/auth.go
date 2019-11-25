@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/iis_project/app"
+	"github.com/iis_project/model"
 	"github.com/mitchellh/mapstructure"
 	"io/ioutil"
 	"net/http"
@@ -27,8 +28,13 @@ type AuthToken struct {
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 type Claims struct {
 	Username string `json:"username"`
-	Role string `json:"role"`
+	Role     string `json:"role"`
 	jwt.StandardClaims
+}
+
+type LoginResponse struct {
+	User *model.User
+	AuthToken AuthToken
 }
 
 var jwtKey = []byte("my_secret_key")
@@ -67,7 +73,7 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	// Create the JWT claims, which includes the username and expiry time
 	claims := &Claims{
 		Username: input.Username,
-		Role: user.Role,
+		Role:     user.Role,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed as unix milliseconds
 			ExpiresAt: expirationTime.Unix(),
@@ -85,11 +91,20 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(AuthToken{
-		Token:     tokenString,
-		TokenType: "Bearer",
-		ExpiresIn: expirationTime.Unix(),
-	})
+	loginResponse := &LoginResponse{
+		User:      user,
+		AuthToken: AuthToken{
+			Token:     tokenString,
+			TokenType: "Bearer",
+			ExpiresIn: expirationTime.Unix(),
+		},
+	}
+
+	data, err := json.Marshal(loginResponse)
+	if err != nil {
+		return err
+	}
+	_, err = w.Write(data)
 
 	return err
 }

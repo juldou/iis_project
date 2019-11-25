@@ -5,7 +5,10 @@ import axios from 'axios';
 class NetworkService {
     async post(url, data) {
         const requestOptions = {
-            headers: { 'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
+            },
             body: data
         };
         return axios.post(url, requestOptions)
@@ -25,11 +28,15 @@ class NetworkService {
     }
     async loadData(url) {
         const requestOptions = {
-            headers: { 'Content-Type': 'application/json', 'cookie': getAccessToken() },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
+            },
         credentials: "same-origin"
         };
         return axios.get(url, {headers: {
-                Cookie: "gosessionid=123"
+                Cookie: "gosessionid=123",
+                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
             }})
             .then(response => {
                 // if (!response.ok) {
