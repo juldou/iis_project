@@ -2,9 +2,6 @@
 1. install docker
 2. run `docker run --name postgres-iis -e POSTGRES_DB=food_delivery -e POSTGRES_USER=postgres_iis -e POSTGRES_PASSWORD=secret123 -d -p 5432:5432 postgres`
 
-# Run redis in docker
-1. `docker run --name redis-iis -p 6379:6379 -d redis`
-
 # How to build server
 - `go build -o server .`
 

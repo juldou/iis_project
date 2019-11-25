@@ -5,7 +5,7 @@ import (
 )
 
 func (ctx *Context) GetAddressById(id uint) (*model.Address, error) {
-	//if ctx.User == nil {
+	//if ctx.JwtUser == nil {
 	//	return nil, ctx.AuthorizationError()
 	//}
 
@@ -18,7 +18,7 @@ func (ctx *Context) GetAddressById(id uint) (*model.Address, error) {
 }
 
 func (ctx *Context) GetAllAddressesByUserId(id uint) ([]*model.Address, error) {
-	//if ctx.User == nil {
+	//if ctx.JwtUser == nil {
 	//	return nil, ctx.AuthorizationError()
 	//}
 
@@ -31,7 +31,7 @@ func (ctx *Context) GetAllAddressesByUserId(id uint) ([]*model.Address, error) {
 }
 
 func (ctx *Context) CreateAddress(address *model.Address) error {
-	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
+	//if ctx.JwtUser.Role == "admin" || ctx.JwtUser.Role == "operator" {
 		return ctx.Database.CreateAddress(address)
 	//} else {
 	//	return ctx.AuthorizationError()
@@ -39,7 +39,7 @@ func (ctx *Context) CreateAddress(address *model.Address) error {
 }
 
 func (ctx *Context) UpdateAddress(address *model.Address) error {
-	//if ctx.User == nil {
+	//if ctx.JwtUser == nil {
 	//	return ctx.AuthorizationError()
 	//}
 
