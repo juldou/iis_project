@@ -17,6 +17,19 @@ func (ctx *Context) GetFoodById(id uint) (*model.Food, error) {
 	return food, nil
 }
 
+func (ctx *Context) GetAllOrdersForUser() ([]*model.Order, error) {
+	if ctx.User == nil {
+		return nil, ctx.AuthorizationError()
+	}
+
+	orders, err := ctx.Database.GetAllOrdersByUserId(ctx.User.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return orders, nil
+}
+
 func (ctx *Context) GetFoodsByRestaurantId(id uint) ([]*model.Food, error) {
 	//if ctx.User == nil {
 	//	return nil, ctx.AuthorizationError()
