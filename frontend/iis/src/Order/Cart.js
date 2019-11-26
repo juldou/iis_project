@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
 import {sendOrder} from "../Network/SendOrder";
 class Cart extends Component{
@@ -39,14 +39,21 @@ class Cart extends Component{
     }
 
     sendOrder() {
-        sendOrder().then(r => {})
+        sendOrder().then(r => {
+            this.setState(
+                {redirect: true}
+            );
+            localStorage.removeItem("order")
+
+        })
         // if success
-        localStorage.removeItem("order")
         //TODO handle error
     }
 
     render(){
-
+        if(this.state.redirect === true) {
+            return <Redirect to='/orders' />
+        }
 
             let addedItems = this.state.order.map(item=>{
                     return(
@@ -82,7 +89,7 @@ class Cart extends Component{
                     </ul>
 
                     <h3> Total: {this.calculatePrice()}E</h3>
-                    <button className="waves-effect waves-light btn pink send" onClick={this.sendOrder}>Send</button>
+                    <button className="waves-effect waves-light btn pink send" onClick={this.sendOrder.bind(this)}>Send</button>
 
                 </div>
             </div>

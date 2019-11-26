@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import React, { Component } from 'react';
 import './index.css';
 import Register from "./Register";
-import {getUserType, isAuthenticated, logout} from "./Network/Authentication";
+import {getUserID, getUserType, isAuthenticated, logout} from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
 
 class Header extends Component {
@@ -36,7 +36,10 @@ class Header extends Component {
         let userType = getUserType();
         if(isAuthenticated() && userType === 'admin') {
             return(
+                <div>
                 <li><a href="/users">Users</a></li>
+                <li><a href="/allorders">All Orders</a></li>
+                </div>
             );
         }
         return '';
@@ -56,7 +59,7 @@ class Header extends Component {
 
         return (
             <div>
-                <li><a href="/orders">Orders</a></li>
+                <li><a href="/orders">My Orders</a></li>
 
                 <li> <a href="/userprofile">Profile</a> </li>
             <li><a href="" onClick={logout}>Logout</a></li>

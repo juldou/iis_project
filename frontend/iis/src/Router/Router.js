@@ -18,6 +18,7 @@ import CreateUser from "../CreateUser";
 import OrderList from "../OrderList";
 import RestaurantList from "../RestaurantList";
 import UserProfile from "../UserProfile";
+import AllOrders from "../AllOrders";
 
 export const AppRouter = (
     <Router>
@@ -38,6 +39,8 @@ export const AppRouter = (
                 <Route exact path="/users" component={Users}/>
                 <Route exact path="/createuser" component={CreateUser}/>
                 <Route exact path="/orders" component={OrderList}/>
+                <Route exact path="/allorders" component={AllOrders}/>
+
                 <Route exact path="/userprofile" component={UserProfile}/>
 
 

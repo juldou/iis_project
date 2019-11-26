@@ -17,6 +17,7 @@ class Configuration {
     GET_ALL_ORDERS = this.API_URL + "/orders";
     GET_MEAL_URL = this.API_URL + "/food"
     UPDATE_MENU_URL = this.API_URL + "/menu"
+    GET_USER_ORDERS_URL = this.API_URL + "/user/{0}/orders"
 }
 export default Configuration;
 

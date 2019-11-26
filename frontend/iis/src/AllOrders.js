@@ -6,7 +6,7 @@ import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {getUserID} from "./Network/Authentication";
 
-class OrderList extends Component {
+class AllOrders extends Component {
     constructor(props) {
         super(props);
 
@@ -18,8 +18,7 @@ class OrderList extends Component {
     }
 
     componentWillMount() {
-        let url = this.config.GET_USER_URL + "/orders";
-        this.api.loadData(url).then(items => {
+        this.api.loadData(this.config.GET_ALL_ORDERS).then(items => {
                 if(!items) return;
                 this.setState({items: items});
             }
@@ -49,4 +48,4 @@ class OrderList extends Component {
             </div>
         );
     }
-} export default OrderList;
+} export default AllOrders;
