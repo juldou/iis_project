@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import './index.css';
 import Register from "./Register";
 import {getUserType, isAuthenticated, logout} from "./Network/Authentication";
+import {withRouter} from "react-router-dom";
 
 class Header extends Component {
 
@@ -43,21 +44,24 @@ class Header extends Component {
 
     getUserState() {
 
-        if(this.state.loggedIn === false) {
+        if(!isAuthenticated()){
             return (
                 <div>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
+
                 </div>
             );
         }
 
         return (
             <div>
-            <li style={{float: "right"}}> <h1> Dobry den, {this.state.name} {this.state.surname} </h1> </li>
+                <li><a href="/orders">Orders</a></li>
+
+                <li style={{float: "right"}}> <h1> Dobry den, {this.state.name} {this.state.surname} </h1> </li>
             <li><a href="/" onClick={logout}>Logout</a></li>
             </div>
         );
 
     }
-} export default Header;
+} export default withRouter(Header);

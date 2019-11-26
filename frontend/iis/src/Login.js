@@ -42,7 +42,7 @@ export default class Login extends Component {
 
     render() {
         if(this.state.toHomescreen === true) {
-            return <Redirect to='/#' />
+            return <Redirect to='/' />
         }
         return (
             <div className="Login">

@@ -17,6 +17,7 @@ export function authHeader() {
     }
 }
 
+// TODO move to login
 export function login(username, password) {
     let config = new Configuration();
     const requestOptions = {
@@ -57,11 +58,12 @@ export function login(username, password) {
 
 export function logout() {
     // remove user from local storage to log user out
-    Cookies.remove('access_token');
     localStorage.removeItem("user");
     localStorage.removeItem("user_type");
     localStorage.removeItem("access_token");
     localStorage.removeItem("access_token_expires_in");
+
+    history.pushState("/")
 }
 
 // function getAll() {

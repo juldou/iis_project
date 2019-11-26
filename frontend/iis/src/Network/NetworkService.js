@@ -2,24 +2,48 @@ import React from 'react';
 import {authHeader, getAccessToken, isAuthenticated} from "./Authentication";
 import axios from 'axios';
 
+export function getHeaders() {
+    if(isAuthenticated()) {
+        return {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getAccessToken()
+        }
+    }
+    return {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+
+    }
+}
 class NetworkService {
-    async post(url, data) {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: data
+     async patch(url, data) {
+        let requestOptions = {
+            method: "PATCH",
+            url: url,
+            headers: getHeaders(),
+            data: data
         };
 
-        if(isAuthenticated()) {
-            requestOptions.headers['Authorization'] = 'Bearer ' + getAccessToken();
-        }
-
-        return axios.post(url, requestOptions)
+        return axios(requestOptions)
             .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                this.handleError(error);
+            });
+    }
 
+     async post(url, data) {
+        let requestOptions = {
+            method: "POST",
+            url: url,
+            headers: getHeaders(),
+            data: data
+        };
+
+        return axios(requestOptions)
+            .then(response => {
                 return response.data;
             })
             .catch(error => {
@@ -28,12 +52,9 @@ class NetworkService {
     }
 
     async delete(url, data) {
-        const requestOptions = {
+        let requestOptions = {
             method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: getHeaders(),
             body: data
         };
 
@@ -53,10 +74,7 @@ class NetworkService {
 
     async loadData(url) {
         const requestOptions = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
+            headers: getHeaders()
         };
 
         if(isAuthenticated()) {
@@ -90,3 +108,4 @@ class NetworkService {
 
 }
 export default NetworkService;
+export const api = new NetworkService();

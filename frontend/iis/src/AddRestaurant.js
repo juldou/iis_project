@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
+import NetworkService from "./Network/NetworkService";
+import {Redirect} from "react-router-dom";
 
 class AddRestaurant extends Component {
     constructor(props) {
         super(props);
 
+        this.api = new NetworkService();
         this.config = new Configuration();
         this.state = {
             name: '',
             type: '',
             description: '',
-            restaurant_id: props.match.params.id
         };
 
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        if(!!this.props.match.params.id) {
+            this.api.loadData(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id).then(restaurant =>
+            {
+                if(!!restaurant) {
+                    this.setState({
+                        name: restaurant.name,
+                        type: restaurant.category,
+                        description: restaurant.description
+                    })
+                }
+            })
+        }
     }
 
     handleNameChange(event) {
@@ -40,6 +57,9 @@ class AddRestaurant extends Component {
     }
 
     render() {
+        if(this.state.homeScreen === true) {
+            return <Redirect to='/' />
+        }
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
@@ -52,7 +72,7 @@ class AddRestaurant extends Component {
                 </label>
                 <label>
                     Description:
-                    <input type="text" value={this.state.price} onChange={this.handleDescriptionChange} />
+                    <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
                 </label>
                 <label>
                     Image:
@@ -65,28 +85,30 @@ class AddRestaurant extends Component {
         );
     }
 
-    async sendData() {
-        fetch(this.config.ADD_RESTAURANT_URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
-            },
-            body: JSON.stringify({
-                name: this.state.name,
-                description: this.state.description,
-                category: this.state.type,
-                picture_url: ''
-            })
-        })  .then(response => {
-            if (!response.ok) {
-                alert(response.status);
-                console.log(response.message);
-            } else {
-                alert("ADDED restaurant");
-            }
-            return response.json();
+    sendData() {
+        let data = JSON.stringify({
+            name: this.state.name,
+            description: this.state.description,
+            category: this.state.type,
+            picture_url: ''
+        });
+
+        if(!!this.props.match.params.id) {
+            this.updateRestaurant(data)
+        } else {
+            this.createRestaurant(data)
+        }
+    }
+
+    createRestaurant(data) {
+        this.api.post(this.config.GET_RESTAURANT_URL, data).then(response =>{
+            this.setState({homeScreen: true})
+        })
+    }
+
+    updateRestaurant(data) {
+        this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response =>{
+            this.setState({homeScreen: true})
         })
     }
 } export default AddRestaurant;

@@ -5,8 +5,7 @@ import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 
-class Users extends Component {
-
+class OrderList extends Component {
     constructor(props) {
         super(props);
 
@@ -18,7 +17,7 @@ class Users extends Component {
     }
 
     componentWillMount() {
-        this.api.loadData(this.config.GET_ALL_USERS_URL).then(items => {
+        this.api.loadData(this.config.GET_ALL_ORDERS).then(items => {
                 if(!items) return;
                 this.setState({items: items});
             }
@@ -30,8 +29,8 @@ class Users extends Component {
             <li key={item.id} onClick={() => {
             } }>
                 <span  >
-                    <p>{item.Email}</p>                     <p>{item.Role}</p>
-
+                    <p>{item.Email}</p>
+                    <p>{item.Role}</p>
                 <NavLink to={ "/edituser/" + item.id} className="link">
                     <Button>Change</Button>
                 </NavLink>
@@ -43,10 +42,7 @@ class Users extends Component {
                 <ul className="items">
                     {listItems}
                 </ul>
-                <NavLink to= "/createuser/" className="link">
-                    <Button>Change</Button>
-                </NavLink>
             </div>
         );
     }
-} export default Users;
+} export default OrderList;
