@@ -11,3 +11,9 @@ type Food struct {
 	Restaurant     Restaurant `gorm:"association_foreignkey:ID"`
 	RestaurantId   uint       `json:"restaurant_id"`
 }
+
+type FoodCategory struct {
+	Model
+
+	Name string `json:"name"`
+}

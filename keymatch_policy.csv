@@ -1,0 +1,6 @@
+p, admin, /*, (GET)|(POST)|(PATCH)|(DELETE)
+
+g, operator, admin
+g, courier, admin
+g, customer, admin
+g, guest, admin
