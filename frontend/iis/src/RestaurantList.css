@@ -1,0 +1,38 @@
+.RestaurantList{
+    width: 90%;
+}
+.items{
+    display: grid;
+
+    grid-template-columns: repeat(3, 2fr);
+
+    grid-auto-rows: auto;
+
+    grid-gap: 1rem;
+}
+.RestaurantPreview {
+
+    border: 2px solid #e7e7e7;
+
+    border-radius: 4px;
+
+    padding: .5rem;
+
+}
+
+body {background-color: #C70025;}
+
+img {width: 100%;}
+
+#RestaurantPreview {width:90%;margin:0 auto;display:flex;flex-wrap:wrap;
+    justify-content:space-between;}
+
+.item-name {color:#000;padding:0px 0;margin:1%;border-radius:2px;flex:1 250px;height:auto;text-align:center;background:linear-gradient(0deg, #efefef, #ffffff);}
+
+.item-name{position:relative;}
+
+.overlay:hover {
+    opacity: 1;
+    background-color: rgba(0,0,0,1);
+
+}

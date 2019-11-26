@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
+import './Categories.css'
 
 class Categories extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class Categories extends Component {
         );
         return (
             <div className="Categories">
-                <ul className="items">
+                <ul className="filter-items">
                     {listItems}
                 </ul>
 

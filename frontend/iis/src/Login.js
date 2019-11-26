@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {login} from "./Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
+import './login.css';
 
 export default class Login extends Component {
     constructor(props) {
@@ -48,7 +49,7 @@ export default class Login extends Component {
             <div className="Login">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
-                        <Form.Label> Email </Form.Label>
+                        <Form.Label> Email: </Form.Label>
 
                         <Form.Control
                             className= {this.errors.email ? "error" : ""}
@@ -59,7 +60,7 @@ export default class Login extends Component {
                         />
                     </Form.Group>
                     <Form.Group controlId="password" bsSize="large">
-                        <Form.Label> Password </Form.Label>
+                        <Form.Label> Password: </Form.Label>
                         <Form.Control
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
