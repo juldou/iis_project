@@ -2,11 +2,9 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/iis_project/app"
 	"github.com/iis_project/model"
-	"github.com/mitchellh/mapstructure"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -109,35 +107,50 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	return err
 }
 
-func (a *API) validateJwtToken(tokenString string, ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	claims := jwt.MapClaims{}
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
+func (a *API) refreshToken(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	if ctx.User == nil {
+		ctx.Logger.Error("refresh failed because there is no valid token in request")
+		return ctx.AuthorizationError()
+	}
+
+	// Declare the expiration time of the token
+	// here, we have kept it as 5 minutes
+	expirationTime := time.Now().Add(100 * time.Minute)
+	// Create the JWT claims, which includes the username and expiry time
+	claims := &Claims{
+		Username: ctx.User.Email,
+		Role:     ctx.User.Role,
+		StandardClaims: jwt.StandardClaims{
+			// In JWT, the expiry time is expressed as unix milliseconds
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	// Declare the token with the algorithm used for signing, and the claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	// Create the JWT string
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		ctx.Logger.WithError(err).Warn("couldn't parse jwt token")
-		return err
+		// If there is an error in creating the JWT return an internal server error
+		w.WriteHeader(http.StatusInternalServerError)
+		//return
 	}
 
-	if token.Valid {
-		var claims Claims
-		err := mapstructure.Decode(token.Claims, &claims)
-		if err != nil {
-			ctx.Logger.WithError(err).Warn("couldn't decode claims")
-			return err
-		}
+	w.Header().Set("Content-Type", "application/json")
+	loginResponse := &LoginResponse{
+		User:      ctx.User,
+		AuthToken: AuthToken{
+			Token:     tokenString,
+			TokenType: "Bearer",
+			ExpiresIn: expirationTime.Unix(),
+		},
+	}
 
-		user, err := a.App.Database.GetUserByEmail(claims.Username)
-		if err != nil {
-			ctx.Logger.Warn("user not found by email")
-		}
-
-		ctx.Logger.Info(fmt.Sprintf("successfully verified jwt token for user %s", claims.Username))
-		ctx = ctx.WithUser(user)
-	} else {
-		ctx.Logger.Info("jwt token for is not valid")
-		w.WriteHeader(http.StatusUnauthorized)
+	data, err := json.Marshal(loginResponse)
+	if err != nil {
 		return err
 	}
+	_, err = w.Write(data)
+
 	return err
 }

@@ -47,3 +47,46 @@ api/user/{id}/address
 api/order/{id}
 ```
 
+#What is DONE:
+####administrátor:
+
+- spravuje uživatele ✓
+
+- má rovněž práva všech následujících rolí
+
+####operátor:
+
+- vkládá a spravuje provozovny a jejich nabídky
+
+- může vkládat obrázky k položkám nabídek 
+
+- ukončuje objednávky pro daný den 
+
+- sestavuje plán řidičů (přiřazení objednávek), kteří provedou vyzvednutí a rozvoz jídel 
+
+- má rovněž práva strávníka
+
+####řidič:
+
+- vyřizuje objednávky (přebírá objednávky, vyzvedává a rozváží jídlo)
+
+- má rovněž práva strávníka
+
+####strávník:
+
+- objednává 1 až n jídel (zvolte vhodné omezení - např. počet jídel, případně vyžadovaná úhrada do uzávěrky objednávek - kontroluje a případně schvaluje/ruší operátor)
+
+- sleduje stav jeho objednávek (přijetí, potvrzení, rozvoz, ...)
+
+- má rovněž práva (a, b) neregistrovaného návštěvníka
+
+####neregistrovaný návštěvník:
+
+- (a) má možnost procházet jídelní lístky jednotlivých provozoven a sledovat aktuální nabídky (položky denního menu mohou být vyprodané) 
+
+- (b) má možnost filtrovat položky nabídek dle různých vlastností (např. bezlepkové, veganské apod.)
+
+- může provést objednání jídla bez registrace: vyžadujte vhodné údaje (má možnost dokončit registraci a stát se strávníkem)
+
+- Každý registrovaný uživatel má možnost editovat svůj profil.
+ 
