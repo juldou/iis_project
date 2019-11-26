@@ -86,6 +86,7 @@ func (a *API) CreateRestaurant(ctx *app.Context, w http.ResponseWriter, r *http.
 		Name:        input.Name,
 		Description: input.Description,
 		PictureUrl:  input.PictureUrl,
+		OrdersAllowed: true,
 	}
 
 	if err := ctx.CreateRestaurant(restaurant); err != nil {
@@ -106,6 +107,7 @@ type UpdateRestaurantInput struct {
 	Name        *string `json:"name"`
 	Description *string `json:"description"`
 	PictureUrl  *string `json:"picture_url"`
+	OrdersAllowed  *bool `json:"orders_allowed"`
 }
 
 func (a *API) UpdateRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -139,6 +141,9 @@ func (a *API) UpdateRestaurantById(ctx *app.Context, w http.ResponseWriter, r *h
 	}
 	if input.PictureUrl != nil {
 		existingRestaurant.PictureUrl = *input.PictureUrl
+	}
+	if input.OrdersAllowed != nil {
+		existingRestaurant.OrdersAllowed = *input.OrdersAllowed
 	}
 
 	err = ctx.UpdateRestaurant(existingRestaurant)
