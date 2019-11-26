@@ -90,3 +90,5 @@ api/order/{id}
 
 - Každý registrovaný uživatel má možnost editovat svůj profil.
  
+#Backend TODO
+- rules

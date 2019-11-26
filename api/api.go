@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/casbin/casbin"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/mitchellh/mapstructure"
 	"net/http"
@@ -31,8 +32,9 @@ func (r *statusCodeRecorder) WriteHeader(statusCode int) {
 }
 
 type API struct {
-	App    *app.App
-	Config *Config
+	App      *app.App
+	Enforcer *casbin.Enforcer
+	Config   *Config
 }
 
 func New(a *app.App) (api *API, err error) {
@@ -41,6 +43,8 @@ func New(a *app.App) (api *API, err error) {
 	if err != nil {
 		return nil, err
 	}
+	e := casbin.NewEnforcer(api.Config.EnforcerModelPath, api.Config.EnforcerPolicyPath)
+	api.Enforcer = e
 	return api, nil
 }
 
@@ -48,7 +52,6 @@ func (a *API) Init(r *mux.Router) {
 	// user methods
 	userRouter := r.PathPrefix("/user").Subrouter()
 	userRouter.Handle("", a.handler(a.CreateUser)).Methods("POST")
-	userRouter.Handle("/orders", a.handler(a.GetAllOrdersByUser)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetUserById)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateUserById)).Methods("PATCH")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteUserById)).Methods("DELETE")
@@ -89,14 +92,21 @@ func (a *API) Init(r *mux.Router) {
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
 	restaurantRouter.Handle("", a.handler(a.CreateRestaurant)).Methods("POST")
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.GetRestaurantById)).Methods("GET")
-	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateRestaurantById)).Methods("PATCH")
+	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateRestaurantById)).Methods("PATCH") // only operator and admin
 	restaurantRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteRestaurantById)).Methods("DELETE")
 	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.CreateFood)).Methods("POST")
-	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.UpdateFoodById)).Methods("PATCH")
-	restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.DeleteFoodById)).Methods("DELETE")
+	//restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.UpdateFoodById)).Methods("PATCH")
+	//restaurantRouter.Handle("/{id:[0-9]+}/food", a.handler(a.DeleteFoodById)).Methods("DELETE")
 	restaurantRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetFoodsByRestaurantId)).Methods("GET")
 	restaurantRouter.Handle("/{id:[0-9]+}/menu", a.handler(a.GetMenuByRestaurantId)).Methods("GET")
-	restaurantRouter.Handle("/{id:[0-9]+}/menu", a.handler(a.CreateMenu)).Methods("POST")
+
+	menuRouter := r.PathPrefix("/menu").Subrouter()
+	menuRouter.Handle("", a.handler(a.CreateMenu)).Methods("POST")
+
+	foodRouter := r.PathPrefix("/food").Subrouter()
+	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.GetFoodById)).Methods("GET")
+	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateFoodById)).Methods("PATCH")
+	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteFoodById)).Methods("DELETE")
 
 	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
@@ -105,7 +115,12 @@ func (a *API) Init(r *mux.Router) {
 	// restaurant-categories methods
 	restaurantCategoriesRouter := r.PathPrefix("/restaurant-categories").Subrouter()
 	restaurantCategoriesRouter.Handle("", a.handler(a.GetRestaurantCategories)).Methods("GET")
+
+	foodCategoriesRouter := r.PathPrefix("/food-categories").Subrouter()
+	foodCategoriesRouter.Handle("", a.handler(a.GetFoodCategories)).Methods("GET")
 }
+
+// TODO: orders_allowed do restauracie
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -123,8 +138,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 		ctx = ctx.WithDatabase(a.App.Database)
 
-		//defer func() {
-		func() {
+		defer func() {
 			statusCode := w.(*statusCodeRecorder).StatusCode
 			if statusCode == 0 {
 				statusCode = 200
@@ -136,7 +150,6 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				"duration":    duration,
 				"status_code": statusCode,
 				"remote":      ctx.RemoteAddress,
-				"payload":     r.GetBody,
 			})
 			logger.Info(r.Method + " " + r.URL.RequestURI())
 		}()
@@ -152,6 +165,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				})
 				if err != nil {
 					ctx.Logger.WithError(err).Warn("couldn't parse jwt token with claims")
+					w.WriteHeader(http.StatusUnauthorized)
 					return
 				}
 
@@ -179,6 +193,22 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 
 		ctx = ctx.WithDatabase(a.App.Database)
 
+		var sub string // the user that wants to access a resource.
+		if ctx.User != nil {
+			sub = ctx.User.Role
+		} else {
+			sub = "guest"
+		}
+		obj := r.URL.RequestURI()[4:] // the resource that is going to be accessed.
+		act := r.Method           // the operation that the user performs on the resource.
+
+		if res := a.Enforcer.Enforce(sub, obj, act); res {
+			// permit
+		} else {
+			// deny the request, show an error
+			http.Error(w, "user with given jwt token cannot perform the api call", http.StatusForbidden)
+			return
+		}
 
 		defer func() {
 			if r := recover(); r != nil {

@@ -29,6 +29,11 @@ func (db *Database) GetFoods() ([]*model.Food, error) {
 	return foods, errors.Wrap(db.Find(&foods).Error, "unable to get foods")
 }
 
+func (db *Database) GetFoodCategories() ([]*model.FoodCategory, error) {
+	var foodCategories []*model.FoodCategory
+	return foodCategories, errors.Wrap(db.Find(&foodCategories).Error, "unable to get food categories")
+}
+
 func (db *Database) CreateFood(food *model.Food) error {
 	return db.Create(food).Error
 }

@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 import Configuration from "./Configuration";
-
 export const getAccessToken = () => localStorage.getItem('access_token');
 export const getUserID = () => localStorage.getItem("user");
 export const isAuthenticated = () => !!getUserID();
@@ -62,8 +61,6 @@ export function logout() {
     localStorage.removeItem("user_type");
     localStorage.removeItem("access_token");
     localStorage.removeItem("access_token_expires_in");
-
-    history.pushState("/")
 }
 
 // function getAll() {

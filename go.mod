@@ -6,6 +6,7 @@ require (
 	github.com/NYTimes/gziphandler v1.1.1 // indirect
 	github.com/astaxie/beego v1.12.0 // indirect
 	github.com/astaxie/session v0.0.0-20130408050157-95d7fe18579c // indirect
+	github.com/casbin/casbin v1.9.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/gorilla/handlers v1.4.2

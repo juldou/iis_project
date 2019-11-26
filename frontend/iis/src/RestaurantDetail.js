@@ -4,6 +4,8 @@ import NetworkService from "./Network/NetworkService";
 import {NavLink} from "react-router-dom";
 import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
+import {getUserType} from "./Network/Authentication";
+import {Button} from "react-bootstrap";
 
 class RestaurantDetail extends Component {
     constructor(props) {
@@ -14,25 +16,13 @@ class RestaurantDetail extends Component {
             menu: [],
             meals: [],
             restaurant: null,
-            id: props.match.params.id
+            id: this.props.restaurantId,
+            category: null
         }
     }
 
     componentDidMount() {
-        let menuUrl = this.config.RESTAURANT_DETAIL_URL + "/" +this.state.id + "/menu"
-        this.api.loadData(menuUrl + "?name=daily").then(items => {
-            if(!items) return;
-
-            this.setState({menu: items});
-            }
-        );
-
-        this.api.loadData(menuUrl + "?name=permanent").then(items => {
-                if(!items) return;
-
-                this.setState({meals: items});
-            }
-        );
+       this.getItems(this.state.category);
         this.api.loadData(this.config.RESTAURANT_DETAIL_URL +
             "/" + this.state.id).then(restaurant => {
                 if(!restaurant) return;
@@ -42,8 +32,32 @@ class RestaurantDetail extends Component {
         );
     }
 
-    addMeal() {
+    categoryChanged(idCategory) {
+        this.setState({category: idCategory});
+        this.getItems(idCategory);
+    }
 
+    getItems(idCategory) {
+        let dailyMenuUrl = this.config.RESTAURANT_DETAIL_URL + "/" +this.state.id + "/menu?name=daily";
+        let mealsUrl = this.config.RESTAURANT_DETAIL_URL + "/" +this.state.id + "/menu?name=permanent";
+        if(!!idCategory) {
+            dailyMenuUrl += "&category=" + idCategory;
+            mealsUrl += "&category=" + idCategory
+        }
+
+        this.api.loadData(dailyMenuUrl).then(items => {
+                if(!items) return;
+
+                this.setState({menu: items});
+            }
+        );
+
+        this.api.loadData(mealsUrl).then(items => {
+                if(!items) return;
+
+                this.setState({meals: items});
+            }
+        );
     }
 
     handleClick = (id)=>{
@@ -60,7 +74,7 @@ class RestaurantDetail extends Component {
 
     render() {
 
-        const menuItems = this.state.meals.map((item) =>{
+        const menuItems = this.state.menu.map((item) =>{
             return(
                 <div className="card" key={item.id}>
                     <div className="card-image">
@@ -73,6 +87,7 @@ class RestaurantDetail extends Component {
                     <div className="card-content">
                         <p>{item.description}</p>
                         <p><b>Price: {item.price}$</b></p>
+                        {this.RemoveButton(item.id)}
                     </div>
                 </div>
             )
@@ -91,13 +106,15 @@ class RestaurantDetail extends Component {
                         <div className="card-content">
                         <p>{item.description}</p>
                     <p><b>Price: {item.price}$</b></p>
-                    </div>
+                            { this.ChangeButton(item.id) }
+
+                        </div>
                 </div>
         )
         });
         return (
             <div className="container">
-                {this.restaurantInfo()}
+                {this.RestaurantInfo()}
 
                 <div >
                     <h3 className="center">Menu</h3>
@@ -115,11 +132,41 @@ class RestaurantDetail extends Component {
 
                  <button className="add-meal" onClick={this.addMeal}> Add meal </button>
                 </NavLink>
+
+                { this.DeactivateButton()}
             </div>
         );
     }
 
-    restaurantInfo() {
+    ChangeButton(id) {
+        if(getUserType() === "admin"|| getUserType() === "operator")
+            return (
+                <div>
+                    <NavLink to={  this.state.id + "/editmeal/" + id} className="link">
+
+                        <Button > Change </Button>
+                    </NavLink>
+
+                    <Button onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
+                </div>
+
+            );
+        return "";
+    }
+
+    RemoveButton(id) {
+        if(getUserType() === "admin"|| getUserType() === "operator")
+            return (
+                <div>
+
+                    <Button onClick={this.removeFromMenu.bind(this, id)}> Remove from menu </Button>
+                </div>
+
+            );
+        return "";
+    }
+
+    RestaurantInfo() {
         if(!this.state.restaurant) return;
         return (<div >
             <h2 className="restaurant-name"> {this.state.restaurant.name} </h2>
@@ -129,18 +176,39 @@ class RestaurantDetail extends Component {
 
         </div>);
     }
+
+    DeactivateButton() {
+        if(getUserType() === "admin"|| getUserType() === "operator")
+            return (
+                <div>
+
+                    <Button onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
+                </div>
+
+            );
+        return "";
+    }
+
+    deactivateOrders() {
+        // TODO
+    }
+
+    addToMenu(id) {
+        let data = JSON.stringify({
+            name: "daily",
+            food_id: +id
+        });
+
+        this.api.post(this.config.UPDATE_MENU_URL, data).then(response => {
+            this.getItems(this.state.category)
+        })
+    }
+
+    removeFromMenu(id) {
+        this.api.delete(this.config.UPDATE_MENU_URL + "/" + id).then(response => {
+            this.getItems(this.state.category)
+        })
+    }
 }
-const mapStateToProps = (state)=>{
-    return {
-        items: state.items
-    }
-};
 
-const mapDispatchToProps= (dispatch)=>{
-
-    return{
-        addToCart: (item)=>{dispatch(addToCart(item))}
-    }
-};
-
-export default connect(mapStateToProps,mapDispatchToProps)(RestaurantDetail)
+export default RestaurantDetail

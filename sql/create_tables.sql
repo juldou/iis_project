@@ -20,7 +20,7 @@ CREATE TABLE address
     city        character varying(100),
     number      integer,
     postal_code character(5),
-    user_id     integer NOT NULL,
+    user_id     integer   NOT NULL,
     created_at  TIMESTAMP NOT NULL,
     updated_at  TIMESTAMP NOT NULL,
     deleted_at  TIMESTAMP
@@ -50,14 +50,14 @@ ALTER TABLE food
 
 CREATE TABLE "order"
 (
-    id            serial PRIMARY KEY,
-    state         text,
-    address_id    integer   NOT NULL,
-    user_id  integer,
-    courier_id  integer,
-    created_at    TIMESTAMP NOT NULL,
-    updated_at    TIMESTAMP NOT NULL,
-    deleted_at    TIMESTAMP
+    id         serial PRIMARY KEY,
+    state      text,
+    address_id integer   NOT NULL,
+    user_id    integer,
+    courier_id integer,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP
 );
 
 ALTER TABLE "order"
@@ -87,16 +87,32 @@ CREATE TABLE restaurant_category
     deleted_at TIMESTAMP
 );
 
+ALTER TABLE restaurant_category
+    OWNER TO postgres_iis;
+
+CREATE TABLE food_category
+(
+    id         serial PRIMARY KEY,
+    name       text,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP
+);
+
+ALTER TABLE food_category
+    OWNER TO postgres_iis;
+
 CREATE TABLE restaurant
 (
-    id          serial PRIMARY KEY,
-    category    character varying(100),
-    name        text UNIQUE NOT NULL,
-    description text,
-    picture_url character varying(100),
-    created_at  TIMESTAMP   NOT NULL,
-    updated_at  TIMESTAMP   NOT NULL,
-    deleted_at  TIMESTAMP
+    id             serial PRIMARY KEY,
+    category       character varying(100),
+    name           text UNIQUE NOT NULL,
+    description    text,
+    picture_url    character varying(100),
+    orders_allowed boolean     NOT NULL,
+    created_at     TIMESTAMP   NOT NULL,
+    updated_at     TIMESTAMP   NOT NULL,
+    deleted_at     TIMESTAMP
 );
 
 ALTER TABLE restaurant
@@ -105,12 +121,12 @@ ALTER TABLE restaurant
 
 CREATE TABLE menu
 (
-    id            serial PRIMARY KEY,
-    name          text      NOT NULL,
-    food_id       integer   NOT NULL,
-    created_at    TIMESTAMP NOT NULL,
-    updated_at    TIMESTAMP NOT NULL,
-    deleted_at    TIMESTAMP
+    id         serial PRIMARY KEY,
+    name       text      NOT NULL,
+    food_id    integer   NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP
 );
 
 ALTER TABLE menu
@@ -139,35 +155,39 @@ ALTER TABLE ONLY order_food
 ALTER TABLE ONLY "menu"
     ADD CONSTRAINT menu_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
 
-insert into restaurant(category, name, description, picture_url, created_at, updated_at)
+insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('vegan',
         'forkys',
         'vegan restaurant',
         'fake_link',
+        true,
         current_timestamp,
         current_timestamp);
 
-insert into restaurant(category, name, description, picture_url, created_at, updated_at)
+insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('ceska',
         'Na purkynce',
         'ceska kuchyna',
         'fake_link',
+        true,
         current_timestamp,
         current_timestamp);
 
-insert into restaurant(category, name, description, picture_url, created_at, updated_at)
+insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('ceska',
         'U 3 opic',
         'ceske menu kazdy den',
         'fake_link',
+        true,
         current_timestamp,
         current_timestamp);
 
-insert into restaurant(category, name, description, picture_url, created_at, updated_at)
+insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('vietnam',
         'Pho Ha Noi',
         'kazdy den vase oblibene bunbonambo',
         'fake_link',
+        true,
         current_timestamp,
         current_timestamp);
 
@@ -185,6 +205,18 @@ values ('azia', current_timestamp, current_timestamp);
 
 insert into restaurant_category(name, created_at, updated_at)
 values ('pizza', current_timestamp, current_timestamp);
+
+insert into food_category(name, created_at, updated_at)
+values ('bezlepkove', current_timestamp, current_timestamp);
+
+insert into food_category(name, created_at, updated_at)
+values ('veganske', current_timestamp, current_timestamp);
+
+insert into food_category(name, created_at, updated_at)
+values ('vegetarianske', current_timestamp, current_timestamp);
+
+insert into food_category(name, created_at, updated_at)
+values ('bezlaktozove', current_timestamp, current_timestamp);
 
 insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
 values ('vegetarianske',

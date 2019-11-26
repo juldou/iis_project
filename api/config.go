@@ -15,13 +15,19 @@ type Config struct {
 
 	// jwt secret
 	JwtSecret []byte
+
+	// Enforcer file paths
+	EnforcerModelPath string
+	EnforcerPolicyPath string
 }
 
 func InitConfig() (*Config, error) {
 	config := &Config{
-		Port:       viper.GetInt("Port"),
-		ProxyCount: viper.GetInt("ProxyCount"),
-		JwtSecret: []byte(viper.GetString("JwtSecret")),
+		Port:               viper.GetInt("Port"),
+		ProxyCount:         viper.GetInt("ProxyCount"),
+		JwtSecret:          []byte(viper.GetString("JwtSecret")),
+		EnforcerModelPath:  viper.GetString("EnforcerModelPath"),
+		EnforcerPolicyPath: viper.GetString("EnforcerPolicyPath"),
 	}
 	if config.Port == 0 {
 		config.Port = 9092
