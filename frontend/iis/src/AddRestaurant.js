@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
 import {Redirect} from "react-router-dom";
+import {Button} from "react-bootstrap";
+import NetworkService from "./Network/NetworkService";
 
 class AddRestaurant extends Component {
     constructor(props) {
@@ -81,6 +82,11 @@ class AddRestaurant extends Component {
 
                 <ImageUpload onChange={this.handleImageChange}/>
                 <input type="submit" value="Submit" />
+
+                {
+                    this.props.match.params.id &&
+                    <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
+                }
             </form>
         );
     }
@@ -108,6 +114,12 @@ class AddRestaurant extends Component {
 
     updateRestaurant(data) {
         this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response =>{
+            this.setState({homeScreen: true})
+        })
+    }
+
+    deleteRestaurant() {
+        this.api.delete(this.config.GET_RESTAURANT_URL+ "/" + this.props.match.params.id).then(response =>{
             this.setState({homeScreen: true})
         })
     }

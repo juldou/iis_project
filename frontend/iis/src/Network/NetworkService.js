@@ -1,5 +1,5 @@
 import React from 'react';
-import {authHeader, getAccessToken, isAuthenticated} from "./Authentication";
+import {authHeader, getAccessToken, isAuthenticated, logout} from "./Authentication";
 import axios from 'axios';
 
 export function getHeaders() {
@@ -27,7 +27,8 @@ class NetworkService {
 
         return axios(requestOptions)
             .then(response => {
-                return response.data;
+                return this.handleResponse(response)
+
             })
             .catch(error => {
                 this.handleError(error);
@@ -44,28 +45,26 @@ class NetworkService {
 
         return axios(requestOptions)
             .then(response => {
-                return response.data;
+                return this.handleResponse(response)
+
             })
             .catch(error => {
                 this.handleError(error);
             });
     }
 
-    async delete(url, data) {
+    async delete(url) {
         let requestOptions = {
-            method: 'DELETE',
+            url: url,
+            method: 'delete',
             headers: getHeaders(),
-            body: data
         };
 
-        if(isAuthenticated()) {
-            requestOptions.headers['Authorization'] = 'Bearer ' + getAccessToken();
-        }
-
-        return axios.delete(url, requestOptions)
+        return axios(requestOptions)
             .then(response => {
 
-                return response.data;
+                return this.handleResponse(response)
+
             })
             .catch(error => {
                 this.handleError(error);
@@ -77,26 +76,25 @@ class NetworkService {
             headers: getHeaders()
         };
 
-        if(isAuthenticated()) {
-            requestOptions.headers['Authorization'] = 'Bearer ' + getAccessToken();
-        }
         return axios.get(url, requestOptions)
             .then(response => {
-                // if (!response.ok) {
-                //     this.handleResponseError(response);
-                // }
-                if(!response.data) {
-                    return;
-                }
-                return response.data;
+                return this.handleResponse(response)
+
             })
-            // .then(json => {
-            //
-            //     return json;
-            // })
             .catch(error => {
                 this.handleError(error);
             });
+    }
+
+    handleResponse(response) {
+        if(response.status === 401) {
+            logout();
+        }
+
+        if(!response.data) {
+            return [];
+        }
+        return response.data;
     }
 
     handleResponseError(response) {
@@ -108,4 +106,3 @@ class NetworkService {
 
 }
 export default NetworkService;
-export const api = new NetworkService();

@@ -57,7 +57,9 @@ class Header extends Component {
         return (
             <div>
                 <li><a href="/orders">Orders</a></li>
-                <li><a href="/" onClick={logout}>Logout</a></li>
+
+                <li> <a href="/userprofile">Profile</a> </li>
+            <li><a href="" onClick={logout}>Logout</a></li>
             </div>
         );
 

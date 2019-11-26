@@ -5,7 +5,6 @@ import NetworkService from "./Network/NetworkService";
 import './Categories.css'
 
 class Categories extends Component {
-
     constructor(props) {
         super(props);
 
@@ -28,7 +27,7 @@ class Categories extends Component {
     render() {
         const listItems = this.state.items.map((item) =>
             <li key={item.id} onClick={() => {
-                this.props.onClick(item.id);
+                this.props.onClick(item.name);
                 this.setState({active: item.id})
             } }>
                 <span  >
