@@ -1,2 +1,4 @@
 DatabaseURI: host=localhost port=5432 user=postgres_iis dbname=food_delivery password=secret123 sslmode=disable
 JwtSecret: 8QB15cPT8rX4ZAabbGF2cdOWnABarfLrTTAAwMdq
+EnforcerModelPath: ./keymatch_model.conf
+EnforcerPolicyPath: ./keymatch_policy.csv

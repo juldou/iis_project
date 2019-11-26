@@ -8,12 +8,27 @@ import (
 	"net/http"
 )
 
+type GetMenuInput struct {
+	Category         string `json:"category"`
+}
+
 func (a *API) GetMenuByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	restaurantId := getIdFromRequest(r)
 	name := r.FormValue("name")
-	category := r.FormValue("category")
 
-	foods, err := ctx.GetMenuByRestaurantId(restaurantId, name, category)
+	var input GetMenuInput
+
+	defer r.Body.Close()
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(body, &input); err != nil {
+		return err
+	}
+
+	foods, err := ctx.GetMenuByRestaurantId(restaurantId, name, input.Category)
 	if err != nil {
 		return err
 	}
