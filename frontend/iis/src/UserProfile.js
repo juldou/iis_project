@@ -16,14 +16,11 @@ export default class UserProfile extends Component {
         };
     }
 
-
     componentDidMount() {
-
         this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
             this.setState({user: user})
         });
     }
-
 
     render() {
         if(!this.state.user) return (
@@ -37,7 +34,12 @@ export default class UserProfile extends Component {
                 <h3>{this.state.user.Role}</h3>
 
                 <h2>ADDRESS</h2>
-                <Button> Change address</Button>
+                <h3>Street</h3>
+                {/*<h3>{this.state.user.Address.street}</h3>*/}
+                <h3>City</h3>
+                {/*<h3>{this.state.user.Address.city}</h3>*/}
+
+                <Button> Edit info</Button>
             </div>
         );
     }

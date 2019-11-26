@@ -15,9 +15,10 @@ class Configuration {
     GET_ALL_USERS_URL = this.API_URL + "/users";
     DELETE_USER_URL = this.API_URL + "/user";
     GET_ALL_ORDERS = this.API_URL + "/orders";
-    GET_MEAL_URL = this.API_URL + "/food"
-    UPDATE_MENU_URL = this.API_URL + "/menu"
-    GET_USER_ORDERS_URL = this.API_URL + "/user/{0}/orders"
+    GET_MEAL_URL = this.API_URL + "/food";
+    UPDATE_MENU_URL = this.API_URL + "/menu";
+    GET_USER_ORDERS_URL = this.API_URL + "/user/{0}/orders";
+    REGISTER_URL = this.API_URL + "/register";
 }
 export default Configuration;
 

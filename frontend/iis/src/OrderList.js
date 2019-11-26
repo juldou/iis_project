@@ -5,6 +5,7 @@ import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {getUserID} from "./Network/Authentication";
+import AsyncSelect from 'react-select/async';
 
 class OrderList extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class OrderList extends Component {
         this.config = new Configuration();
         this.api = new NetworkService();
         this.state = {
-            items: [],
+            items: null,
         };
     }
 
@@ -27,6 +28,7 @@ class OrderList extends Component {
     }
 
     render() {
+        if(!this.state.items) return "";
         if(this.state.items.length === 0) {
             return (
                 <h3> There are no orders</h3>
@@ -36,8 +38,8 @@ class OrderList extends Component {
             <li key={item.id}>
                 <span  >
                     <p>{item.id}</p>
-                    <p>{item.status}</p>
-                    <p>{item.courier}</p>
+                    <p>{item.state}</p>
+
                 </span>
             </li>
         );
