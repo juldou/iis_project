@@ -21,17 +21,26 @@ func (ctx *Context) GetUserById(id uint) (*model.User, error) {
 	return user, nil
 }
 
-func (ctx *Context) GetUsers() ([]*model.User, error) {
+func (ctx *Context) GetUsers(role string) ([]*model.User, error) {
 	//if ctx.User == nil {
 	//	return nil, ctx.AuthorizationError()
 	//}
 
-	user, err := ctx.Database.GetUsers()
+	users, err := ctx.Database.GetUsers()
 	if err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	var filteredUsers []*model.User
+	for _, user := range users {
+		if role != "" && user.Role != role {
+			continue
+		} else {
+			filteredUsers = append(filteredUsers, user)
+		}
+	}
+
+	return filteredUsers, nil
 }
 
 func (ctx *Context) CreateUser(user *model.User, password string) error {

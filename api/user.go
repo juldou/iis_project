@@ -25,7 +25,9 @@ func (a *API) GetUserById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 }
 
 func (a *API) GetUsers(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	users, err := ctx.GetUsers()
+	role := r.FormValue("role")
+
+	users, err := ctx.GetUsers(role)
 	if err != nil {
 		return err
 	}

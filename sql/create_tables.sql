@@ -159,14 +159,10 @@ ALTER TABLE ONLY order_food
 ALTER TABLE ONLY "menu"
     ADD CONSTRAINT menu_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
 
-<<<<<<< Updated upstream
-insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
-=======
 ALTER TABLE ONLY "user"
     ADD CONSTRAINT user_has_address FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 
-insert into restaurant(category, name, description, picture_url, created_at, updated_at)
->>>>>>> Stashed changes
+insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('vegan',
         'forkys',
         'vegan restaurant',
