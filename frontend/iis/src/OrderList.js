@@ -4,6 +4,7 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
+import {getUserID} from "./Network/Authentication";
 
 class OrderList extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class OrderList extends Component {
     }
 
     componentWillMount() {
-        this.api.loadData(this.config.GET_ALL_ORDERS).then(items => {
+        let url = this.config.GET_USER_URL + "/orders";
+        this.api.loadData(url).then(items => {
                 if(!items) return;
                 this.setState({items: items});
             }
@@ -25,21 +27,23 @@ class OrderList extends Component {
     }
 
     render() {
+        if(this.state.items.length === 0) {
+            return (
+                <h3> There are no orders</h3>
+            )
+        }
         const listItems = this.state.items.map((item) =>
-            <li key={item.id} onClick={() => {
-            } }>
+            <li key={item.id}>
                 <span  >
-                    <p>{item.Email}</p>
-                    <p>{item.Role}</p>
-                <NavLink to={ "/edituser/" + item.id} className="link">
-                    <Button>Change</Button>
-                </NavLink>
+                    <p>{item.id}</p>
+                    <p>{item.status}</p>
+                    <p>{item.courier}</p>
                 </span>
             </li>
         );
         return (
-            <div className="users">
-                <ul className="items">
+            <div >
+                <ul>
                     {listItems}
                 </ul>
             </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap from "react-bootstrap";
+import './Register.css';
 
 export default class Register extends Component {
     constructor(props) {
@@ -39,9 +40,10 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div className="Login">
+            <div className="Register">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
+                        <Form.Label> Email: </Form.Label>
                         <Form.Control
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
@@ -51,6 +53,7 @@ export default class Register extends Component {
                         />
                     </Form.Group>
                     <Form.Group controlId="password" bsSize="large">
+                        <Form.Label> Password: </Form.Label>
                         <Form.Control
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
@@ -59,6 +62,7 @@ export default class Register extends Component {
                         />
                     </Form.Group>
                     <Form.Group controlId="repeat-password" bsSize="large">
+                        <Form.Label> Repeat password: </Form.Label>
                         <Form.Control
                             className= {this.errors.repeatPassword ? "error" : ""}
                             value={this.state.repeatPassword}
@@ -72,7 +76,7 @@ export default class Register extends Component {
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        Login
+                        REGISTER
                     </Button>
                 </Form>
             </div>

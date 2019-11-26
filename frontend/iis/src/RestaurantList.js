@@ -3,6 +3,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {getUserType, isAuthenticated} from "./Network/Authentication";
+import './RestaurantList.css'
 
 
 class RestaurantList extends  Component {
@@ -32,10 +33,16 @@ class RestaurantList extends  Component {
 
         const listItems = items.map((item) =>
             <li key={item.id }>
-                <div className="RestaurantPreview" >
+                <div className="RestaurantPreview" key={item.id}>
                     <NavLink to={"restaurant/" + item.id} className="link">
-                    <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="200" height="200"/>
-                    <div className="item-name"><h2>{item.name}</h2></div>
+
+                    <div className="item-name">
+                        <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="300" height="300"/>
+                        <h4>{item.name}</h4>
+                        <h1>{item.category}</h1>
+                        <p>{item.description}</p>
+                    </div>
+                        <div className="overlay"></div>
                     </NavLink>
 
 
