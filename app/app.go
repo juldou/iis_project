@@ -7,7 +7,6 @@ import (
 )
 
 type App struct {
-	Config   *Config
 	Database *db.Database
 }
 
@@ -19,10 +18,6 @@ func (a *App) NewContext() *Context {
 
 func New() (app *App, err error) {
 	app = &App{}
-	app.Config, err = InitConfig()
-	if err != nil {
-		return nil, err
-	}
 
 	dbConfig, err := db.InitConfig()
 	if err != nil {

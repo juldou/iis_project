@@ -140,7 +140,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 				tokenString := strings.TrimSpace(splitAuthorization[1])
 				claims := jwt.MapClaims{}
 				token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-					return jwtKey, nil
+					return a.Config.JwtSecret, nil
 				})
 				if err != nil {
 					ctx.Logger.WithError(err).Warn("couldn't parse jwt token with claims")
