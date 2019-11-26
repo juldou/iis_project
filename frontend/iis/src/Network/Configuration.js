@@ -7,7 +7,7 @@ class Configuration {
     GET_RESTAURANT_URL = this.API_URL + "/restaurant";
     ADD_MEAL_URL = this.API_URL + "/restaurant";
     ADD_RESTAURANT_URL = this.API_URL + "/restaurant";
-    CATEGORIES_URL = this.API_URL + "/restaurant-categories";
+    CATEGORIES_URL = this.API_URL + "/food-categories";
     LOGIN_URL = this.API_URL + "/login";
     ORDER_URL = this.API_URL + "/order";
     EDIT_USER = this.API_URL + "/user";
@@ -15,6 +15,8 @@ class Configuration {
     GET_ALL_USERS_URL = this.API_URL + "/users";
     DELETE_USER_URL = this.API_URL + "/user";
     GET_ALL_ORDERS = this.API_URL + "/orders";
+    GET_MEAL_URL = this.API_URL + "/food"
+    UPDATE_MENU_URL = this.API_URL + "/menu"
 }
 export default Configuration;
 

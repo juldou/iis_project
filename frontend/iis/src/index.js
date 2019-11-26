@@ -4,7 +4,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Homescreen from "./Homescreen";
 import RestaurantDetail from "./RestaurantDetail";
-import routing from "./Router";
+import routing from "./Router/Router";
 import { createStore } from 'redux';
 import cartReducer from "./Order/CartReducer";
 import App from "./App";

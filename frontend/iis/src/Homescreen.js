@@ -1,10 +1,11 @@
 import React from 'react';
-import RestaurantList from "./RestaurantList";
 import Header from "./Header";
 import Categories from "./Categories";
+import RestaurantDetail from "./RestaurantDetail";
 
 const AppContext = React.createContext(null)
 
+// TODO rename,  actually restaurant detail
 class Homescreen extends React.Component {
     triggerCategoryChange(idCategory) {
         this.list.categoryChanged(idCategory)
@@ -13,7 +14,7 @@ class Homescreen extends React.Component {
     return (
         <div className="Application">
             <section>
-              <RestaurantList ref={list => this.list = list}/>
+              <RestaurantDetail ref={list => this.list = list} restaurantId={this.props.match.params.restaurantId}/>
               <Categories onClick={this.triggerCategoryChange.bind(this)}/>
             </section>
         </div>

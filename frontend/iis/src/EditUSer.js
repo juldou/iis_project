@@ -113,7 +113,7 @@ export default class EditUser extends Component {
                     <Button
                         block
                         bsSize="large"
-                        onClick = { this.deleteUser}
+                        onClick = { this.deleteUser.bind(this)}
                     >
                         DELETE
                     </Button>

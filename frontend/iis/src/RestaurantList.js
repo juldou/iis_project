@@ -12,17 +12,11 @@ class RestaurantList extends  Component {
         this.config = new Configuration();
         this.api = new NetworkService();
         this.state = {
-            category: ""
         }
     }
 
     componentDidMount() {
         this.getItems(this.state.category);
-    }
-
-    categoryChanged(idCategory) {
-        this.setState({category: idCategory});
-        this.getItems(idCategory);
     }
 
     render() {
@@ -65,7 +59,7 @@ class RestaurantList extends  Component {
     }
 
     changeButton(id) {
-        if(getUserType() === "admin")
+        if(getUserType() === "admin"|| getUserType() === "operator")
             return (
             <NavLink to={ "/editrestaurant/" + id} className="link">
 
@@ -89,9 +83,6 @@ class RestaurantList extends  Component {
 
     getItems(idCategory) {
         let url = this.config.RESTAURANT_LIST_URL;
-        if(idCategory !== "") {
-            url += "?category=" + idCategory;
-        }
         this.api.loadData(url).then(items => {
             if(!items) return;
             this.setState({items: items});
