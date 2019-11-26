@@ -96,6 +96,15 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		return err
 	}
 
+	menu := &model.Menu{
+		Name:   "permanent",
+		Food:   *food,
+	}
+
+	if err := ctx.CreateMenu(menu); err != nil {
+		return err
+	}
+
 	data, err := json.Marshal(&FoodUserResponse{Id: food.ID})
 	if err != nil {
 		return err
