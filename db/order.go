@@ -22,6 +22,7 @@ func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, erro
 	var orderFoods []*model.OrderFood
 	if err := db.Where("order_id = ?", orderId).Find(&orderFoods).Error; err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 	for _, orderFood := range orderFoods {
 		orderFood.Menu.ID = orderFood.FoodId
@@ -29,6 +30,21 @@ func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, erro
 		db.First(&orderFood.Menu.Food)
 	}
 	return orderFoods, nil
+}
+
+func (db *Database) GetOrders() ([]*model.Order, error) {
+	var orders []*model.Order
+
+	if err:= db.Find(&orders).Error; err != nil {
+		return nil, err
+	}
+	for _, order := range orders {
+		order.Courier.ID = order.CourierId
+		order.Address.ID = order.AddressId
+		db.First(&order.Courier)
+		db.First(&order.Address)
+	}
+	return orders, nil
 }
 
 func (db *Database) CreateOrder(order *model.Order) error {

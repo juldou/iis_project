@@ -79,6 +79,10 @@ func (a *API) Init(r *mux.Router) {
 	loginRouter := r.PathPrefix("/login").Subrouter()
 	loginRouter.Handle("", a.handler(a.loginHandler)).Methods("POST")
 
+	// login method
+	registerRouter := r.PathPrefix("/register").Subrouter()
+	registerRouter.Handle("", a.handler(a.NotImplementedHandler)).Methods("POST")
+
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
 	refreshRouter.Handle("", a.handler(a.refreshToken)).Methods("GET")

@@ -17,6 +17,27 @@ func (ctx *Context) GetOrderById(id uint) (*model.Order, error) {
 	return order, nil
 }
 
+func (ctx *Context) GetOrders(state string) ([]*model.Order, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+
+	orders, err := ctx.Database.GetOrders()
+	if err != nil {
+		return nil, err
+	}
+	var filteredOrders []*model.Order
+	for _, order := range orders {
+		if state != "" && order.State != state {
+			continue
+		} else {
+			filteredOrders = append(filteredOrders, order)
+		}
+	}
+
+	return filteredOrders, nil
+}
+
 func (ctx *Context) GetAllFoodsByOrderId(id uint) ([]model.Food, error) {
 	//if ctx.User == nil {
 	//	return nil, ctx.AuthorizationError()

@@ -11,6 +11,7 @@ func (db *Database) GetMenuByRestaurantId(id uint) ([]*model.Menu, error) {
 	var menus []*model.Menu
 	if err := db.Joins("join food on food.id=menu.food_id").Where("food.restaurant_id=?", id).Find(&menus).Error; err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 	for _, menu := range menus {
 		menu.Food.ID = menu.FoodId
