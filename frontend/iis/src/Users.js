@@ -4,6 +4,7 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
+import './Users.css';
 
 class Users extends Component {
 
@@ -27,24 +28,28 @@ class Users extends Component {
 
     render() {
         const listItems = this.state.items.map((item) =>
-            <li key={item.id} onClick={() => {
+
+            <div className= "userCard" key={item.id} onClick={() => {
             } }>
-                <span  >
-                    <p>{item.Email}</p>                     <p>{item.Role}</p>
+                <div className= "userContainer">
+                    <b>Email: {item.Email}</b>
+                    <p>Role: {item.Role}</p>
 
                 <NavLink to={ "/edituser/" + item.id} className="link">
-                    <Button>Change</Button>
+                    <Button>CHANGE</Button>
                 </NavLink>
-                </span>
-            </li>
+                </div>
+            </div>
+
         );
+
         return (
             <div className="users">
-                <ul className="items">
+                <ul className="user-items">
                     {listItems}
                 </ul>
                 <NavLink to= "/createuser/" className="link">
-                    <Button>Change</Button>
+                    <Button>CREATE NEW</Button>
                 </NavLink>
             </div>
         );

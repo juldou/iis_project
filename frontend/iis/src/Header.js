@@ -57,9 +57,7 @@ class Header extends Component {
         return (
             <div>
                 <li><a href="/orders">Orders</a></li>
-
-                <li style={{float: "right"}}> <h1> Dobry den, {this.state.name} {this.state.surname} </h1> </li>
-            <li><a href="/" onClick={logout}>Logout</a></li>
+                <li><a href="/" onClick={logout}>Logout</a></li>
             </div>
         );
 
