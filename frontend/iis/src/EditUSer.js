@@ -7,7 +7,7 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 
-const usertypes = [
+export const usertypes = [
     { label: "admin", value: "admin" },
     { label: "operator", value: "operator" },
     { label: "courier", value: "courier" },
@@ -38,7 +38,6 @@ export default class EditUser extends Component {
                     email: user.Email,
                     type: user.Role
                 });
-
             }
         );
     }
@@ -59,14 +58,14 @@ export default class EditUser extends Component {
 
     typeChange = value => {
         this.setState({
-            type: value
+            type: value.value
         });
     };
     handleSubmit = event => {
         event.preventDefault();
         let data = JSON.stringify({
             email: this.state.email,
-            type: this.state.type
+            role: this.state.type
         });
         this.api.post(this.config.EDIT_USER, data).then(response => {
                 this.setState({toHomescreen: true});
@@ -74,6 +73,13 @@ export default class EditUser extends Component {
         );
     };
 
+    deleteUser() {
+
+        this.api.delete(this.config.DELETE_USER_URL + "/" + this.id).then(response => {
+                this.setState({toHomescreen: true});
+            }
+        );
+    }
     render() {
         if(this.state.toHomescreen === true) {
             return <Redirect to='/#' />
@@ -102,6 +108,14 @@ export default class EditUser extends Component {
                         type="submit"
                     >
                         CHANGE
+                    </Button>
+
+                    <Button
+                        block
+                        bsSize="large"
+                        onClick = { this.deleteUser}
+                    >
+                        DELETE
                     </Button>
                 </Form>
             </div>

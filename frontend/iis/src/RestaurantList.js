@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {NavLink, useHistory} from "react-router-dom";
 import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
-import {isAuthenticated} from "./Network/Authentication";
+import {getUserType, isAuthenticated} from "./Network/Authentication";
 
 
 class RestaurantList extends  Component {
@@ -43,6 +43,11 @@ class RestaurantList extends  Component {
                     <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="200" height="200"/>
                     <div className="item-name"><h2>{item.name}</h2></div>
                     </NavLink>
+
+
+
+                    {this.changeButton(item.id)}
+
                 </div>
                 <span className="item-name">{item.Name}</span>
             </li>
@@ -57,6 +62,17 @@ class RestaurantList extends  Component {
                 {this.addButton()}
             </div>
         );
+    }
+
+    changeButton(id) {
+        if(getUserType() === "admin")
+            return (
+            <NavLink to={ "/editrestaurant/" + id} className="link">
+
+                <button className="add-meal" > Change </button>
+            </NavLink>
+            );
+        return "";
     }
 
     addButton() {

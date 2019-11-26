@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
+import NetworkService from "./Network/NetworkService";
 
 class AddMeal extends Component {
     constructor(props) {
         super(props);
 
         this.config = new Configuration();
+        this.api = new NetworkService();
+
         this.state = {
             name: '',
             type: '',
@@ -66,28 +69,15 @@ class AddMeal extends Component {
     }
 
     async sendData() {
-        var url = this.config.ADD_MEAL_URL + "/" + this.state.restaurant_id + "/food"
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + localStorage.getItem("access_token")
-            },
-            body: JSON.stringify({
-                name: this.state.name,
-                description: this.state.description,
-                category: this.state.type,
-                picture_url: ''
-            })
-        })  .then(response => {
-            if (!response.ok) {
-                alert(response.status);
-                console.log(response.message);
-            } else {
-                alert("ADDED MEAL");
-            }
-            return response.json();
+        let url = this.config.ADD_MEAL_URL + "/" + this.state.restaurant_id + "/food";
+        let data = JSON.stringify({
+            name: this.state.name,
+            description: this.state.description,
+            category: this.state.type,
+            picture_url: ''
+        });
+        this.api.post(url, data).then(response => {
+
         })
         //TODO handle error
     }

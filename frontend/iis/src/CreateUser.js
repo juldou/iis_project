@@ -3,19 +3,31 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {login} from "./Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
+import Configuration from "./Network/Configuration";
+import NetworkService from "./Network/NetworkService";
+import Select from 'react-select';
+import {usertypes} from "./EditUSer";
 
-export default class Login extends Component {
+export default class CreateUser extends Component {
     constructor(props) {
         super(props);
+        this.config = new Configuration();
+        this.api = new NetworkService();
+
         this.errors = {
             email: false,
             password: false
         };
+        this.id = props.match.params.id;
         this.state = {
             email: "",
             password: "",
+            type: "",
             toHomescreen: false
         };
+    }
+
+    componentDidMount() {
     }
 
     validateForm() {
@@ -32,17 +44,27 @@ export default class Login extends Component {
         });
     };
 
+    typeChange = value => {
+        this.setState({
+            type: value.value
+        });
+    };
     handleSubmit = event => {
         event.preventDefault();
-        login(this.state.email, this.state.password).then(response => {
-            this.setState({toHomescreen: true});
-        }
-    );
+        let data = JSON.stringify({
+            email: this.state.email,
+            password: this.state.password,
+            role: this.state.type
+        });
+        this.api.post(this.config.GET_USER_URL, data).then(response => {
+                this.setState({toHomescreen: true});
+            }
+        );
     };
 
     render() {
         if(this.state.toHomescreen === true) {
-            return <Redirect to='/' />
+            return <Redirect to='/#' />
         }
         return (
             <div className="Login">
@@ -68,14 +90,17 @@ export default class Login extends Component {
                         />
                     </Form.Group>
 
+                    <label> Type </label>
+                    <Select id="type" options = {usertypes} onChange={this.typeChange}  />
                     <Button
                         block
                         bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        Login
+                        CREATE
                     </Button>
+
                 </Form>
             </div>
         );

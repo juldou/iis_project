@@ -120,8 +120,13 @@ class RestaurantDetail extends Component {
     }
 
     restaurantInfo() {
-        return (<div className="restaurant-header">
-            <h3 className="restaurant-name"> {this.state.id} </h3>
+        if(!this.state.restaurant) return;
+        return (<div >
+            <h2 className="restaurant-name"> {this.state.restaurant.name} </h2>
+            <h3 className> {this.state.restaurant.category} </h3>
+            <h3 className> {this.state.restaurant.description} </h3>
+            <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={this.state.restaurant.name} height="200" width="200"/>
+
         </div>);
     }
 }
