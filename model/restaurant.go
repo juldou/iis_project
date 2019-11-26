@@ -7,6 +7,7 @@ type Restaurant struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	PictureUrl  string `json:"picture_url"`
+	OrdersAllowed bool `json:"orders_allowed"`
 }
 
 type RestaurantCategory struct {
