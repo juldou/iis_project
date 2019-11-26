@@ -24,21 +24,21 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	return err
 }
 
-//func (a *API) GetAllOrdersByUserId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-//	id := getIdFromRequest(r)
-//	addresses, err := ctx.GetAllOrdersByUserId(id)
-//	if err != nil {
-//		return err
-//	}
-//
-//	data, err := json.Marshal(addresses)
-//	if err != nil {
-//		return err
-//	}
-//
-//	_, err = w.Write(data)
-//	return err
-//}
+func (a *API) GetAllFoodsByOrderId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	foodIds, err := ctx.GetAllFoodsByOrderId(id)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(foodIds)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
 
 type OrderInput struct {
 	AddressId        uint       `json:"address_id"`

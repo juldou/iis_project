@@ -4,6 +4,7 @@ import (
 	"github.com/iis_project/model"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
+	"log"
 )
 
 func (db *Database) GetOrderById(id uint) (*model.Order, error) {
@@ -15,6 +16,19 @@ func (db *Database) GetOrderById(id uint) (*model.Order, error) {
 		return nil, errors.Wrap(err, "unable to get order by id")
 	}
 	return &order, nil
+}
+
+func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, error) {
+	var orderFoods []*model.OrderFood
+	if err := db.Where("order_id = ?", orderId).Find(&orderFoods).Error; err != nil {
+		log.Fatal(err)
+	}
+	for _, orderFood := range orderFoods {
+		orderFood.Menu.ID = orderFood.FoodId
+		db.First(&orderFood.Menu)
+		db.First(&orderFood.Menu.Food)
+	}
+	return orderFoods, nil
 }
 
 func (db *Database) CreateOrder(order *model.Order) error {

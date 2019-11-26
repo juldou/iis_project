@@ -48,6 +48,7 @@ func (a *API) Init(r *mux.Router) {
 	// user methods
 	userRouter := r.PathPrefix("/user").Subrouter()
 	userRouter.Handle("", a.handler(a.CreateUser)).Methods("POST")
+	userRouter.Handle("/orders", a.handler(a.GetAllOrdersByUser)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetUserById)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateUserById)).Methods("PATCH")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteUserById)).Methods("DELETE")
@@ -63,9 +64,10 @@ func (a *API) Init(r *mux.Router) {
 	// order methods
 	orderRouter := r.PathPrefix("/order").Subrouter()
 	orderRouter.Handle("", a.handler(a.CreateOrder)).Methods("POST")
-	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetOrderById)).Methods("GET")
-	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateOrderById)).Methods("PATCH")
-	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
+	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.GetOrderById)).Methods("GET")
+	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateOrderById)).Methods("PATCH")
+	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
+	orderRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetAllFoodsByOrderId)).Methods("GET")
 
 	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
@@ -73,7 +75,7 @@ func (a *API) Init(r *mux.Router) {
 
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
-	refreshRouter.Handle("", a.handler(a.NotImplementedHandler)).Methods("GET")
+	refreshRouter.Handle("", a.handler(a.refreshToken)).Methods("GET")
 
 	// restaurant methods
 	restaurantRouter := r.PathPrefix("/restaurant").Subrouter()
@@ -113,6 +115,24 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 		ctx = ctx.WithLogger(ctx.Logger.WithField("request_id", base64.RawURLEncoding.EncodeToString(model.NewId())))
 		ctx = ctx.WithDatabase(a.App.Database)
 
+		//defer func() {
+		func() {
+			statusCode := w.(*statusCodeRecorder).StatusCode
+			if statusCode == 0 {
+				statusCode = 200
+			}
+			duration := time.Since(beginTime)
+
+			logger := ctx.Logger.WithFields(logrus.Fields{
+				"time":        fmt.Sprintf("%d:%d:%d", time.Now().Hour(), time.Now().Minute(), time.Now().Second()),
+				"duration":    duration,
+				"status_code": statusCode,
+				"remote":      ctx.RemoteAddress,
+				"payload":     r.GetBody,
+			})
+			logger.Info(r.Method + " " + r.URL.RequestURI())
+		}()
+
 		authorization := r.Header.Get("Authorization")
 		if authorization != "" {
 			splitAuthorization := strings.Split(authorization, "Bearer")
@@ -151,21 +171,6 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 
 		ctx = ctx.WithDatabase(a.App.Database)
 
-		//defer func() {
-		func() {
-			statusCode := w.(*statusCodeRecorder).StatusCode
-			if statusCode == 0 {
-				statusCode = 200
-			}
-			duration := time.Since(beginTime)
-
-			logger := ctx.Logger.WithFields(logrus.Fields{
-				"duration":    duration,
-				"status_code": statusCode,
-				"remote":      ctx.RemoteAddress,
-			})
-			logger.Info(r.Method + " " + r.URL.RequestURI())
-		}()
 
 		defer func() {
 			if r := recover(); r != nil {
