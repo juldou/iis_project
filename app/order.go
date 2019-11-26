@@ -17,6 +17,23 @@ func (ctx *Context) GetOrderById(id uint) (*model.Order, error) {
 	return order, nil
 }
 
+func (ctx *Context) GetAllFoodsByOrderId(id uint) ([]model.Food, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+
+	orderFoods, err := ctx.Database.GetAllFoodsByOrderId(id)
+	if err != nil {
+		return nil, err
+	}
+	var foods []model.Food
+	for _, orderFood := range orderFoods {
+		foods = append(foods, orderFood.Menu.Food)
+	}
+
+	return foods, nil
+}
+
 func (ctx *Context) CreateOrder(order *model.Order) error {
 	return ctx.Database.CreateOrder(order)
 }

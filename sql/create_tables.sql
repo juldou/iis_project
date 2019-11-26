@@ -259,4 +259,18 @@ values ('Uhorka',
         '98525',
         1,
         current_timestamp,
-        current_timestamp)
+        current_timestamp);
+
+insert into "order"(state, address_id, user_id, courier_id, created_at, updated_at)
+values ('new',
+        1,
+        1,
+        1,
+        current_timestamp,
+        current_timestamp);
+
+insert into order_food(order_id, food_id, created_at, updated_at)
+values (1,
+        1,
+        current_timestamp,
+        current_timestamp);
