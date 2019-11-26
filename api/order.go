@@ -24,6 +24,23 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	return err
 }
 
+func (a *API) GetOrders(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	state := r.FormValue("state")
+
+	orders, err := ctx.GetOrders(state)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(orders)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
 func (a *API) GetAllFoodsByOrderId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	id := getIdFromRequest(r)
 	foodIds, err := ctx.GetAllFoodsByOrderId(id)

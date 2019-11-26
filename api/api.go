@@ -69,9 +69,17 @@ func (a *API) Init(r *mux.Router) {
 	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
 	orderRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetAllFoodsByOrderId)).Methods("GET")
 
+	// restaurants methods
+	ordersRouter := r.PathPrefix("/orders").Subrouter()
+	ordersRouter.Handle("", a.handler(a.GetOrders)).Methods("GET")
+
 	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
 	loginRouter.Handle("", a.handler(a.loginHandler)).Methods("POST")
+
+	// login method
+	registerRouter := r.PathPrefix("/register").Subrouter()
+	registerRouter.Handle("", a.handler(a.NotImplementedHandler)).Methods("POST")
 
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
