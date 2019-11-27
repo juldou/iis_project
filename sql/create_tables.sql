@@ -4,6 +4,7 @@ CREATE TABLE "user"
     email           text UNIQUE NOT NULL,
     role            text        NOT NULL,
     hashed_password bytea       NOT NULL,
+    address_id      int NULL,
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
     deleted_at      TIMESTAMP
@@ -20,7 +21,6 @@ CREATE TABLE address
     city        character varying(100),
     number      integer,
     postal_code character(5),
-    user_id     integer   NOT NULL,
     created_at  TIMESTAMP NOT NULL,
     updated_at  TIMESTAMP NOT NULL,
     deleted_at  TIMESTAMP
@@ -129,6 +129,10 @@ CREATE TABLE menu
     deleted_at TIMESTAMP
 );
 
+-- is_soldout do menu TODO
+-- TODO odtranenie z menu
+-- TODO registrace
+
 ALTER TABLE menu
     OWNER TO postgres_iis;
 
@@ -154,6 +158,9 @@ ALTER TABLE ONLY order_food
 
 ALTER TABLE ONLY "menu"
     ADD CONSTRAINT menu_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_has_address FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 
 insert into restaurant(category, name, description, picture_url, orders_allowed, created_at, updated_at)
 values ('vegan',
@@ -284,12 +291,11 @@ values ('daily',
         current_timestamp);
 
 
-insert into address(street, city, number, postal_code, user_id, created_at, updated_at)
+insert into address(street, city, number, postal_code, created_at, updated_at)
 values ('Uhorka',
         'Uhorske',
         '500',
         '98525',
-        1,
         current_timestamp,
         current_timestamp);
 

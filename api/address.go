@@ -24,22 +24,6 @@ func (a *API) GetAddressById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	return err
 }
 
-func (a *API) GetAllAddressesByUserId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	id := getIdFromRequest(r)
-	addresses, err := ctx.GetAllAddressesByUserId(id)
-	if err != nil {
-		return err
-	}
-
-	data, err := json.Marshal(addresses)
-	if err != nil {
-		return err
-	}
-
-	_, err = w.Write(data)
-	return err
-}
-
 type AddressInput struct {
 	Street     string `json:"street"`
 	City       string `json:"city"`
@@ -52,7 +36,6 @@ type AddressResponse struct {
 }
 
 func (a *API) CreateAddress(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	id := getIdFromRequest(r)
 	var input AddressInput
 
 	defer r.Body.Close()
@@ -70,7 +53,6 @@ func (a *API) CreateAddress(ctx *app.Context, w http.ResponseWriter, r *http.Req
 		City:       input.City,
 		Number:     input.Number,
 		PostalCode: input.PostalCode,
-		UserId:     id,
 	}
 
 	if err := ctx.CreateAddress(address); err != nil {
@@ -125,9 +107,6 @@ func (a *API) UpdateAddressById(ctx *app.Context, w http.ResponseWriter, r *http
 	}
 	if input.PostalCode != nil {
 		existingAddress.PostalCode = *input.PostalCode
-	}
-	if input.UserId != nil {
-		existingAddress.UserId = *input.UserId
 	}
 
 	err = ctx.UpdateAddress(existingAddress)
