@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
 import {sendOrder} from "../Network/SendOrder";
+import {Button} from "react-bootstrap";
 class Cart extends Component{
 
     constructor(props) {
@@ -70,7 +71,8 @@ class Cart extends Component{
                                     <b>Quantity: {item.quantity}</b>
                                 </p>
 
-                                <button className="waves-effect waves-light btn pink remove" onClick={()=>{this.handleRemove(item.id)}}>Remove</button>
+                                <button className="waves-effect waves-light btn pink remove" onClick={()=>{this.handleRemove(item.id)}}
+                                 >Remove</button>
                             </div>
                         </li>
                     )
@@ -89,7 +91,9 @@ class Cart extends Component{
                     </ul>
 
                     <h3> Total: {this.calculatePrice()}E</h3>
-                    <button className="waves-effect waves-light btn pink send" onClick={this.sendOrder.bind(this)}>Send</button>
+                    <Button
+                        className="waves-effect waves-light btn pink send" onClick={this.sendOrder.bind(this)}
+                        disabled={this.state.order.length === 0}>Send</Button>
 
                 </div>
             </div>

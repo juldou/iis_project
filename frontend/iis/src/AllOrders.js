@@ -4,8 +4,18 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import {getUserID} from "./Network/Authentication";
+import {getUserID, getUserType, isCourier, isOperator} from "./Network/Authentication";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
+import Form from "react-bootstrap/Form";
+import {usertypes} from "./EditUSer";
+import Select from 'react-select';
+
+export const stateOptions = [
+    {label: "new", value: "new"},
+    {label: "accepted", value: "accepted"},
+    {label: "delivering", value: "delivering"},
+    {label: "delivered", value: "delivered"}
+];
 
 class AllOrders extends Component {
     constructor(props) {
@@ -47,10 +57,17 @@ class AllOrders extends Component {
                 <span  >
                     <h3>{item.id}</h3>
                     <h3>{item.state}</h3>
+                    {(isOperator()) &&
                     <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
-                    defaultValue={{label: item.Courier.Email, value: item.Courier.id}}/>
+                                 defaultValue={{label: item.Courier.Email, value: item.Courier.id}}/>
+                    }
 
-                </span>
+                    { isCourier() &&
+                    <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
+                            value={this.state.type}
+                            defaultValue={{label: item.state, value: item.state}}/>
+                    }
+                    </span>
             </li>
         );
         return (
@@ -68,4 +85,12 @@ class AllOrders extends Component {
         };
         this.api.patch(this.config.ORDER_URL + "/" + id, data)
     }
+
+    changeOrderState(id, selectedOption) {
+        let data = {
+            state: selectedOption.value
+        };
+        this.api.patch(this.config.ORDER_URL + "/" + id, data)
+    }
+
 } export default AllOrders;

@@ -6,6 +6,7 @@ import './Register.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Redirect} from "react-router";
+import {isAuthenticated} from "./Network/Authentication";
 
 export default class Register extends Component {
     constructor(props) {
@@ -45,7 +46,6 @@ export default class Register extends Component {
             [event.target.id]: event.target.value
         });
     };
-
 
     render() {
         if(this.state.redirect === true) {
@@ -127,8 +127,15 @@ export default class Register extends Component {
             city: this.state.city
         });
 
-        this.api.post(this.config.REGISTER_URL, data).then(result => {
+        if(!isAuthenticated) {
+            this.api.post(this.config.REGISTER_URL, data).then(result => {
+                this.setState({redirect: true});
+            })
+        } else {
+
+        } this.api.patch(this.config.REGISTER_URL, data).then(result => {
             this.setState({redirect: true});
         })
+
     };
 }

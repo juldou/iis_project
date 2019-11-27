@@ -4,7 +4,7 @@ import NetworkService from "./Network/NetworkService";
 import {NavLink} from "react-router-dom";
 import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
-import {getUserType} from "./Network/Authentication";
+import {getUserType, isOperator} from "./Network/Authentication";
 import {Button} from "react-bootstrap";
 
 class RestaurantDetail extends Component {
@@ -139,7 +139,7 @@ class RestaurantDetail extends Component {
     }
 
     ChangeButton(id) {
-        if(getUserType() === "admin"|| getUserType() === "operator")
+        if(isOperator())
             return (
                 <div>
                     <NavLink to={  this.state.id + "/editmeal/" + id} className="link">
@@ -155,7 +155,7 @@ class RestaurantDetail extends Component {
     }
 
     RemoveButton(id) {
-        if(getUserType() === "admin"|| getUserType() === "operator")
+        if(isOperator())
             return (
                 <div>
 
@@ -178,7 +178,7 @@ class RestaurantDetail extends Component {
     }
 
     DeactivateButton() {
-        if(getUserType() === "admin"|| getUserType() === "operator")
+        if(isOperator())
             return (
                 <div>
 
