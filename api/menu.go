@@ -2,33 +2,32 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/gorilla/schema"
 	"github.com/iis_project/app"
 	"github.com/iis_project/model"
 	"io/ioutil"
 	"net/http"
 )
 
-type GetMenuInput struct {
-	Category         string `json:"category"`
+type Filter struct {
+	Name     string `schema:"name"`
+	Category string `schema:"category"`
 }
 
 func (a *API) GetMenuByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	restaurantId := getIdFromRequest(r)
-	name := r.FormValue("name")
 
-	var input GetMenuInput
-
-	defer r.Body.Close()
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
+	if err := r.ParseForm(); err != nil {
 		return err
 	}
 
-	if err := json.Unmarshal(body, &input); err != nil {
+	filter := new(Filter)
+	if err := schema.NewDecoder().Decode(filter, r.Form); err != nil {
 		return err
 	}
 
-	foods, err := ctx.GetMenuByRestaurantId(restaurantId, name, input.Category)
+	foods, err := ctx.GetMenuByRestaurantId(restaurantId, filter.Name, filter.Category)
+
 	if err != nil {
 		return err
 	}
@@ -42,10 +41,9 @@ func (a *API) GetMenuByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *
 	return err
 }
 
-
 type MenuInput struct {
-	Name         string `json:"name"`
-	FoodId       uint `json:"food_id"`
+	Name   string `json:"name"`
+	FoodId uint   `json:"food_id"`
 }
 
 type MenuResponse struct {
@@ -66,7 +64,7 @@ func (a *API) CreateMenu(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 	}
 
 	menu := &model.Menu{
-		Name: input.Name,
+		Name:   input.Name,
 		FoodId: input.FoodId,
 	}
 

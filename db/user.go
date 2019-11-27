@@ -14,6 +14,8 @@ func (db *Database) GetUserById(id uint) (*model.User, error) {
 		}
 		return nil, errors.Wrap(err, "unable to get user by id")
 	}
+	user.Address.ID = user.AddressId
+	db.First(&user.Address)
 	return &user, nil
 }
 
