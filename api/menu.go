@@ -9,6 +9,22 @@ import (
 	"net/http"
 )
 
+func (a *API) GetMenuById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+	menu, err := ctx.GetMenuById(id)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(menu)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
 type Filter struct {
 	Name     string `schema:"name"`
 	Category string `schema:"category"`
@@ -72,6 +88,52 @@ func (a *API) CreateMenu(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 	}
 
 	data, err := json.Marshal(&FoodUserResponse{Id: menu.ID})
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
+type UpdateMenuInput struct {
+	Name          *string     `json:"name"`
+	FoodId        *uint       `json:"food_id"`
+}
+
+func (a *API) UpdateMenuById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+
+	var input UpdateMenuInput
+
+	defer r.Body.Close()
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(body, &input); err != nil {
+		return err
+	}
+
+	existingMenu, err := ctx.GetMenuById(id)
+	if err != nil || existingMenu == nil {
+		return err
+	}
+
+	if input.Name != nil {
+		existingMenu.Name = *input.Name
+	}
+	if input.FoodId != nil {
+		existingMenu.FoodId = *input.FoodId
+	}
+
+	err = ctx.UpdateMenu(existingMenu)
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(existingMenu)
 	if err != nil {
 		return err
 	}

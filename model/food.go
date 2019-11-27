@@ -10,6 +10,7 @@ type Food struct {
 	PictureUrl     string     `json:"picture_url"`
 	Restaurant     Restaurant `gorm:"association_foreignkey:ID"`
 	RestaurantId   uint       `json:"restaurant_id"`
+	IsSoldout      bool 	  `json:"is_soldout"`
 }
 
 type FoodCategory struct {

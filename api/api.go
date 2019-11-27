@@ -80,7 +80,7 @@ func (a *API) Init(r *mux.Router) {
 
 	// login method
 	registerRouter := r.PathPrefix("/register").Subrouter()
-	registerRouter.Handle("", a.handler(a.NotImplementedHandler)).Methods("POST")
+	registerRouter.Handle("", a.handler(a.CreateRegistration)).Methods("POST")
 
 	// refresh method
 	refreshRouter := r.PathPrefix("/refresh").Subrouter()
@@ -100,6 +100,9 @@ func (a *API) Init(r *mux.Router) {
 
 	menuRouter := r.PathPrefix("/menu").Subrouter()
 	menuRouter.Handle("", a.handler(a.CreateMenu)).Methods("POST")
+	menuRouter.Handle("/{id:[0-9]+}", a.handler(a.GetMenuById)).Methods("GET")
+	menuRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateMenuById)).Methods("PATCH")
+	menuRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteMenuById)).Methods("DELETE")
 
 	foodRouter := r.PathPrefix("/food").Subrouter()
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.GetFoodById)).Methods("GET")

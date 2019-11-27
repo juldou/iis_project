@@ -93,6 +93,7 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		Description:  input.Description,
 		PictureUrl:   input.PictureUrl,
 		RestaurantId: id,
+		IsSoldout: false,
 	}
 
 	if err := ctx.CreateFood(food); err != nil {
@@ -124,6 +125,7 @@ type UpdateFoodInput struct {
 	Description  *string `json:"description"`
 	PictureUrl   *string `json:"picture_url"`
 	RestaurantId *uint   `json:"restaurant_id"`
+	IsSoldout *bool   `json:"is_soldout"`
 }
 
 func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -163,6 +165,9 @@ func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	}
 	if input.RestaurantId != nil {
 		existingFood.RestaurantId = *input.RestaurantId
+	}
+	if input.IsSoldout != nil {
+		existingFood.IsSoldout = *input.IsSoldout
 	}
 
 	err = ctx.UpdateFood(existingFood)
