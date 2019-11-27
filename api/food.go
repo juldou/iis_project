@@ -2,10 +2,14 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/iis_project/app"
 	"github.com/iis_project/model"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 )
 
 func (a *API) GetFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -188,18 +192,90 @@ func (a *API) DeleteFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	return err
 }
 
+
 func (a *API) GetFoodCategories(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
-	restaurantCategories, err := ctx.GetFoodCategories()
+	foodCategories, err := ctx.GetFoodCategories()
 
 	if err != nil {
 		return err
 	}
 
-	data, err := json.Marshal(restaurantCategories)
+	data, err := json.Marshal(foodCategories)
 	if err != nil {
 		return err
 	}
 
+	_, err = w.Write(data)
+	return err
+}
+
+
+func (a *API) AddFoodPicture(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	id := getIdFromRequest(r)
+
+	existingFood, err := ctx.GetFoodById(id)
+	if err != nil || existingFood == nil {
+		return err
+	}
+
+	//var Buf bytes.Buffer
+	// in your case file would be fileupload
+	if err := r.ParseMultipartForm(5 * 1024 * 1024 * 1024 /* 5MB */); err != nil {
+		return err
+	}
+	file, header, err := r.FormFile("fileupload")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	name := strings.Split(header.Filename, ".")
+	fmt.Printf("File name %s\n", name[0])
+	// Copy the file data to my buffer
+	//io.Copy(&Buf, file)
+
+	// do something with the contents...
+	// I normally have a struct defined and unmarshal into a struct, but this will
+	// work as an example
+
+	fileName :=  fmt.Sprintf("%d_%s", id, header.Filename)
+	filePath := "./frontend/iis/public/foods/" + fileName
+
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	io.Copy(f, file)
+
+	// Copy the file to the destination path
+	//written, err := io.Copy(f, io.TeeReader(file, Buf))
+	//if err != nil {
+	//	return err
+	//}
+
+	//contents := Buf.String()
+	//fmt.Println(written)
+	//fmt.Println(contents)
+	// I reset the buffer in case I want to use it again
+	// reduces memory allocations in more intense projects
+	//Buf.Reset()
+	// do something else
+	// etc write header
+
+	existingFood.PictureUrl = fileName
+
+	err = ctx.UpdateFood(existingFood)
+
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(existingFood)
+
+	if err != nil {
+		return err
+	}
 	_, err = w.Write(data)
 	return err
 }

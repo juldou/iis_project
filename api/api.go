@@ -55,7 +55,6 @@ func (a *API) Init(r *mux.Router) {
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.GetUserById)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateUserById)).Methods("PATCH")
 	userRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteUserById)).Methods("DELETE")
-	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.GetAllAddressesByUserId)).Methods("GET")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.CreateAddress)).Methods("POST")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.UpdateAddressById)).Methods("PATCH")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.DeleteAddressById)).Methods("DELETE")
@@ -106,6 +105,7 @@ func (a *API) Init(r *mux.Router) {
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.GetFoodById)).Methods("GET")
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateFoodById)).Methods("PATCH")
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteFoodById)).Methods("DELETE")
+	foodRouter.Handle("/{id:[0-9]+}/picture", a.handler(a.AddFoodPicture)).Methods("POST")
 
 	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()

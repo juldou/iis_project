@@ -56,13 +56,13 @@ api/order/{id}
 
 ####operátor:
 
-- vkládá a spravuje provozovny a jejich nabídky
+- vkládá a spravuje provozovny a jejich nabídky 
 
 - může vkládat obrázky k položkám nabídek 
 
 - ukončuje objednávky pro daný den 
 
-- sestavuje plán řidičů (přiřazení objednávek), kteří provedou vyzvednutí a rozvoz jídel 
+- sestavuje plán řidičů (přiřazení objednávek), kteří provedou vyzvednutí a rozvoz jídel ✓ 
 
 - má rovněž práva strávníka
 
@@ -76,7 +76,7 @@ api/order/{id}
 
 - objednává 1 až n jídel (zvolte vhodné omezení - např. počet jídel, případně vyžadovaná úhrada do uzávěrky objednávek - kontroluje a případně schvaluje/ruší operátor)
 
-- sleduje stav jeho objednávek (přijetí, potvrzení, rozvoz, ...)
+- sleduje stav jeho objednávek (přijetí, potvrzení, rozvoz, ...) ✓
 
 - má rovněž práva (a, b) neregistrovaného návštěvníka
 
@@ -84,11 +84,11 @@ api/order/{id}
 
 - (a) má možnost procházet jídelní lístky jednotlivých provozoven a sledovat aktuální nabídky (položky denního menu mohou být vyprodané) 
 
-- (b) má možnost filtrovat položky nabídek dle různých vlastností (např. bezlepkové, veganské apod.)
+- (b) má možnost filtrovat položky nabídek dle různých vlastností (např. bezlepkové, veganské apod.) ✓
 
 - může provést objednání jídla bez registrace: vyžadujte vhodné údaje (má možnost dokončit registraci a stát se strávníkem)
 
-- Každý registrovaný uživatel má možnost editovat svůj profil.
+- Každý registrovaný uživatel má možnost editovat svůj profil. 
  
 #Backend TODO
 - rules

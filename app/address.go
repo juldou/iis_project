@@ -17,19 +17,6 @@ func (ctx *Context) GetAddressById(id uint) (*model.Address, error) {
 	return address, nil
 }
 
-func (ctx *Context) GetAllAddressesByUserId(id uint) ([]*model.Address, error) {
-	//if ctx.JwtUser == nil {
-	//	return nil, ctx.AuthorizationError()
-	//}
-
-	addresses, err := ctx.Database.GetAllAddressesByUserId(id)
-	if err != nil {
-		return nil, err
-	}
-
-	return addresses, nil
-}
-
 func (ctx *Context) CreateAddress(address *model.Address) error {
 	//if ctx.JwtUser.Role == "admin" || ctx.JwtUser.Role == "operator" {
 		return ctx.Database.CreateAddress(address)
