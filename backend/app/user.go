@@ -73,7 +73,6 @@ func (ctx *Context) UpdateUser(user *model.User) error {
 	//	return ctx.AuthorizationError()
 	//}
 
-	// TODO: validate user for updating
 	if !strings.Contains(user.Email, "@") {
 		return &ValidationError{"invalid email"}
 	}

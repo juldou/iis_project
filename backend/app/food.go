@@ -30,6 +30,23 @@ func (ctx *Context) GetAllOrdersForUser() ([]*model.Order, error) {
 	return orders, nil
 }
 
+func (ctx *Context) GetAllOrdersAssignedToCourier() ([]*model.Order, error) {
+	if ctx.User == nil {
+		return nil, ctx.AuthorizationError()
+	}
+
+	if ctx.User.Role != "courier" {
+		return nil, ctx.AuthorizationError()
+	}
+
+	orders, err := ctx.Database.GetAllOrdersByCourierId(ctx.User.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return orders, nil
+}
+
 func (ctx *Context) GetFoodsByRestaurantId(id uint) ([]*model.Food, error) {
 	//if ctx.User == nil {
 	//	return nil, ctx.AuthorizationError()
@@ -79,7 +96,6 @@ func (ctx *Context) UpdateFood(food *model.Food) error {
 	//	return ctx.AuthorizationError()
 	//}
 
-	// TODO: validate user for updating
 	if food.Name == "" {
 		return &ValidationError{"cannot update"}
 	}

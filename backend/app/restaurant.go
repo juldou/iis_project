@@ -87,7 +87,6 @@ func (ctx *Context) UpdateRestaurant(restaurant *model.Restaurant) error {
 	//	return ctx.AuthorizationError()
 	//}
 
-	// TODO: validate user for updating
 	if restaurant.Name == "" {
 		return &ValidationError{"cannot update"}
 	}

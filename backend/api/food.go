@@ -27,6 +27,21 @@ func (a *API) GetFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	return err
 }
 
+func (a *API) GetAllOrdersAssignedToCourier(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	orders, err := ctx.GetAllOrdersAssignedToCourier()
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(orders)
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
+	return err
+}
+
 func (a *API) GetAllOrdersByUser(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	orders, err := ctx.GetAllOrdersForUser()
 	if err != nil {

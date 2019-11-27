@@ -71,9 +71,9 @@ func (a *API) Init(r *mux.Router) {
 	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
 	orderRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetAllFoodsByOrderId)).Methods("GET")
 
-	// restaurants methods
 	ordersRouter := r.PathPrefix("/orders").Subrouter()
 	ordersRouter.Handle("", a.handler(a.GetOrders)).Methods("GET")
+	ordersRouter.Handle("/courier", a.handler(a.GetAllOrdersAssignedToCourier)).Methods("GET")
 
 	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
@@ -111,8 +111,6 @@ func (a *API) Init(r *mux.Router) {
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteFoodById)).Methods("DELETE")
 	foodRouter.Handle("/{id:[0-9]+}/picture", a.handler(a.AddFoodPicture)).Methods("POST")
 
-
-
 	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()
 	restaurantsRouter.Handle("", a.handler(a.GetRestaurants)).Methods("GET")
@@ -124,8 +122,6 @@ func (a *API) Init(r *mux.Router) {
 	foodCategoriesRouter := r.PathPrefix("/food-categories").Subrouter()
 	foodCategoriesRouter.Handle("", a.handler(a.GetFoodCategories)).Methods("GET")
 }
-
-// TODO: orders_allowed do restauracie
 
 func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) error) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
