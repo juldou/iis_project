@@ -26,8 +26,8 @@ class Header extends Component {
                 <Nav className="mr-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/cart">Cart</Nav.Link>
-                    {isAdmin() &&                     <Nav.Link href="/users">Users</Nav.Link>}
-                    { isOperator() &&                     <Nav.Link href="/allorders">All Orders</Nav.Link>
+                    {isAdmin() && <Nav.Link href="/users">Users</Nav.Link>}
+                    { isOperator() && <Nav.Link href="/allorders">All Orders</Nav.Link>
                     }
 
 

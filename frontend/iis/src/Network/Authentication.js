@@ -52,7 +52,7 @@ export function login(username, password) {
 
         ).then(response => {
             localStorage.setItem("user", response.User.id);
-            localStorage.setItem("user_type", response.User.Role);
+            localStorage.setItem("user_type", response.User.role);
             localStorage.setItem("access_token", response.AuthToken.access_token);
             localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
         });
