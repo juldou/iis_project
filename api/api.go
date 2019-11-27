@@ -71,8 +71,9 @@ func (a *API) Init(r *mux.Router) {
 	orderRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteOrderById)).Methods("DELETE")
 	orderRouter.Handle("/{id:[0-9]+}/foods", a.handler(a.GetAllFoodsByOrderId)).Methods("GET")
 
+	// restaurants methods
 	ordersRouter := r.PathPrefix("/orders").Subrouter()
-	ordersRouter.Handle("", a.handler(a.GetAllOrdersByUser)).Methods("GET")
+	ordersRouter.Handle("", a.handler(a.GetOrders)).Methods("GET")
 
 	// login method
 	loginRouter := r.PathPrefix("/login").Subrouter()
@@ -106,6 +107,8 @@ func (a *API) Init(r *mux.Router) {
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.UpdateFoodById)).Methods("PATCH")
 	foodRouter.Handle("/{id:[0-9]+}", a.handler(a.DeleteFoodById)).Methods("DELETE")
 	foodRouter.Handle("/{id:[0-9]+}/picture", a.handler(a.AddFoodPicture)).Methods("POST")
+
+
 
 	// restaurants methods
 	restaurantsRouter := r.PathPrefix("/restaurants").Subrouter()

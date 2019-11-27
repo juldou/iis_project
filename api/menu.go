@@ -27,6 +27,7 @@ func (a *API) GetMenuByRestaurantId(ctx *app.Context, w http.ResponseWriter, r *
 	}
 
 	foods, err := ctx.GetMenuByRestaurantId(restaurantId, filter.Name, filter.Category)
+
 	if err != nil {
 		return err
 	}

@@ -192,7 +192,6 @@ func (a *API) DeleteFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	return err
 }
 
-
 func (a *API) GetFoodCategories(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	foodCategories, err := ctx.GetFoodCategories()
 
@@ -276,6 +275,7 @@ func (a *API) AddFoodPicture(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	if err != nil {
 		return err
 	}
+
 	_, err = w.Write(data)
 	return err
 }
