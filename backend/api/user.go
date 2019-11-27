@@ -65,8 +65,8 @@ func (a *API) CreateUser(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 	}
 
 	user := &model.User{
-		Email:          input.Email,
-		Role:           input.Role,
+		Email: input.Email,
+		Role:  input.Role,
 	}
 
 	if err := ctx.CreateUser(user, input.Password); err != nil {

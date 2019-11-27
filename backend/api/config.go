@@ -17,7 +17,7 @@ type Config struct {
 	JwtSecret []byte
 
 	// Enforcer file paths
-	EnforcerModelPath string
+	EnforcerModelPath  string
 	EnforcerPolicyPath string
 }
 

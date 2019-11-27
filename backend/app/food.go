@@ -58,7 +58,7 @@ func (ctx *Context) GetFoodCategories() ([]*model.FoodCategory, error) {
 
 func (ctx *Context) CreateFood(food *model.Food) error {
 	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
-		return ctx.Database.CreateFood(food)
+	return ctx.Database.CreateFood(food)
 	//} else {
 	//	return ctx.AuthorizationError()
 	//}

@@ -37,7 +37,7 @@ func (ctx *Context) GetAddressByUserId(id uint) (*model.Address, error) {
 
 func (ctx *Context) CreateAddress(address *model.Address) error {
 	//if ctx.JwtUser.Role == "admin" || ctx.JwtUser.Role == "operator" {
-		return ctx.Database.CreateAddress(address)
+	return ctx.Database.CreateAddress(address)
 	//} else {
 	//	return ctx.AuthorizationError()
 	//}

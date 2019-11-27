@@ -189,8 +189,8 @@ func (a *API) CreateRegistration(ctx *app.Context, w http.ResponseWriter, r *htt
 	}
 
 	user := &model.User{
-		Email:   input.Email,
-		Role:    "customer",
+		Email:     input.Email,
+		Role:      "customer",
 		AddressId: address.ID,
 	}
 

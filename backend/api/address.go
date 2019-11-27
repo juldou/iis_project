@@ -27,7 +27,7 @@ func (a *API) GetAddressById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 type AddressInput struct {
 	Street     string `json:"street"`
 	City       string `json:"city"`
-	Number     string    `json:"number"`
+	Number     string `json:"number"`
 	PostalCode string `json:"postal_code"`
 }
 
@@ -71,9 +71,9 @@ func (a *API) CreateAddress(ctx *app.Context, w http.ResponseWriter, r *http.Req
 type UpdateAddressInput struct {
 	Street     *string `json:"street"`
 	City       *string `json:"city"`
-	Number     *string    `json:"number"`
+	Number     *string `json:"number"`
 	PostalCode *string `json:"postal_code"`
-	UserId     *uint `json:"user_id"`
+	UserId     *uint   `json:"user_id"`
 }
 
 func (a *API) UpdateAddressById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {

@@ -20,8 +20,8 @@ import (
 func serveAPI(ctx context.Context, api *api.API) {
 	cors := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"*","GET", "HEAD", "POST", "OPTIONS", "PATCH", "DELETE"}),
-		handlers.AllowedHeaders([]string{"*","Content-Type", "Authorization"}),
+		handlers.AllowedMethods([]string{"*", "GET", "HEAD", "POST", "OPTIONS", "PATCH", "DELETE"}),
+		handlers.AllowedHeaders([]string{"*", "Content-Type", "Authorization"}),
 		handlers.ExposedHeaders([]string{"*"}),
 	)
 

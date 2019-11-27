@@ -66,7 +66,7 @@ func (ctx *Context) GetRestaurantCategories() ([]*model.RestaurantCategory, erro
 
 func (ctx *Context) CreateRestaurant(restaurant *model.Restaurant) error {
 	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
-		return ctx.Database.CreateRestaurant(restaurant)
+	return ctx.Database.CreateRestaurant(restaurant)
 	//} else {
 	//	return ctx.AuthorizationError()
 	//}

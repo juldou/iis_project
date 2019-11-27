@@ -38,7 +38,7 @@ func (ctx *Context) GetMenuByRestaurantId(restaurantId uint, name string, catego
 
 func (ctx *Context) CreateMenu(menu *model.Menu) error {
 	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
-		return ctx.Database.CreateMenu(menu)
+	return ctx.Database.CreateMenu(menu)
 	//} else {
 	//	return ctx.AuthorizationError()
 	//}

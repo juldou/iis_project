@@ -205,7 +205,7 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 			sub = "guest"
 		}
 		obj := r.URL.RequestURI()[4:] // the resource that is going to be accessed.
-		act := r.Method           // the operation that the user performs on the resource.
+		act := r.Method               // the operation that the user performs on the resource.
 
 		if res := a.Enforcer.Enforce(sub, obj, act); res {
 			// permit

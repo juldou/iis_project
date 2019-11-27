@@ -98,8 +98,8 @@ func (a *API) CreateMenu(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 }
 
 type UpdateMenuInput struct {
-	Name          *string     `json:"name"`
-	FoodId        *uint       `json:"food_id"`
+	Name   *string `json:"name"`
+	FoodId *uint   `json:"food_id"`
 }
 
 func (a *API) UpdateMenuById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {

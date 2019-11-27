@@ -27,7 +27,6 @@ func (a *API) GetFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	return err
 }
 
-
 func (a *API) GetAllOrdersByUser(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	orders, err := ctx.GetAllOrdersForUser()
 	if err != nil {
@@ -93,7 +92,7 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		Description:  input.Description,
 		PictureUrl:   input.PictureUrl,
 		RestaurantId: id,
-		IsSoldout: false,
+		IsSoldout:    false,
 	}
 
 	if err := ctx.CreateFood(food); err != nil {
@@ -101,8 +100,8 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 	}
 
 	menu := &model.Menu{
-		Name:   "permanent",
-		Food:   *food,
+		Name: "permanent",
+		Food: *food,
 	}
 
 	if err := ctx.CreateMenu(menu); err != nil {
@@ -125,7 +124,7 @@ type UpdateFoodInput struct {
 	Description  *string `json:"description"`
 	PictureUrl   *string `json:"picture_url"`
 	RestaurantId *uint   `json:"restaurant_id"`
-	IsSoldout *bool   `json:"is_soldout"`
+	IsSoldout    *bool   `json:"is_soldout"`
 }
 
 func (a *API) UpdateFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -212,7 +211,6 @@ func (a *API) GetFoodCategories(ctx *app.Context, w http.ResponseWriter, r *http
 	return err
 }
 
-
 func (a *API) AddFoodPicture(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	id := getIdFromRequest(r)
 
@@ -230,7 +228,7 @@ func (a *API) AddFoodPicture(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	}
 	defer file.Close()
 
-	fileName :=  fmt.Sprintf("%d.png", id)
+	fileName := fmt.Sprintf("%d.png", id)
 	filePath := "../frontend/iis/public/foods/" + fileName
 
 	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)

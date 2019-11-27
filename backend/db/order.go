@@ -35,7 +35,7 @@ func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, erro
 func (db *Database) GetOrders() ([]*model.Order, error) {
 	var orders []*model.Order
 
-	if err:= db.Find(&orders).Error; err != nil {
+	if err := db.Find(&orders).Error; err != nil {
 		return nil, err
 	}
 	for _, order := range orders {
