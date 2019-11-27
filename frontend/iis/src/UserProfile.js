@@ -45,6 +45,7 @@ export default class UserProfile extends Component {
                     <Button> Edit info</Button>
                 </NavLink>
             </div>
+            </div>
         );
     }
 }

@@ -6,7 +6,6 @@ import Register from "./Register";
 import {getUserID, getUserType, isAdmin, isAuthenticated, isOperator, logout} from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
 import {Nav, Navbar} from "react-bootstrap";
-import './Header.css';
 
 
 class Header extends Component {
@@ -60,7 +59,7 @@ class Header extends Component {
                 <Nav className="mr-auto">
                 <Nav.Link href="/orders">My Orders</Nav.Link>
                 <Nav.Link href="/userprofile">Profile</Nav.Link>
-                <Nav.Link href="" onClick={logout}>Logout</Nav.Link>
+                <Nav.Link href="/" onClick={logout}>Logout</Nav.Link>
 
                 </Nav>
 
