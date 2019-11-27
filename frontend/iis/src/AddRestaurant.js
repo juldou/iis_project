@@ -4,6 +4,9 @@ import Configuration from "./Network/Configuration";
 import {Redirect} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import NetworkService from "./Network/NetworkService";
+import Form from "react-bootstrap/Form";
+import AsyncSelect from "react-select/async/dist/react-select.esm";
+import {validateRequiredField} from "./Validation";
 
 class AddRestaurant extends Component {
     constructor(props) {
@@ -17,9 +20,12 @@ class AddRestaurant extends Component {
             description: '',
         };
 
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleTypeChange = this.handleTypeChange.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.errors = {
+            name:false,
+            description: false,
+            type: false
+        };
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -38,16 +44,12 @@ class AddRestaurant extends Component {
         }
     }
 
-    handleNameChange(event) {
-        this.setState({name: event.target.value});
-    }
+    handleChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    };
 
-    handleTypeChange(event) {
-        this.setState({type: event.target.value});
-    }
-    handleDescriptionChange(event) {
-        this.setState({description: event.target.value});
-    }
     handleImageChange(image) {
         alert(image);
         this.setState({image: image});
@@ -62,19 +64,37 @@ class AddRestaurant extends Component {
             return <Redirect to='/' />
         }
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Name:
-                    <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-                </label>
-                <label>
-                    Type:
-                    <input type="text" value={this.state.type} onChange={this.handleTypeChange} />
-                </label>
-                <label>
-                    Description:
-                    <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
-                </label>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="name" bsSize="large">
+                    <Form.Label> Name </Form.Label>
+                    <Form.Control
+                        className= {this.errors.name ? "error" : ""}
+                        autoFocus
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="type" bsSize="large">
+                    <Form.Label> Type </Form.Label>
+                    <Form.Control
+                        className= {this.errors.type ? "error" : ""}
+                        autoFocus
+                        type="text"
+                        value={this.state.type}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="description" bsSize="large">
+                    <Form.Label> Description </Form.Label>
+                    <Form.Control
+                        className= {this.errors.description ? "error" : ""}
+                        value={this.state.description}
+                        onChange={this.handleChange}
+                        type="text"
+                    />
+                </Form.Group>
                 <label>
                     Image:
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
@@ -83,12 +103,30 @@ class AddRestaurant extends Component {
                 <ImageUpload onChange={this.handleImageChange}/>
                 <input type="submit" value="Submit" />
 
+                <Button
+                    block
+                    bsSize="large"
+                    disabled={!this.validateForm()}
+                    type="submit"
+                >
+                    CHANGE
+                </Button>
+
                 {
                     this.props.match.params.id &&
                     <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
                 }
-            </form>
+            </Form>
         );
+    }
+
+    validateForm() {
+        this.errors = {
+            name: validateRequiredField(this.state.name),
+            description: validateRequiredField(this.state.description),
+            type: validateRequiredField(this.state.type),
+        };
+        return !Object.keys(this.errors).some(x => this.errors[x]);
     }
 
     sendData() {

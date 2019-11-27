@@ -5,7 +5,9 @@ export const getUserID = () => localStorage.getItem("user");
 export const isAuthenticated = () => !!getUserID();
 
 export const getUserType = () => localStorage.getItem("user_type");
-
+export const isAdmin = () => getUserType() === "admin";
+export const isOperator = () => getUserType() === "operator" || isAdmin();
+export const isCourier = () => getUserType() === "courier" || isOperator();
 
 export function authHeader() {
     // return authorization header with basic auth credentials
@@ -34,6 +36,7 @@ export function login(username, password) {
                 if (response.status === 401) {
                     // auto logout if 401 response returned from api
                     logout();
+                    alert("You have been logged out")
                 }
 
                 const error = response.statusText;

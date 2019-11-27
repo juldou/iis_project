@@ -4,6 +4,8 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
+import Form from "react-bootstrap/Form";
+import AsyncSelect from "react-select/async/dist/react-select.esm";
 
 class AddMeal extends Component {
     constructor(props) {
@@ -15,41 +17,48 @@ class AddMeal extends Component {
         this.state = {
             name: '',
             type: '',
-            description: ''
+            description: '',
+            price: ''
+        };
+
+        this.errors = {
+            name:false,
+            description: false,
+            type: false,
+            price: false
         };
 
         this.restaurant_id = this.props.match.params.restaurantId;
-        this.handleNameChange = this.handleNameChange.bind(this);
         this.handleTypeChange = this.handleTypeChange.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         if(!!this.props.match.params.id) {
-            this.api.loadData(this.config.GET_MEAL_URL + "/" + this.props.match.params.id).then(restaurant =>
+            this.api.loadData(this.config.GET_MEAL_URL + "/" + this.props.match.params.id).then(meal =>
             {
-                if(!!restaurant) {
+                if(!!meal) {
                     this.setState({
-                        name: restaurant.name,
-                        type: restaurant.category,
-                        description: restaurant.description
+                        name: meal.name,
+                        type: meal.category,
+                        description: meal.description,
+                        price: meal.price
                     })
                 }
             })
         }
     }
 
-    handleNameChange(event) {
-        this.setState({name: event.target.value});
-    }
+    handleChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    };
 
     handleTypeChange(event) {
         this.setState({type: event.target.value});
     }
-    handleDescriptionChange(event) {
-        this.setState({description: event.target.value});
-    }
+
     handleImageChange(image) {
         alert(image);
         this.setState({image: image});
@@ -59,25 +68,53 @@ class AddMeal extends Component {
         this.sendData()
     }
 
+    validateForm() {
+        this.errors = {
+            name: this.state.name.length < 5 ,
+            description: this.state.password !== this.state.repeatPassword,
+            price: this.validatePrice(),
+        };
+        return !Object.keys(this.errors).some(x => this.errors[x]);
+    }
 
     render() {
         if(this.state.homeScreen === true) {
             return <Redirect to={'/restaurant/' + this.restaurant_id}/>
         }
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                Name:
-                <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-            </label>
-                <label>
-                    Type:
-                    <input type="text" value={this.state.type} onChange={this.handleTypeChange} />
-                </label>
-                <label>
-                    Description:
-                    <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
-                </label>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="name" bsSize="large">
+                    <Form.Label> Name </Form.Label>
+                    <Form.Control
+                        className= {this.errors.name ? "error" : ""}
+                        autoFocus
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="description" bsSize="large">
+                    <Form.Label> Description </Form.Label>
+                    <Form.Control
+                        className= {this.errors.description ? "error" : ""}
+                        value={this.state.description}
+                        onChange={this.handleChange}
+                        type="text"
+                    />
+                </Form.Group>
+                <Form.Group controlId="price" bsSize="large">
+                    <Form.Label> Price </Form.Label>
+                    <Form.Control
+                        className= {this.errors.price ? "error" : ""}
+                        value={this.state.price}
+                        onChange={this.handleChange}
+                        type="text"
+                    />
+                </Form.Group>
+
+                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this,)}
+                             defaultValue={{label: this.state.type, value: this.state.type}}/>
+                }
                 <label>
                     Image:
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
@@ -86,12 +123,41 @@ class AddMeal extends Component {
                 <ImageUpload onChange={this.handleImageChange}/>
                 <input type="submit" value="Submit" />
 
+                <Button
+                    block
+                    bsSize="large"
+                    disabled={!this.validateForm()}
+                    type="submit"
+                >
+                    CHANGE
+                </Button>
+
                 {
                     this.props.match.params.id &&
-                    <Button onClick={this.deleteMeal}> DELETE</Button>
+                    <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
                 }
+            </Form>
+        );
+    }
 
-            </form>
+    validatePrice() {
+        const re = /^[0-9\b]+$/;
+
+        // if value is not blank, then test the regex
+
+        if (this.state.price !== '' && re.test(this.state.price)) {
+            return false;
+        }
+        return true;
+    }
+
+    loadCategories() {
+        return this.api.loadData(this.config.CATEGORIES_URL).then(items => {
+                if(!items) return;
+                return items.map(cat=> {
+                   return  {label: cat.name, value: cat.name}
+                })
+            }
         );
     }
 
@@ -101,6 +167,7 @@ class AddMeal extends Component {
             description: this.state.description,
             category: this.state.type,
             restaurant_id: this.restaurant_id,
+            price: this.state.price,
             picture_url: ''
         });
 

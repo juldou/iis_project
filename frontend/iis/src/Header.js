@@ -3,8 +3,10 @@ import Cookies from 'js-cookie'
 import React, { Component } from 'react';
 import './index.css';
 import Register from "./Register";
-import {getUserID, getUserType, isAuthenticated, logout} from "./Network/Authentication";
+import {getUserID, getUserType, isAdmin, isAuthenticated, isOperator, logout} from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
+import {Nav, Navbar} from "react-bootstrap";
+
 
 class Header extends Component {
 
@@ -18,52 +20,50 @@ class Header extends Component {
 
     render() {
         return (
-            <nav className="Header">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/cart">Cart</a></li>
-                    {this.adminItems()}
+            <Navbar className="navbar" bg="light" expand="lg">
 
-                    <li><a href="#about">About</a></li>
+
+                <Nav className="mr-auto">
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/cart">Cart</Nav.Link>
+                    {isAdmin() &&                     <Nav.Link href="/users">Users</Nav.Link>}
+                    { isOperator() &&                     <Nav.Link href="/allorders">All Orders</Nav.Link>
+                    }
+
+
+                    <Nav.Link href="#about">About</Nav.Link>
                      {this.getUserState()}
-                </ul>
+                </Nav>
 
-            </nav>
+            </Navbar>
         );
-    }
-
-    adminItems() {
-        let userType = getUserType();
-        if(isAuthenticated() && userType === 'admin') {
-            return(
-                <div>
-                <li><a href="/users">Users</a></li>
-                <li><a href="/allorders">All Orders</a></li>
-                </div>
-            );
-        }
-        return '';
     }
 
     getUserState() {
 
         if(!isAuthenticated()){
             return (
-                <div>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
 
-                </div>
+                    <Nav className="mr-auto">
+                    <Nav.Link href="/login">Login</Nav.Link>
+                    <Nav.Link href="/register">Register</Nav.Link>
+
+                    </Nav>
+
+
             );
         }
 
         return (
-            <div>
-                <li><a href="/orders">My Orders</a></li>
 
-                <li> <a href="/userprofile">Profile</a> </li>
-            <li><a href="" onClick={logout}>Logout</a></li>
-            </div>
+                <Nav className="mr-auto">
+                <Nav.Link href="/orders">My Orders</Nav.Link>
+                <Nav.Link href="/userprofile">Profile</Nav.Link>
+                <Nav.Link href="/" onClick={logout}>Logout</Nav.Link>
+
+                </Nav>
+
+
         );
 
     }

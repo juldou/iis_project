@@ -4,7 +4,18 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import {getUserID} from "./Network/Authentication";
+import {getUserID, getUserType, isCourier, isOperator} from "./Network/Authentication";
+import AsyncSelect from "react-select/async/dist/react-select.esm";
+import Form from "react-bootstrap/Form";
+import {usertypes} from "./EditUSer";
+import Select from 'react-select';
+
+export const stateOptions = [
+    {label: "new", value: "new"},
+    {label: "accepted", value: "accepted"},
+    {label: "delivering", value: "delivering"},
+    {label: "delivered", value: "delivered"}
+];
 
 class AllOrders extends Component {
     constructor(props) {
@@ -13,7 +24,7 @@ class AllOrders extends Component {
         this.config = new Configuration();
         this.api = new NetworkService();
         this.state = {
-            items: [],
+            items: null,
         };
     }
 
@@ -25,7 +36,17 @@ class AllOrders extends Component {
         );
     }
 
+    loadCouriers() {
+        return this.api.loadData(this.config.GET_ALL_USERS_URL + "?role=courier").then(couriers=> {
+            return couriers.map(courier => {
+                return {label: courier.Email, value: courier.id};
+            })
+        })
+    }
+
     render() {
+        if(!this.state.items) return "";
+
         if(this.state.items.length === 0) {
             return (
                 <h3> There are no orders</h3>
@@ -34,10 +55,19 @@ class AllOrders extends Component {
         const listItems = this.state.items.map((item) =>
             <li key={item.id}>
                 <span  >
-                    <p>{item.id}</p>
-                    <p>{item.status}</p>
-                    <p>{item.courier}</p>
-                </span>
+                    <h3>{item.id}</h3>
+                    <h3>{item.state}</h3>
+                    {(isOperator()) &&
+                    <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
+                                 defaultValue={{label: item.Courier.Email, value: item.Courier.id}}/>
+                    }
+
+                    { isCourier() &&
+                    <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
+                            value={this.state.type}
+                            defaultValue={{label: item.state, value: item.state}}/>
+                    }
+                    </span>
             </li>
         );
         return (
@@ -48,4 +78,19 @@ class AllOrders extends Component {
             </div>
         );
     }
+
+    changeCourier(id, selectedOption) {
+        let data = {
+            courier_id: selectedOption.value
+        };
+        this.api.patch(this.config.ORDER_URL + "/" + id, data)
+    }
+
+    changeOrderState(id, selectedOption) {
+        let data = {
+            state: selectedOption.value
+        };
+        this.api.patch(this.config.ORDER_URL + "/" + id, data)
+    }
+
 } export default AllOrders;

@@ -9,6 +9,7 @@ import { createStore } from 'redux';
 import cartReducer from "./Order/CartReducer";
 import App from "./App";
 import {Provider} from "react-redux";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const store = createStore(cartReducer);
