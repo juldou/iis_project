@@ -6,7 +6,7 @@ import Register from "./Register";
 import {getUserID, getUserType, isAuthenticated, logout} from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
 import {Nav, Navbar} from "react-bootstrap";
-import './Header.css';
+
 
 
 class Header extends Component {
