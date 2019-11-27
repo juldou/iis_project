@@ -64,16 +64,44 @@ class AddRestaurant extends Component {
             return <Redirect to='/' />
         }
         return (
+
+            // <div className="add">
+            //     <Form onSubmit={this.handleSubmit}>
+            //         <Form.Group controlId="formBasicName">
+            //             <Form.Label>Name</Form.Label>
+            //             <Form.Control className= {this.errors.name ? "error" : ""} autoFocus type="text" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleChange} />
+            //         </Form.Group>
+            //
+            //         <Form.Group controlId="formBasicType">
+            //             <Form.Label>Type</Form.Label>
+            //             <Form.Control className= {this.errors.type ? "error" : ""} autoFocus type="text" placeholder="Enter type of a restaurant" value={this.state.type} onChange={this.handleChange}  />
+            //         </Form.Group>
+            //
+            //         <Form.Group controlId="formBasicDescription">
+            //             <Form.Label>Description</Form.Label>
+            //             <Form.Control type="description" placeholder="Enter restaurant description" value={this.state.description} onChange={this.handleDescriptionChange}  />
+            //         </Form.Group>
+            //
+            //         <Form.Group controlId="formBasicImage">
+            //             <Form.Label>Image</Form.Label>
+            //         </Form.Group>
+            //
+            //         <ImageUpload onChange={this.handleImageChange}/>
+            //         <br/>
+            //         <Button variant="primary" type="submit">
+            //             Submit
+            //         </Button>
+            //         {
+            //             this.props.match.params.id &&
+            //             <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
+            //         }
+            //     </Form>
+            // </div>
+            <div className="add">
             <Form onSubmit={this.handleSubmit}>
-                <Form.Group controlId="name" bsSize="large">
-                    <Form.Label> Name </Form.Label>
-                    <Form.Control
-                        className= {this.errors.name ? "error" : ""}
-                        autoFocus
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                    />
+                <Form.Group controlId="formBasicName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control className= {this.errors.name ? "error" : ""} autoFocus type="text" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleChange} />
                 </Form.Group>
 
                 <Form.Group controlId="type" bsSize="large">
@@ -117,6 +145,7 @@ class AddRestaurant extends Component {
                     <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
                 }
             </Form>
+            </div>
         );
     }
 

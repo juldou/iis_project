@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button} from "react-bootstrap";
+import {Button, Jumbotron} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {getUserID} from "./Network/Authentication";
 import AsyncSelect from 'react-select/async';
@@ -35,13 +35,16 @@ class OrderList extends Component {
             )
         }
         const listItems = this.state.items.map((item) =>
-            <li key={item.id}>
-                <span  >
-                    <p>{item.id}</p>
-                    <p>{item.state}</p>
+            <Jumbotron  key={item.id}>
+                <h1>{item.id}</h1>
+                <p>
+                    State: {item.state}
+                </p>
+                <p>
+                    <Button variant="primary">Learn more</Button>
+                </p>
+            </Jumbotron>
 
-                </span>
-            </li>
         );
         return (
             <div >

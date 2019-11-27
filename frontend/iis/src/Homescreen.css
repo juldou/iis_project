@@ -1,0 +1,10 @@
+.Categories{
+    margin-top: 20%;
+    width: 15%;
+    float: left;
+    background-color: red;
+}
+.RestaurantDetail{
+    width: 85%;
+    float: right;
+}

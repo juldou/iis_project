@@ -1,0 +1,15 @@
+.add{
+
+    -webkit-flex: 3;
+    -ms-flex: 3;
+    flex: 3;
+    position: relative;
+    margin-top: 1%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    float: right;
+    /*padding: 20px;*/
+    background-color: #f1f1f1;
+
+}
