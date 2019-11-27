@@ -16,11 +16,12 @@ func ComparePasswordHash(hashedPassword, givenPassword []byte) bool {
 type User struct {
 	Model
 
-	Email          string  `json:"email"`
+	Email          string `json:"email"`
 	HashedPassword []byte
 	Role           string  `json:"role"`
-	Address          Address    `gorm:"association_foreignkey:ID"`
-	AddressId        uint       `json:"address_id"`
+	Address        Address `gorm:"association_foreignkey:ID"`
+	AddressId      uint    `json:"address_id"`
+	Phone          string  `json:"phone"`
 }
 
 func (u *User) SetPassword(password string) error {

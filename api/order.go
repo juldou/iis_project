@@ -58,10 +58,11 @@ func (a *API) GetAllFoodsByOrderId(ctx *app.Context, w http.ResponseWriter, r *h
 }
 
 type OrderInput struct {
-	AddressId        uint       `json:"address_id"`
-	UserId           uint       `json:"user_id"`
-	//RestaurantId     uint     `json:"restaurant_id"`
-	FoodIds			 []uint   `json:"food_ids"`
+	City    *string `json:"city"`
+	Street  *string `json:"street"`
+	Phone   *string `json:"phone"`
+	UserId  *uint   `json:"user_id"`
+	FoodIds []uint  `json:"food_ids"`
 }
 
 type OrderResponse struct {
@@ -82,10 +83,34 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	}
 
 	order := &model.Order{
-		State:            "new",
-		UserId:           input.UserId,
-		AddressId:        input.AddressId,
+		State: "new",
 	}
+
+	var address *model.Address
+	if input.City != nil && input.Street != nil && input.Phone != nil {
+		address = &model.Address{
+			Street: *input.Street,
+			City:   *input.City,
+		}
+		order.Phone = *input.Phone
+		if err := ctx.CreateAddress(address); err != nil {
+			return err
+		}
+	}
+
+	if input.UserId != nil {
+		user, err := ctx.GetUserById(*input.UserId)
+		if err != nil {
+			return err
+		}
+		address, err = ctx.GetAddressByUserId(*input.UserId)
+		if err != nil {
+			return err
+		}
+		order.Phone = user.Phone
+	}
+
+	order.Address = *address
 
 	if err := ctx.CreateOrder(order); err != nil {
 		return err
@@ -94,7 +119,7 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 	for _, foodId := range input.FoodIds {
 		orderFood := &model.OrderFood{
 			OrderId: order.ID,
-			FoodId: foodId,
+			FoodId:  foodId,
 		}
 		if err := ctx.CreateOrderFood(orderFood); err != nil {
 			return err
@@ -111,8 +136,8 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 }
 
 type UpdateOrderInput struct {
-	State            *string     `json:"state"`
-	CourierId        *uint       `json:"courier_id"`
+	State     *string `json:"state"`
+	CourierId *uint   `json:"courier_id"`
 }
 
 func (a *API) UpdateOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {

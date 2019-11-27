@@ -5,6 +5,7 @@ CREATE TABLE "user"
     role            text        NOT NULL,
     hashed_password bytea       NOT NULL,
     address_id      int NULL,
+    phone           character(13),
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
     deleted_at      TIMESTAMP
@@ -56,6 +57,7 @@ CREATE TABLE "order"
     address_id integer   NOT NULL,
     user_id    integer,
     courier_id integer,
+    phone      character(13),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     deleted_at TIMESTAMP
