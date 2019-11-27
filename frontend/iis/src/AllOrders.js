@@ -22,7 +22,7 @@ class AllOrders extends Component {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             items: null,
         };
@@ -39,7 +39,7 @@ class AllOrders extends Component {
     loadCouriers() {
         return this.api.loadData(this.config.GET_ALL_USERS_URL + "?role=courier").then(couriers=> {
             return couriers.map(courier => {
-                return {label: courier.Email, value: courier.id};
+                return {label: courier.email, value: courier.id};
             })
         })
     }
@@ -59,7 +59,7 @@ class AllOrders extends Component {
                     <h3>{item.state}</h3>
                     {(isOperator()) &&
                     <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
-                                 defaultValue={{label: item.Courier.Email, value: item.Courier.id}}/>
+                                 defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
                     }
 
                     { isCourier() &&

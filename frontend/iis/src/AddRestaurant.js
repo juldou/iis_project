@@ -12,7 +12,7 @@ class AddRestaurant extends Component {
     constructor(props) {
         super(props);
 
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.config = new Configuration();
         this.state = {
             name: '',
@@ -33,14 +33,13 @@ class AddRestaurant extends Component {
         if(!!this.props.match.params.id) {
             this.api.loadData(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id).then(restaurant =>
             {
-                if(!!restaurant) {
                     this.setState({
                         name: restaurant.name,
                         type: restaurant.category,
                         description: restaurant.description
                     })
-                }
-            })
+
+            }).catch()
         }
     }
 

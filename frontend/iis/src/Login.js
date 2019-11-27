@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import {login} from "./Network/Authentication";
+import {login, loginBody} from "./Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
 import './login.css';
+import NetworkService from "./Network/NetworkService";
+import Configuration from "./Network/Configuration";
+import {withRouter} from "react-router";
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
+
+        this.api = new NetworkService(this.props);
+        this.api.setErrorCallback(this.showError)
+        this.config = new Configuration();
+
         this.errors = {
             email: false,
             password: false
@@ -17,6 +25,7 @@ export default class Login extends Component {
             password: "",
             toHomescreen: false
         };
+        this.login.bind(this)
     }
 
     validateForm() {
@@ -35,11 +44,18 @@ export default class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        login(this.state.email, this.state.password).then(response => {
-            this.setState({toHomescreen: true});
-        }
-    );
+        this.login();
     };
+
+    login() {
+        let data = loginBody(this.state.email, this.state.password);
+        this.api.post(this.config.LOGIN_URL, data).then(response => {
+            localStorage.setItem("user", response.User.id);
+            localStorage.setItem("user_type", response.User.role);
+            localStorage.setItem("access_token", response.AuthToken.access_token);
+            localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
+        }).catch()
+    }
 
     render() {
         if(this.state.toHomescreen === true) {
@@ -81,4 +97,4 @@ export default class Login extends Component {
             </div>
         );
     }
-}
+} export default withRouter(Login);

@@ -12,7 +12,7 @@ class OrderList extends Component {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             items: null,
         };

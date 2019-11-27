@@ -12,7 +12,7 @@ export default class CreateUser extends Component {
     constructor(props) {
         super(props);
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
 
         this.errors = {
             email: false,

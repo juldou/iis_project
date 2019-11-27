@@ -18,6 +18,9 @@ export function authHeader() {
     }
 }
 
+export function loginBody(username, password) {
+    return JSON.stringify({ username, password });
+}
 // TODO move to login
 export function login(username, password) {
     let config = new Configuration();
@@ -35,7 +38,7 @@ export function login(username, password) {
             if (!response.ok) {
                 if (response.status === 401) {
                     // auto logout if 401 response returned from api
-                    logout();
+                    // logout();
                     alert("You have been logged out")
                 }
 
@@ -58,13 +61,7 @@ export function login(username, password) {
         });
 }
 
-export function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem("user");
-    localStorage.removeItem("user_type");
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("access_token_expires_in");
-}
+
 
 // function getAll() {
 //     const requestOptions = {

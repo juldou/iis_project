@@ -6,12 +6,13 @@ import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
 import {Button} from "react-bootstrap";
+import {withRouter} from "react-router";
 
 class RestaurantDetail extends Component {
     constructor(props) {
         super(props);
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             menu: [],
             meals: [],
@@ -211,4 +212,4 @@ class RestaurantDetail extends Component {
     }
 }
 
-export default RestaurantDetail
+export default withRouter(RestaurantDetail)

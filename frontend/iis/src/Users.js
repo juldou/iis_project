@@ -13,7 +13,7 @@ class Users extends Component {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             items: [],
         };
@@ -33,8 +33,8 @@ class Users extends Component {
             <div className= "userCard" key={item.id} onClick={() => {
             } }>
                 <div className= "userContainer">
-                    <b>Email: {item.Email}</b>
-                    <p>Role: {item.Role}</p>
+                    <b>Email: {item.email}</b>
+                    <p>Role: {item.role}</p>
 
                 <NavLink to={ "/edituser/" + item.id} className="link">
                     <Button>EDIT</Button>

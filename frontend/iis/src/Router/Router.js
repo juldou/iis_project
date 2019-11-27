@@ -19,9 +19,39 @@ import OrderList from "../OrderList";
 import RestaurantList from "../RestaurantList";
 import UserProfile from "../UserProfile";
 import AllOrders from "../AllOrders";
+import createHistory from 'history/createBrowserHistory';
+import setupInterceptors from "../Network/NetworkService";
+import axios from 'axios';
+import context from "react-router/modules/RouterContext";
+
+const history = createHistory();
+
+
+axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+    if (error.response.status === 401) {
+        history.push('/login')
+        // store.dispatch(logoutUser());
+    }
+
+    if (error.response.status === 404) {
+        history.push('/not-found');
+    }
+
+    if (error.response.status === 500) {
+        history.push('/');
+    }
+
+    return Promise.reject(error);
+});
+
+
+
+// setupInterceptors(history);
 
 export const AppRouter = (
-    <Router>
+    <Router history={history} forceRefresh={true}>
         <div>
             <Header/>
             {/*<Switch >*/}
