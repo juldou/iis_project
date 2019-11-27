@@ -84,29 +84,33 @@ var serveCmd = &cobra.Command{
 			serveAPI(ctx, api)
 		}()
 
-		user := &model.User{Email: "julo.marko@gmail.com", Role: "admin", AddressId: 1}
-		password := "heslo123"
-		user.SetPassword(password)
-		app.Database.CreateUser(user)
-
-		user = &model.User{Email: "jan.zauska@gmail.com", Role: "operator", AddressId: 1}
-		password = "heslo123"
-		user.SetPassword(password)
-		app.Database.CreateUser(user)
-
-		user = &model.User{Email: "martin.rockar@gmail.com", Role: "courier", AddressId: 1}
-		password = "heslo123"
-		user.SetPassword(password)
-		app.Database.CreateUser(user)
-
-		user = &model.User{Email: "adam.kucera@gmail.com", Role: "customer", AddressId: 1}
-		password = "heslo123"
-		user.SetPassword(password)
-		app.Database.CreateUser(user)
+		initUsers(app)
 
 		wg.Wait()
 		return nil
 	},
+}
+
+func initUsers(app *app.App) {
+	user := &model.User{Email: "admin@admin.com", Role: "admin", AddressId: 1, Phone: "+421949111222"}
+	password := "admin"
+	user.SetPassword(password)
+	app.Database.CreateUser(user)
+
+	user = &model.User{Email: "operator@operator.com", Role: "operator", AddressId: 1, Phone: "+421949111222"}
+	password = "operator"
+	user.SetPassword(password)
+	app.Database.CreateUser(user)
+
+	user = &model.User{Email: "courier@courier.com", Role: "courier", AddressId: 1, Phone: "+421949111222"}
+	password = "courier"
+	user.SetPassword(password)
+	app.Database.CreateUser(user)
+
+	user = &model.User{Email: "customer@customer.com", Role: "customer", AddressId: 1, Phone: "+421949111222"}
+	password = "heslo123"
+	user.SetPassword(password)
+	app.Database.CreateUser(user)
 }
 
 func init() {

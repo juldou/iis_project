@@ -3,13 +3,14 @@ package model
 type Order struct {
 	Model
 
-	State            string     `json:"state"`
-	User             User       `gorm:"association_foreignkey:ID"`
-	UserId           uint       `json:"user_id"`
-	Courier          User       `gorm:"association_foreignkey:ID"`
-	CourierId        uint       `json:"courier_id"`
-	Address          Address    `gorm:"association_foreignkey:ID"`
-	AddressId        uint       `json:"address_id"`
+	State     string  `json:"state"`
+	User      User    `gorm:"association_foreignkey:ID"`
+	UserId    uint    `json:"user_id"`
+	Courier   User    `gorm:"association_foreignkey:ID"`
+	CourierId uint    `json:"courier_id"`
+	Address   Address `gorm:"association_foreignkey:ID"`
+	AddressId uint    `json:"address_id"`
+	Phone     string  `json:"phone"`
 }
 
 type OrderFood struct {

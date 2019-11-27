@@ -19,12 +19,12 @@ func (db *Database) GetAddressById(id uint) (*model.Address, error) {
 	return &address, nil
 }
 
-func (db *Database) CreateAddress(food *model.Address) error {
-	return db.Create(food).Error
+func (db *Database) CreateAddress(address *model.Address) error {
+	return db.Create(address).Error
 }
 
-func (db *Database) UpdateAddress(food *model.Address) error {
-	return errors.Wrap(db.Save(food).Error, "unable to update food")
+func (db *Database) UpdateAddress(address *model.Address) error {
+	return errors.Wrap(db.Save(address).Error, "unable to update food")
 }
 
 func (db *Database) DeleteAddress(address *model.Address) error {

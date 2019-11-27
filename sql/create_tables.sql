@@ -5,6 +5,7 @@ CREATE TABLE "user"
     role            text        NOT NULL,
     hashed_password bytea       NOT NULL,
     address_id      int NULL,
+    phone           character(13),
     created_at      TIMESTAMP   NOT NULL,
     updated_at      TIMESTAMP   NOT NULL,
     deleted_at      TIMESTAMP
@@ -19,7 +20,7 @@ CREATE TABLE address
     id          serial PRIMARY KEY,
     street      character varying(100),
     city        character varying(100),
-    number      integer,
+    number      character varying(100),
     postal_code character(5),
     created_at  TIMESTAMP NOT NULL,
     updated_at  TIMESTAMP NOT NULL,
@@ -39,6 +40,7 @@ CREATE TABLE food
     price         decimal,
     picture_url   character varying(100),
     restaurant_id integer   NOT NULL,
+    is_soldout    bool null,
     created_at    TIMESTAMP NOT NULL,
     updated_at    TIMESTAMP NOT NULL,
     deleted_at    TIMESTAMP
@@ -55,6 +57,7 @@ CREATE TABLE "order"
     address_id integer   NOT NULL,
     user_id    integer,
     courier_id integer,
+    phone      character(13),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     deleted_at TIMESTAMP
@@ -128,10 +131,6 @@ CREATE TABLE menu
     updated_at TIMESTAMP NOT NULL,
     deleted_at TIMESTAMP
 );
-
--- is_soldout do menu TODO
--- TODO odtranenie z menu
--- TODO registrace
 
 ALTER TABLE menu
     OWNER TO postgres_iis;
@@ -225,48 +224,52 @@ values ('vegetarianske', current_timestamp, current_timestamp);
 insert into food_category(name, created_at, updated_at)
 values ('bezlaktozove', current_timestamp, current_timestamp);
 
-insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('vegetarianske',
+insert into food(category, name, price, description, picture_url, restaurant_id, is_soldout,created_at, updated_at)
+values ('vegan',
         'Tofu',
         30,
         'Tofu s jednoduchou polevou',
-        'fake_link',
+        '1.png',
         1,
+        false,
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('vegetarianske',
-        'Tofu',
+insert into food(category, name, price, description, picture_url, restaurant_id, is_soldout,created_at, updated_at)
+values ('maso',
+        'Burger',
         30,
-        'Tofu s jednoduchou polevou',
-        'fake_link',
+        'Burger se salatem',
+        '2.png',
         2,
+        false,
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('veganske',
+insert into food(category, name, price, description, picture_url, restaurant_id, is_soldout,created_at, updated_at)
+values ('vegetarianske',
         'Salat',
         20,
         'Zdravy salat bez omacky',
-        'fake_link',
+        '3.png',
         2,
+        false,
         current_timestamp,
         current_timestamp);
 
-insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
+insert into food(category, name, price, description, picture_url, restaurant_id, is_soldout,created_at, updated_at)
 values ('bezlepkove',
         'Ryza',
         10,
-        'Ryza s paprikou',
-        'fake_link',
+        'Priloha ryza',
+        '4.png',
         2,
+        true,
         current_timestamp,
         current_timestamp);
 
 
-insert into menu(name, food_id, created_at, updated_at)
+insert into menu(name, food_id,  created_at, updated_at)
 values ('daily',
         1,
         current_timestamp,

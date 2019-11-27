@@ -31,7 +31,7 @@ type Claims struct {
 }
 
 type LoginResponse struct {
-	User *model.User
+	User      *model.User
 	AuthToken AuthToken
 }
 
@@ -90,7 +90,7 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 
 	w.Header().Set("Content-Type", "application/json")
 	loginResponse := &LoginResponse{
-		User:      user,
+		User: user,
 		AuthToken: AuthToken{
 			Token:     tokenString,
 			TokenType: "Bearer",
@@ -138,7 +138,7 @@ func (a *API) refreshToken(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 
 	w.Header().Set("Content-Type", "application/json")
 	loginResponse := &LoginResponse{
-		User:      ctx.User,
+		User: ctx.User,
 		AuthToken: AuthToken{
 			Token:     tokenString,
 			TokenType: "Bearer",
@@ -152,5 +152,57 @@ func (a *API) refreshToken(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	}
 	_, err = w.Write(data)
 
+	return err
+}
+
+type RegisterInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Street   string `json:"street"`
+	City     string `json:"city"`
+}
+
+type RegisterResponse struct {
+	Id uint `json:"id"`
+}
+
+func (a *API) CreateRegistration(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	var input RegisterInput
+
+	defer r.Body.Close()
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(body, &input); err != nil {
+		return err
+	}
+
+	address := &model.Address{
+		Street: input.Street,
+		City:   input.City,
+	}
+
+	if err := ctx.CreateAddress(address); err != nil {
+		return err
+	}
+
+	user := &model.User{
+		Email:   input.Email,
+		Role:    "customer",
+		AddressId: address.ID,
+	}
+
+	if err := ctx.CreateUser(user, input.Password); err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(&RegisterResponse{Id: user.ID})
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(data)
 	return err
 }
