@@ -16,7 +16,7 @@ func ComparePasswordHash(hashedPassword, givenPassword []byte) bool {
 type User struct {
 	Model
 
-	Email          string  `json:"category"`
+	Email          string  `json:"email"`
 	HashedPassword []byte
 	Role           string  `json:"role"`
 	Address          Address    `gorm:"association_foreignkey:ID"`

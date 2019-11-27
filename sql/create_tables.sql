@@ -226,31 +226,31 @@ insert into food_category(name, created_at, updated_at)
 values ('bezlaktozove', current_timestamp, current_timestamp);
 
 insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('vegetarianske',
+values ('vegan',
         'Tofu',
         30,
         'Tofu s jednoduchou polevou',
-        'fake_link',
+        '1.png',
         1,
         current_timestamp,
         current_timestamp);
 
 insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('vegetarianske',
-        'Tofu',
+values ('maso',
+        'Burger',
         30,
-        'Tofu s jednoduchou polevou',
-        'fake_link',
+        'Burger se salatem',
+        '2.png',
         2,
         current_timestamp,
         current_timestamp);
 
 insert into food(category, name, price, description, picture_url, restaurant_id, created_at, updated_at)
-values ('veganske',
+values ('vegetarianske',
         'Salat',
         20,
         'Zdravy salat bez omacky',
-        'fake_link',
+        '3.png',
         2,
         current_timestamp,
         current_timestamp);
@@ -259,8 +259,8 @@ insert into food(category, name, price, description, picture_url, restaurant_id,
 values ('bezlepkove',
         'Ryza',
         10,
-        'Ryza s paprikou',
-        'fake_link',
+        'Priloha ryza',
+        '4.png',
         2,
         current_timestamp,
         current_timestamp);
