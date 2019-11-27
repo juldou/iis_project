@@ -22,11 +22,19 @@ func (ctx *Context) GetAllOrdersForUser() ([]*model.Order, error) {
 		return nil, ctx.AuthorizationError()
 	}
 
-	orders, err := ctx.Database.GetAllOrdersByUserId(ctx.User.ID)
-	if err != nil {
-		return nil, err
+	var err error
+	var orders []*model.Order
+	if ctx.User.Role == "courier" {
+		orders, err = ctx.Database.GetAllOrdersByCourierId(ctx.User.ID)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		orders, err = ctx.Database.GetAllOrdersByUserId(ctx.User.ID)
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	return orders, nil
 }
 
