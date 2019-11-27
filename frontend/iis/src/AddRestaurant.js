@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import {Redirect} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import NetworkService from "./Network/NetworkService";
+import './AddRestaurant.css';
 
 class AddRestaurant extends Component {
     constructor(props) {
@@ -62,32 +63,38 @@ class AddRestaurant extends Component {
             return <Redirect to='/' />
         }
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Name:
-                    <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-                </label>
-                <label>
-                    Type:
-                    <input type="text" value={this.state.type} onChange={this.handleTypeChange} />
-                </label>
-                <label>
-                    Description:
-                    <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
-                </label>
-                <label>
-                    Image:
-                    {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
-                </label>
+            <div className="add">
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="formBasicName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="name" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleNameChange} />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicType">
+                    <Form.Label>Type</Form.Label>
+                    <Form.Control type="type" placeholder="Enter type of a restaurant" value={this.state.type} onChange={this.handleTypeChange}  />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicDescription">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control type="description" placeholder="Enter restaurant description" value={this.state.description} onChange={this.handleDescriptionChange}  />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicImage">
+                    <Form.Label>Image</Form.Label>
+                </Form.Group>
 
                 <ImageUpload onChange={this.handleImageChange}/>
-                <input type="submit" value="Submit" />
-
+                <br/>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
                 {
                     this.props.match.params.id &&
                     <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
                 }
-            </form>
+            </Form>
+            </div>
         );
     }
 

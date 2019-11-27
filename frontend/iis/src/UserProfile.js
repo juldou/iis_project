@@ -4,6 +4,7 @@ import {Button} from "react-bootstrap";
 import ErrorScreen from "./ErrorScreen";
 import Configuration from "./Network/Configuration";
 import {getUserID} from "./Network/Authentication";
+import {NavLink} from "react-router-dom";
 
 export default class UserProfile extends Component {
     constructor(props) {
@@ -30,15 +31,27 @@ export default class UserProfile extends Component {
             <ErrorScreen/>
         );
         return(
-            <div>
-                <h3>EMAIL</h3>
-                <h3>{this.state.user.Email}</h3>
-                <h3>Type</h3>
-                <h3>{this.state.user.Role}</h3>
+            <div className= "profileCard" key={this.state.user.id} onClick={() => {
+            } }>
+                <div className= "profileContainer">
+                    <b>Email: {this.state.user.Email}</b>
+                    <p>Role: {this.state.user.Role}</p>
 
-                <h2>ADDRESS</h2>
-                <Button> Change address</Button>
+                    <h2>ADDRESS</h2>
+                        <Button> Change address</Button>
+
+                </div>
             </div>
+
+            // <div>
+            //     <h3>EMAIL</h3>
+            //     <h3>{this.state.user.Email}</h3>
+            //     <h3>Type</h3>
+            //     <h3>{this.state.user.Role}</h3>
+            //
+            //     <h2>ADDRESS</h2>
+            //     <Button> Change address</Button>
+            // </div>
         );
     }
 }
