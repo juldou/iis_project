@@ -65,8 +65,6 @@ class RestaurantList extends  Component {
                 <br/>
                 {this.addButton()}
                 <br/>
-                <br/>
-                <br/>
                 <ul className="items">
                     {listItems}
                 </ul>

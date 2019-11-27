@@ -38,9 +38,6 @@ class Header extends Component {
                     {isAdmin() && <Nav.Link href="/users">Users</Nav.Link>}
                     { isCourier() && <Nav.Link href="/allorders">All Orders</Nav.Link>
                     }
-
-
-                    <Nav.Link href="#about">About</Nav.Link>
                      {this.getUserState()}
                 </Nav>
 

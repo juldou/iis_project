@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button} from "react-bootstrap";
+import {Button, Jumbotron} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {getUserID, getUserType, isCourier, isOperator} from "./Network/Authentication";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Form from "react-bootstrap/Form";
 import {usertypes} from "./EditUSer";
 import Select from 'react-select';
+import './AllOrders.css';
 
 export const stateOptions = [
     {label: "new", value: "new"},
@@ -53,25 +54,28 @@ class AllOrders extends Component {
             )
         }
         const listItems = this.state.items.map((item) =>
-            <li key={item.id}>
-                <span  >
-                    <h3>{item.id}</h3>
-                    <h3>{item.state}</h3>
-                    {(isOperator()) &&
-                    <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
-                                 defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
-                    }
+            <Jumbotron  key={item.id}>
+                <h1>
+                    Order: {item.id}
+                </h1>
+                <p>
+                    State: {item.state}
+                </p>
+                {(isOperator()) &&
+                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
+                             defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
+                }
 
-                    { isCourier() &&
-                    <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
-                            value={this.state.type}
-                            defaultValue={{label: item.state, value: item.state}}/>
-                    }
-                    </span>
-            </li>
+                { isCourier() &&
+                <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
+                        value={this.state.type}
+                        defaultValue={{label: item.state, value: item.state}}/>
+                }
+            </Jumbotron>
+
         );
         return (
-            <div >
+            <div className="AllOrders">
                 <ul>
                     {listItems}
                 </ul>
