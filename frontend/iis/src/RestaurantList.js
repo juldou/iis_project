@@ -49,13 +49,6 @@ class RestaurantList extends  Component {
                             </Card.Body>
                         </Card>
 
-                    {/*<div className="item-name">*/}
-                    {/*    <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="300" height="300"/>*/}
-                    {/*    <h4>{item.name}</h4>*/}
-                    {/*    <h1>{item.category}</h1>*/}
-                    {/*    <p>{item.description}</p>*/}
-                    {/*</div>*/}
-                    {/*    <div className="overlay"></div>*/}
                     </NavLink>
 
 
@@ -68,13 +61,17 @@ class RestaurantList extends  Component {
         );
         return (
             <div className="RestaurantList">
-
+                <br/>
+                {this.addButton()}
+                <br/>
+                <br/>
+                <br/>
                 <ul className="items">
                     {listItems}
                 </ul>
                 <br/>
                 <br/>
-                {this.addButton()}
+
             </div>
         );
     }
