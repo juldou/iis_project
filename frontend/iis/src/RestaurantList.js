@@ -4,6 +4,7 @@ import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {getUserType, isAuthenticated, isOperator} from "./Network/Authentication";
 import './RestaurantList.css'
+import {Button, Card} from "react-bootstrap";
 
 
 class RestaurantList extends  Component {
@@ -36,18 +37,30 @@ class RestaurantList extends  Component {
                 <div className="RestaurantPreview" key={item.id}>
                     <NavLink to={"restaurant/" + item.id} className="link">
 
-                    <div className="item-name">
-                        <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="300" height="300"/>
-                        <h4>{item.name}</h4>
-                        <h1>{item.category}</h1>
-                        <p>{item.description}</p>
-                    </div>
-                        <div className="overlay"></div>
+                        <Card style={{ width: '20rem' }}>
+                            <Card.Img variant="top" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" />
+                            <Card.Body>
+                                <Card.Title className="mb-2 text-muted">{item.name}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">{item.category}</Card.Subtitle>
+                                <Card.Text className="mb-2 text-muted">
+                                    {item.description}
+                                </Card.Text>
+                                {this.changeButton(item.id)}
+                            </Card.Body>
+                        </Card>
+
+                    {/*<div className="item-name">*/}
+                    {/*    <img className="preview-image" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" alt="daco" width="300" height="300"/>*/}
+                    {/*    <h4>{item.name}</h4>*/}
+                    {/*    <h1>{item.category}</h1>*/}
+                    {/*    <p>{item.description}</p>*/}
+                    {/*</div>*/}
+                    {/*    <div className="overlay"></div>*/}
                     </NavLink>
 
 
 
-                    {this.changeButton(item.id)}
+
 
                 </div>
                 <span className="item-name">{item.Name}</span>
@@ -55,6 +68,7 @@ class RestaurantList extends  Component {
         );
         return (
             <div className="RestaurantList">
+
                 <ul className="items">
                     {listItems}
                 </ul>
@@ -70,7 +84,7 @@ class RestaurantList extends  Component {
             return (
             <NavLink to={ "/editrestaurant/" + id} className="link">
 
-                <button className="add-meal" > Change </button>
+                <Button variant="info" > Change </Button>
             </NavLink>
             );
         return "";
@@ -79,8 +93,9 @@ class RestaurantList extends  Component {
     addButton() {
         if(isAuthenticated()) {
             return(
+                // <p Add new item to a Restaurant list./p>
                 <NavLink to="/addrestaurant/" className="link">
-                <button type="button" name="button">New Item</button>
+                <Button variant="info" name="button">ADD NEW ITEM</Button>
                 </NavLink>
             );
         }

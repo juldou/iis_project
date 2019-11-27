@@ -53,15 +53,6 @@ nav {
 }
 
 
-.RestaurantList {
-  -webkit-flex: 3;
-  -ms-flex: 3;
-  flex: 3;
-  float: right;
-  padding: 20px;
-  width: 70%;
-  background-color: #f1f1f1;
-}
 
 section:after {
   content: "";
@@ -77,8 +68,8 @@ section:after {
   border: 1px solid red;
 }
 
-a.active {
-  background-color: #4CAF50;
-  border: 1px solid black;
+/*a.active {*/
+/*  background-color: #4CAF50;*/
+/*  border: 1px solid black;*/
 
-}
+/*}*/

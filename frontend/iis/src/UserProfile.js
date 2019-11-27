@@ -30,11 +30,11 @@ export default class UserProfile extends Component {
             <ErrorScreen/>
         );
         return(
-            <div>
-                <h3>EMAIL</h3>
-                <h3>{this.state.user.Email}</h3>
-                <h3>Type</h3>
-                <h3>{this.state.user.Role}</h3>
+            <div className= "profileCard" key={this.state.user.id} onClick={() => {
+            } }>
+                <div className= "profileContainer">
+                    <b>Email: {this.state.user.Email}</b>
+                    <p>Role: {this.state.user.Role}</p>
 
                 <h2>ADDRESS</h2>
                 <h3>Street</h3>

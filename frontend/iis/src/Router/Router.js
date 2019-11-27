@@ -24,7 +24,7 @@ export const AppRouter = (
     <Router>
         <div>
             <Header/>
-            <Switch>
+            {/*<Switch >*/}
                 <Route exact path="/" component={RestaurantList} />
                 <Route exact path="/restaurant/:restaurantId" component={Homescreen} />
                 <Route exact path="/restaurant/:restaurantId/addmeal" component={AddMeal}/>
@@ -44,7 +44,7 @@ export const AppRouter = (
                 <Route exact path="/userprofile" component={UserProfile}/>
 
 
-            </Switch>
+            {/*</Switch>*/}
         </div>
     </Router>
 );
