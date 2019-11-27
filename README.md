@@ -2,50 +2,16 @@
 1. install docker
 2. run `docker run --name postgres-iis -e POSTGRES_DB=food_delivery -e POSTGRES_USER=postgres_iis -e POSTGRES_PASSWORD=secret123 -d -p 5432:5432 postgres`
 
-# How to build server
-- `go build -o server .`
+# How to build and run server
+```
+go build -o server .
+./server serve
+```
 
-# How to run server
-- `./server serve`
 
 # How to create/drop tables
 - check sql/ directory, run scripts against your db 
 
-# API
-GET
-```
-api/restaurant/{id}
-api/restaurant/{id}/foods 
-api/restaurant/{id}/menu?name=daily     (returns foods)
-api/restaurant/{id}/menu?name=permanent (returns foods)
-
-api/restaurants
-
-api/restaurant-categories
-
-api/user/{id}
-api/user/{id}/address   // returns array of addresses
-
-api/order/{id}
-```
-POST
-```
-api/restaurant
-api/restaurant/{id}/food
-
-api/user
-api/user/{id}/address
-
-api/order
-```
-PATCH
-```
-api/restaurants/{id}
-
-api/user/{id}/address
-
-api/order/{id}
-```
 
 #What is DONE:
 ####administrátor:
