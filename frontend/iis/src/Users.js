@@ -4,7 +4,7 @@ import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import './Users.css';
-import {Button} from "react-bootstrap";
+import {Button, Jumbotron} from "react-bootstrap";
 
 
 class Users extends Component {
@@ -13,7 +13,7 @@ class Users extends Component {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             items: [],
         };
@@ -32,14 +32,16 @@ class Users extends Component {
 
             <div className= "userCard" key={item.id} onClick={() => {
             } }>
-                <div className= "userContainer">
-                    <b>Email: {item.Email}</b>
-                    <p>Role: {item.Role}</p>
-
-                <NavLink to={ "/edituser/" + item.id} className="link">
-                    <Button>EDIT</Button>
-                </NavLink>
-                </div>
+                <Jumbotron className= "userContainer">
+                    <p>Email: {item.email}</p>
+                    <p>Role: {item.role}</p>
+                    <br/>
+                    <p>
+                        <NavLink to={"/edituser/" + this.id} className="link">
+                            <Button variant="info"> Edit info</Button>
+                        </NavLink>
+                    </p>
+                </Jumbotron>
             </div>
 
         );

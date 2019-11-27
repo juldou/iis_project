@@ -3,9 +3,18 @@ import Cookies from 'js-cookie'
 import React, { Component } from 'react';
 import './index.css';
 import Register from "./Register";
-import {getUserID, getUserType, isAdmin, isAuthenticated, isOperator, logout} from "./Network/Authentication";
+import {
+    getUserID,
+    getUserType,
+    isAdmin,
+    isAuthenticated,
+    isCourier,
+    isOperator,
+    logout
+} from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
 import {Nav, Navbar} from "react-bootstrap";
+import NetworkService from "./Network/NetworkService";
 
 
 class Header extends Component {
@@ -27,11 +36,8 @@ class Header extends Component {
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/cart">Cart</Nav.Link>
                     {isAdmin() && <Nav.Link href="/users">Users</Nav.Link>}
-                    { isOperator() && <Nav.Link href="/allorders">All Orders</Nav.Link>
+                    { isCourier() && <Nav.Link href="/allorders">All Orders</Nav.Link>
                     }
-
-
-                    <Nav.Link href="#about">About</Nav.Link>
                      {this.getUserState()}
                 </Nav>
 
@@ -59,12 +65,17 @@ class Header extends Component {
                 <Nav className="mr-auto">
                 <Nav.Link href="/orders">My Orders</Nav.Link>
                 <Nav.Link href="/userprofile">Profile</Nav.Link>
-                <Nav.Link href="/" onClick={logout}>Logout</Nav.Link>
+                <Nav.Link href="" onClick={this.logout.bind(this)}>Logout</Nav.Link>
 
                 </Nav>
 
 
         );
 
+    }
+
+    logout(){
+        let api = new NetworkService(this.props);
+        api.logout()
     }
 } export default withRouter(Header);

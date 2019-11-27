@@ -5,6 +5,7 @@ import Configuration from "./Network/Configuration";
 import {getUserType, isAuthenticated, isOperator} from "./Network/Authentication";
 import './RestaurantList.css'
 import {Button, Card} from "react-bootstrap";
+import {withRouter} from "react-router";
 
 
 class RestaurantList extends  Component {
@@ -12,7 +13,7 @@ class RestaurantList extends  Component {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
         }
     }
@@ -64,8 +65,6 @@ class RestaurantList extends  Component {
                 <br/>
                 {this.addButton()}
                 <br/>
-                <br/>
-                <br/>
                 <ul className="items">
                     {listItems}
                 </ul>
@@ -109,4 +108,4 @@ class RestaurantList extends  Component {
         );
     }
 
-} export default RestaurantList;
+} export default withRouter(RestaurantList);

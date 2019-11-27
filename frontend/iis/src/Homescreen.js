@@ -2,6 +2,7 @@ import React from 'react';
 import Header from "./Header";
 import Categories from "./Categories";
 import RestaurantDetail from "./RestaurantDetail";
+import './Homescreen.css';
 
 const AppContext = React.createContext(null)
 
@@ -14,8 +15,12 @@ class Homescreen extends React.Component {
     return (
         <div className="Application">
             <section>
-              <RestaurantDetail ref={list => this.list = list} restaurantId={this.props.match.params.restaurantId}/>
-              <Categories onClick={this.triggerCategoryChange.bind(this)}/>
+                <div className="RestaurantDetail">
+                    <RestaurantDetail ref={list => this.list = list} restaurantId={this.props.match.params.restaurantId}/>
+              </div>
+                <div className="Categories">
+                    <Categories onClick={this.triggerCategoryChange.bind(this)}/>
+                </div>
             </section>
         </div>
     );

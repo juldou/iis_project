@@ -6,13 +6,14 @@ import {Button} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
+import {validateRequiredField} from "./Validation";
 
 class AddMeal extends Component {
     constructor(props) {
         super(props);
 
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
 
         this.state = {
             name: '',
@@ -56,7 +57,7 @@ class AddMeal extends Component {
     };
 
     handleTypeChange(event) {
-        this.setState({type: event.target.value});
+        this.setState({type: event.value});
     }
 
     handleImageChange(image) {
@@ -70,9 +71,10 @@ class AddMeal extends Component {
 
     validateForm() {
         this.errors = {
-            name: this.state.name.length < 5 ,
-            description: this.state.password !== this.state.repeatPassword,
+            name: validateRequiredField(this.state.name) ,
+            description:  validateRequiredField(this.state.name),
             price: this.validatePrice(),
+            type: validateRequiredField(this.state.type)
         };
         return !Object.keys(this.errors).some(x => this.errors[x]);
     }
@@ -112,7 +114,7 @@ class AddMeal extends Component {
                     />
                 </Form.Group>
 
-                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this,)}
+                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
                              defaultValue={{label: this.state.type, value: this.state.type}}/>
                 }
                 <label>
@@ -167,7 +169,7 @@ class AddMeal extends Component {
             description: this.state.description,
             category: this.state.type,
             restaurant_id: this.restaurant_id,
-            price: this.state.price,
+            price: +this.state.price,
             picture_url: ''
         });
 

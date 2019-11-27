@@ -5,13 +5,15 @@ import {NavLink} from "react-router-dom";
 import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
-import {Button} from "react-bootstrap";
+import {withRouter} from "react-router";
+import {Button, Card, Jumbotron, Tab, Tabs} from "react-bootstrap";
+import './RestaurantDetails.css';
 
 class RestaurantDetail extends Component {
     constructor(props) {
         super(props);
         this.config = new Configuration();
-        this.api = new NetworkService();
+        this.api = new NetworkService(this.props);
         this.state = {
             menu: [],
             meals: [],
@@ -75,62 +77,98 @@ class RestaurantDetail extends Component {
     render() {
 
         const menuItems = this.state.menu.map((item) =>{
-            return(
-                <div className="card" key={item.id}>
-                    <div className="card-image">
-                        <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                        <span className="card-title">{item.name}</span>
-                        <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                        <i className="material-icons">add</i>
-                    </div>
 
-                    <div className="card-content">
-                        <p>{item.description}</p>
-                        <p><b>Price: {item.price}$</b></p>
-                        {this.RemoveButton(item.id)}
-                    </div>
-                </div>
+            return(
+                // <div className="card" key={item.id}>
+                    <Card style={{ width: '30rem' }}>
+                        <Card.Img variant="top" src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" />
+                        <Card.Body>
+                            <Card.Title>{item.name}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
+                            <Card.Text>
+                                {item.description}
+                            </Card.Text>
+                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                        </Card.Body>
+                    </Card>
+                // </div>
+                // <div className="card" key={item.id}>
+                //     <div className="card-image">
+                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
+                //         <span className="card-title">{item.name}</span>
+                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
+                //         <i className="material-icons">add</i>
+                //     </div>
+                //
+                //     <div className="card-content">
+                //         <p>{item.description}</p>
+                //         <p><b>Price: {item.price}$</b></p>
+                //         {this.RemoveButton(item.id)}
+                //     </div>
+                // </div>
             )
         });
 
         const mealItems = this.state.meals.map((item) =>{
             return(
-                <div className="card" key={item.id}>
-                    <div className="card-image">
-                        <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                        <span className="card-title">{item.name}</span>
-                        <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                        <i className="material-icons">add</i>
-                    </div>
+                // <div className="card" key={item.id}>
+                <Card style={{ width: '30rem' }}>
+                    <Card.Img variant="top" src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" />
+                    <Card.Body>
+                        <Card.Title>{item.name}</Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
+                        <Card.Text>
+                            {item.description}
+                        </Card.Text>
+                        <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                    </Card.Body>
+                </Card>
+                    // </div>
 
-                        <div className="card-content">
-                        <p>{item.description}</p>
-                    <p><b>Price: {item.price}$</b></p>
-                            { this.ChangeButton(item.id) }
-
-                        </div>
-                </div>
+                // <div className="card" key={item.id}>
+                //     <div className="card-image">
+                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
+                //         <span className="card-title">{item.name}</span>
+                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
+                //         <i className="material-icons">add</i>
+                //     </div>
+                //
+                //         <div className="card-content">
+                //         <p>{item.description}</p>
+                //     <p><b>Price: {item.price}$</b></p>
+                //             { this.ChangeButton(item.id) }
+                //
+                //         </div>
+                // </div>
         )
         });
         return (
             <div className="container">
                 {this.RestaurantInfo()}
 
-                <div >
-                    <h3 className="center">Menu</h3>
-                    <div className="box">
-                        {menuItems}
-                    </div>
+                <Tabs defaultActiveKey="menu" id="uncontrolled-tab-example">
+                    <Tab eventKey="menu" title="Menu">
+                        <br/>
+                        <h3 className="center">Menu</h3>
+                        <br/>
+                        <div className="box">
+                            {menuItems}
+                        </div>
+                    </Tab>
+                    <Tab eventKey="nabidka" title="Stala nabidka">
+                        <br/>
+                        <h3 className="center">Stala nabidka</h3>
+                        <br/>
+                        <div className="box">
+                            {mealItems}
+                        </div>
+                    </Tab>
 
-                    <h3 className="center">Stala nabidka</h3>
-                    <div className="box">
-                        {mealItems}
-                    </div>
-                </div>
-
+                </Tabs>
+                <br/>
+                <br/>
                 <NavLink to={ this.state.id + "/addmeal"} className="link">
-
-                 <button className="add-meal" onClick={this.addMeal}> Add meal </button>
+                 <Button className="add-meal" variant="info" onClick={this.addMeal}> Add meal </Button>
                 </NavLink>
 
                 { this.DeactivateButton()}
@@ -144,10 +182,10 @@ class RestaurantDetail extends Component {
                 <div>
                     <NavLink to={  this.state.id + "/editmeal/" + id} className="link">
 
-                        <Button > Change </Button>
+                        <Button variant="info" > Change </Button>
                     </NavLink>
 
-                    <Button onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
+                    <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
                 </div>
 
             );
@@ -168,13 +206,13 @@ class RestaurantDetail extends Component {
 
     RestaurantInfo() {
         if(!this.state.restaurant) return;
-        return (<div >
-            <h2 className="restaurant-name"> {this.state.restaurant.name} </h2>
-            <h3 className> {this.state.restaurant.category} </h3>
-            <h3 className> {this.state.restaurant.description} </h3>
-            <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={this.state.restaurant.name} height="200" width="200"/>
-
-        </div>);
+        return (
+            <Jumbotron className="Jumbotron">
+                <h1><b> {this.state.restaurant.name} </b></h1>
+                <br/>
+                <p>{this.state.restaurant.category} </p>
+                <p>{this.state.restaurant.description}</p>
+            </Jumbotron>);
     }
 
     DeactivateButton() {
@@ -182,7 +220,7 @@ class RestaurantDetail extends Component {
             return (
                 <div>
 
-                    <Button onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
+                    <Button variant="info" onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
                 </div>
 
             );
@@ -211,4 +249,4 @@ class RestaurantDetail extends Component {
     }
 }
 
-export default RestaurantDetail
+export default withRouter(RestaurantDetail)

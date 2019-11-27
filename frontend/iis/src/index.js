@@ -10,13 +10,21 @@ import cartReducer from "./Order/CartReducer";
 import App from "./App";
 import {Provider} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
+
+import createHistory from 'history/createBrowserHistory';
 
 
-const store = createStore(cartReducer);
 
-ReactDOM.render(<Provider store={store}>
-    <App />
-</Provider>, document.getElementById('root'));
+
+// window.addEventListener('unhandledrejection', function(event) {
+//     // the event object has two special properties:
+//     alert(event.promise); // [object Promise] - the promise that generated the error
+//     alert(event.reason); // Error: Whoops! - the unhandled error object
+// });
+
+ReactDOM.render(
+    <App />, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

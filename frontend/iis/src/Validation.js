@@ -19,3 +19,14 @@ export function validateRequiredField(text) {
     }
     return true;
 }
+
+export function validatePhone(text) {
+    const re = /^\+\d{12}$/;
+
+    // return erro
+
+    if (text !== "" && !!text && re.test(text)) {
+        return false;
+    }
+    return true;
+}

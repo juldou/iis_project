@@ -1,6 +1,7 @@
-import React from 'react';
-import {authHeader, getAccessToken, isAuthenticated, logout} from "./Authentication";
+import React, {Component} from 'react';
+import {authHeader, getAccessToken, isAuthenticated} from "./Authentication";
 import axios from 'axios';
+import {withRouter} from "react-router";
 
 export function getHeaders() {
     if(isAuthenticated()) {
@@ -16,7 +17,27 @@ export function getHeaders() {
 
     }
 }
+
+
 class NetworkService {
+    constructor(props) {
+        this.props = props;
+
+        // axios.interceptors.response.use((response) => {
+        //         return response
+        //     },
+        //     function (error) {
+        //         const originalRequest = error.config;
+        //         if (error.response.status === 401) {
+        //             this.logout()
+        //         }
+        //     });
+    }
+
+    setErrorCallback(callback) {
+        this.errorCallback = callback
+    }
+
      async patch(url, data) {
         let requestOptions = {
             method: "PATCH",
@@ -27,12 +48,10 @@ class NetworkService {
 
         return axios(requestOptions)
             .then(response => {
-                return this.handleResponse(response)
+                return response.data
 
             })
-            .catch(error => {
-                this.handleError(error);
-            });
+
     }
 
      async post(url, data) {
@@ -44,13 +63,8 @@ class NetworkService {
         };
 
         return axios(requestOptions)
-            .then(response => {
-                return this.handleResponse(response)
 
-            })
-            .catch(error => {
-                this.handleError(error);
-            });
+
     }
 
     async delete(url) {
@@ -63,12 +77,9 @@ class NetworkService {
         return axios(requestOptions)
             .then(response => {
 
-                return this.handleResponse(response)
+                return response.data
 
             })
-            .catch(error => {
-                this.handleError(error);
-            });
     }
 
     async loadData(url) {
@@ -76,23 +87,15 @@ class NetworkService {
             headers: getHeaders()
         };
 
-        return axios.get(url, requestOptions)
-            .then(response => {
-                return this.handleResponse(response)
+        return axios.get(url, requestOptions).then(response =>{
+            return response.data
+        })
 
-            })
-            .catch(error => {
-                this.handleError(error);
-            });
     }
 
     handleResponse(response) {
-        if(response.status === 401) {
-            logout();
-        }
-
         if(!response.data) {
-            return [];
+            throw new Error("4004")
         }
         return response.data;
     }
@@ -101,8 +104,22 @@ class NetworkService {
         throw new Error("HTTP error, status = " + response.status);
     }
     handleError(error) {
-        console.log(error.message);
+        alert(error)
+        if (+error === 401) {
+            this.logout()
+        }
+        if(!!this.errorCallback) {
+            this.errorCallback(error)
+        }
     }
 
+    logout() {
+        // remove user from local storage to log user out
+        localStorage.removeItem("user");
+        localStorage.removeItem("user_type");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("access_token_expires_in");
+        this.props.history.push("/")
+    }
 }
-export default NetworkService;
+export default (NetworkService);
