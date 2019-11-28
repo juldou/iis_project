@@ -249,4 +249,4 @@ class RestaurantDetail extends Component {
     }
 }
 
-export default withRouter(RestaurantDetail)
+export default (RestaurantDetail)

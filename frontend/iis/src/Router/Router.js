@@ -34,14 +34,14 @@ axios.interceptors.response.use(response => {
         history.push('/login')
         // store.dispatch(logoutUser());
     }
-
-    if (error.response.status === 404) {
-        history.push('/not-found');
-    }
-
-    if (error.response.status === 500) {
-        history.push('/');
-    }
+    //
+    // if (error.response.status === 404) {
+    //     history.push('/not-found');
+    // }
+    //
+    // if (error.response.status === 500) {
+    //     history.push('/');
+    // }
 
     return Promise.reject(error);
 });
@@ -51,7 +51,7 @@ axios.interceptors.response.use(response => {
 // setupInterceptors(history);
 
 export const AppRouter = (
-    <Router history={history} forceRefresh={true}>
+    <Router history={history}>
         <div>
             <Header/>
             {/*<Switch >*/}

@@ -3,11 +3,13 @@ import Header from "./Header";
 import Categories from "./Categories";
 import RestaurantDetail from "./RestaurantDetail";
 import './Homescreen.css';
+import {withRouter} from "react-router";
 
 const AppContext = React.createContext(null)
 
 // TODO rename,  actually restaurant detail
 class Homescreen extends React.Component {
+
     triggerCategoryChange(idCategory) {
         this.list.categoryChanged(idCategory)
     }
@@ -27,4 +29,4 @@ class Homescreen extends React.Component {
   }
 }
 
-export default Homescreen;
+export default (Homescreen);

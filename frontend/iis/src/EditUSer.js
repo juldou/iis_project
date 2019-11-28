@@ -186,7 +186,7 @@ export default class EditUser extends Component {
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        CHANGE
+                        {this.id? "CHANGE" : "CREATE"}
                     </Button>
 
                     <Button
