@@ -14,26 +14,27 @@ class OrderList extends Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
-            items: null,
+            items: undefined,
         };
     }
 
     componentWillMount() {
         let url = this.config.GET_USER_URL + "/orders";
         this.api.loadData(url).then(items => {
-                if(!items) return;
                 this.setState({items: items});
             }
         ).catch();
     }
 
     render() {
-        if(!this.state.items) return "";
-        if(this.state.items.length === 0) {
+        if(this.state.items === undefined) return "";
+
+        if(this.state.items === null || this.state.items === "" ) {
             return (
                 <h3> There are no orders</h3>
             )
         }
+
         const listItems = this.state.items.map((item) =>
             <Jumbotron  key={item.id}>
                 <h1>{item.id}</h1>

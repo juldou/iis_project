@@ -28,21 +28,26 @@ class Users extends Component {
     }
 
     render() {
+        if(this.state.items === undefined) return "";
+
+        if(this.state.items === null || this.state.items === "" ) {
+           return(<h3> There are no users</h3>);
+        }
         const listItems = this.state.items.map((item) =>
 
-            <div className= "userCard" key={item.id} onClick={() => {
-            } }>
-                <Jumbotron className= "userContainer">
-                    <p>Email: {item.email}</p>
-                    <p>Role: {item.role}</p>
-                    <br/>
-                    <p>
-                        <NavLink to={"/edituser/" + item.id} className="link">
-                            <Button variant="info"> Edit info</Button>
-                        </NavLink>
-                    </p>
-                </Jumbotron>
-            </div>
+        <div className= "userCard" key={item.id} onClick={() => {
+        } }>
+            <Jumbotron className= "userContainer">
+                <p>Email: {item.email}</p>
+                <p>Role: {item.role}</p>
+                <br/>
+                <p>
+                    <NavLink to={"/edituser/" + item.id} className="link">
+                        <Button variant="info"> Edit info</Button>
+                    </NavLink>
+                </p>
+            </Jumbotron>
+        </div>
 
         );
 

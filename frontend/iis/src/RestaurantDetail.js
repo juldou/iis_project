@@ -77,7 +77,7 @@ class RestaurantDetail extends Component {
 
 
     render() {
-        if(this.state.restaurant === null || this.state.restaurant == "") {
+        if(this.state.restaurant === null || this.state.restaurant === "") {
             return (<h3>  Restaurant not found </h3>);
         }
         const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
@@ -96,7 +96,10 @@ class RestaurantDetail extends Component {
                             {item.is_soldout ? "Sold out" : "Available"}
                             </Card.Text>
 
-                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button
+                            >
+                            { this.ChangeButton(item.id) }
+
                             {this.RemoveButton(item.id)}
                         </Card.Body>
                     </Card>
@@ -132,6 +135,7 @@ class RestaurantDetail extends Component {
                         </Card.Text>
                         <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
                         { this.ChangeButton(item.id) }
+                        { this.AddButton(item.id)}
                     </Card.Body>
                 </Card>
                     // </div>
@@ -199,10 +203,15 @@ class RestaurantDetail extends Component {
                         <Button variant="info" > Change </Button>
                     </NavLink>
                 <br/>
-                    <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
                 </div>
 
             );
+        return "";
+    }
+
+    AddButton(id) {
+        if(isOperator())
+            return( <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
         return "";
     }
 

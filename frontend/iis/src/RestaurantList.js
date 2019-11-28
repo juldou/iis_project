@@ -15,6 +15,7 @@ class RestaurantList extends  Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
+            items: undefined
         }
     }
 
@@ -24,7 +25,8 @@ class RestaurantList extends  Component {
 
     render() {
         const items = this.state.items;
-        if(!items) return (
+        if(items === undefined) return "";
+        if(items === null || items === "") return (
             <div className="RestaurantList">
                 There are no restaurants
             </div>
@@ -90,7 +92,6 @@ class RestaurantList extends  Component {
     getItems(idCategory) {
         let url = this.config.RESTAURANT_LIST_URL;
         this.api.loadData(url).then(items => {
-            if(!items) return;
             this.setState({items: items});
             }
         ).catch();
