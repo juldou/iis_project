@@ -20,7 +20,7 @@ func (db *Database) GetOrderById(id uint) (*model.Order, error) {
 
 func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, error) {
 	var orderFoods []*model.OrderFood
-	if err := db.Where("order_id = ?", orderId).Find(&orderFoods).Error; err != nil {
+	if err := db.Where("order_id = ? and deleted_at is null", orderId).Find(&orderFoods).Error; err != nil {
 		log.Fatal(err)
 		return nil, err
 	}

@@ -10,12 +10,12 @@ import (
 
 func (a *API) GetUserById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	id := getIdFromRequest(r)
-	todo, err := ctx.GetUserById(id)
+	user, err := ctx.GetUserById(id)
 	if err != nil {
 		return err
 	}
 
-	data, err := json.Marshal(todo)
+	data, err := json.Marshal(user)
 	if err != nil {
 		return err
 	}

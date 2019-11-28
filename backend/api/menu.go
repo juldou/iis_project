@@ -149,8 +149,18 @@ func (a *API) DeleteMenuById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	if err != nil || existingMenu == nil {
 		return err
 	}
-	if err := ctx.DeleteMenu(existingMenu); err != nil {
-		return err
+
+	if existingMenu.Name == "permanent" {
+		if err := ctx.DeleteMenu(existingMenu); err != nil {
+			return err
+		}
+	} else if existingMenu.Name == "daily" {
+		existingMenu.Name = "permanent"
+		err = ctx.UpdateMenu(existingMenu)
+		if err != nil {
+			return err
+		}
 	}
+
 	return err
 }

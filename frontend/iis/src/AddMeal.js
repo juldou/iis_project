@@ -62,13 +62,10 @@ class AddMeal extends Component {
 
     handleImageChange(image) {
         this.setState({image: image});
-        alert(this.state.image)
 
         let form_data = new FormData();
-        form_data.append('file', "randomimage.png");
-        form_data.append('content', this.state.image);
-
-        this.api.uploadImage(this.config.GET_MEAL_URL + "/" + 1 + "/picture", form_data).catch()
+        form_data.append('file', this.state.image, this.state.image.name);
+        this.api.uploadImage(this.config.GET_MEAL_URL + "/" + this.props.match.params.id + "/picture", form_data).catch()
 
     }
 
@@ -204,13 +201,13 @@ class AddMeal extends Component {
     }
 
     updateMeal(data) {
-        this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food/" +this.props.match.params.id, data).then(response =>{
+        this.api.patch(this.config.API_URL + "/food/" +this.props.match.params.id, data).then(response =>{
             this.setState({homeScreen: true})
         }).catch()
     }
 
     deleteMeal() {
-        this.api.delete(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food/" +this.props.match.params.id).then(response =>{
+        this.api.delete(this.config.API_URL + "/food/" +this.props.match.params.id).then(response =>{
             this.setState({homeScreen: true})
         }).catch()
     }
