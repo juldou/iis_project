@@ -81,10 +81,11 @@ class RestaurantDetail extends Component {
             return (<h3>  Restaurant not found </h3>);
         }
         const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
+            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
             return(
                 // <div className="card" key={item.id}>
                     <Card style={{ width: '22rem' }}>
-                        <Card.Img className="card-image" variant="top" src={"/foods/" + item.picture_url} />
+                        <Card.Img className="card-image" variant="top" src={imageUrl} />
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
@@ -106,10 +107,12 @@ class RestaurantDetail extends Component {
         });
 
         const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) =>{
+            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
+
             return(
                 // <div className="card" key={item.id}>
                 <Card style={{ width: '22rem' }}>
-                    <Card.Img className="card-image" variant="top" src={"/foods/" + item.picture_url} />
+                    <Card.Img className="card-image" variant="top" src={imageUrl} />
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
