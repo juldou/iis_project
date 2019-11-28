@@ -83,8 +83,12 @@ func (a *API) CreateUser(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 }
 
 type UpdateUserInput struct {
+	Email    *string `json:"email"`
 	Password *string `json:"password"`
 	Role     *string `json:"role"`
+	Phone    *string `json:"phone"`
+	Street   *string `json:"street"`
+	City     *string `json:"street"`
 }
 
 type UpdateUserResponse struct {
@@ -118,6 +122,24 @@ func (a *API) UpdateUserById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	}
 	if input.Role != nil {
 		existingUser.Role = *input.Role
+	}
+	if input.Email != nil {
+		existingUser.Email = *input.Email
+	}
+	if input.Phone != nil {
+		existingUser.Phone = *input.Phone
+	}
+
+	address, err := ctx.GetAddressByUserId(id)
+	if err != nil {
+		return err
+	}
+
+	if input.Street != nil {
+		address.Street = *input.Street
+	}
+	if input.City != nil {
+		address.City = *input.City
 	}
 
 	err = ctx.UpdateUser(existingUser)
