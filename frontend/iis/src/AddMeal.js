@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button} from "react-bootstrap";
+import {Button, FormCheck} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
@@ -19,7 +19,8 @@ class AddMeal extends Component {
             name: '',
             type: '',
             description: '',
-            price: ''
+            price: '',
+            available: false
         };
 
         this.errors = {
@@ -43,7 +44,8 @@ class AddMeal extends Component {
                         name: meal.name,
                         type: meal.category,
                         description: meal.description,
-                        price: meal.price
+                        price: meal.price,
+                        available: !meal.is_soldout
                     })
                 }
             }).catch()
@@ -128,10 +130,22 @@ class AddMeal extends Component {
                         type="text"
                     />
                 </Form.Group>
+                <Form.Group controlId="price" bsSize="large">
+                    <Form.Label> Check </Form.Label>
+                    <input
+
+                        type="checkbox"     className="form-check-input"
+
+                        defaultChecked={true}
+                    />sdfsdf
+                </Form.Group>
+                <input type="checkbox" defaultChecked={this.state.available} onChange={this.handleChange.bind(this)} />
 
                 <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
                              defaultValue={{label: this.state.type, value: this.state.type}}/>
-                }
+
+
+
                 <label>
                     Image:
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}

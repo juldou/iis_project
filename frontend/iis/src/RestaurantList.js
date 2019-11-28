@@ -26,10 +26,7 @@ class RestaurantList extends  Component {
         const items = this.state.items;
         if(!items) return (
             <div className="RestaurantList">
-
-                <button type="button" name="button" >New Item</button>
-                <br/>
-
+                There are no restaurants
             </div>
         );
 
@@ -54,6 +51,7 @@ class RestaurantList extends  Component {
         );
         return (
             <Container className="RestaurantList">
+                {listItems.length === 0 && <h3> There are no meals </h3>}
 
                 <ul className="items">
                     {listItems}

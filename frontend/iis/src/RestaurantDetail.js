@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
@@ -15,19 +15,19 @@ class RestaurantDetail extends Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
-            menu: [],
-            meals: [],
-            restaurant: null,
+            menu: null,
+            meals: null,
+            restaurant: undefined,
             id: this.props.restaurantId,
-            category: null
+            category: null,
+            loading: true
         }
     }
 
     componentDidMount() {
-       this.getItems(this.state.category);
+        this.getItems(this.state.category);
         this.api.loadData(this.config.RESTAURANT_DETAIL_URL +
             "/" + this.state.id).then(restaurant => {
-                if(!restaurant) return;
                 this.setState({
                     restaurant: restaurant});
             }
@@ -48,15 +48,12 @@ class RestaurantDetail extends Component {
         }
 
         this.api.loadData(dailyMenuUrl).then(items => {
-                if(!items) return;
 
                 this.setState({menu: items});
             }
         ).catch();
 
         this.api.loadData(mealsUrl).then(items => {
-                if(!items) return;
-
                 this.setState({meals: items});
             }
         ).catch();
@@ -80,8 +77,10 @@ class RestaurantDetail extends Component {
 
 
     render() {
-
-        const menuItems = this.state.menu.map((item) =>{
+        if(this.state.restaurant === null || this.state.restaurant == "") {
+            return (<h3>  Restaurant not found </h3>);
+        }
+        const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
             return(
                 // <div className="card" key={item.id}>
                     <Card style={{ width: '30rem' }}>
@@ -120,7 +119,7 @@ class RestaurantDetail extends Component {
             )
         });
 
-        const mealItems = this.state.meals.map((item) =>{
+        const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) =>{
             return(
                 // <div className="card" key={item.id}>
                 <Card style={{ width: '30rem' }}>
@@ -164,6 +163,7 @@ class RestaurantDetail extends Component {
                         <h3 className="center">Menu</h3>
                         <br/>
                         <div className="box">
+                            {menuItems.length === 0 && <h3> Menu is empty</h3>}
                             {menuItems}
                         </div>
                     </Tab>
@@ -172,6 +172,8 @@ class RestaurantDetail extends Component {
                         <h3 className="center">Stala nabidka</h3>
                         <br/>
                         <div className="box">
+                            {mealItems.length === 0 && <h3> There are no meals </h3>}
+
                             {mealItems}
                         </div>
                     </Tab>
