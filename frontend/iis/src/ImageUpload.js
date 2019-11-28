@@ -25,7 +25,7 @@ class ImageUpload extends Component {
             this.onChange(file);
         };
 
-        reader.readAsBinaryString(file)
+        reader.readAsDataURL(file)
 
     }
 
@@ -34,7 +34,7 @@ class ImageUpload extends Component {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
+            $imagePreview = (<img src={imagePreviewUrl} style={{ "max-height": "500px"}}/>);
         }
 
         return (

@@ -3,7 +3,6 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {NavLink, Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
-import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
 import {Button, Card, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
@@ -154,11 +153,13 @@ class RestaurantDetail extends Component {
                 </Tabs>
                 <br/>
                 <br/>
-                <NavLink to={ this.state.id + "/addmeal"} className="link">
-                 <Button className="add-meal" variant="info" onClick={this.addMeal}> Add meal </Button>
-                </NavLink>
+                {
+                    isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
+                        <Button className="add-meal" variant="info" onClick={this.addMeal}> Add meal </Button>
+                    </NavLink>
+                }
 
-                { this.DeactivateButton()}
+
             </div>
         );
     }

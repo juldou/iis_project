@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
-import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
 import {Button, Jumbotron} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {validatePhone, validateRequiredField} from "../Validation";
 import {getUserID, isAuthenticated, isCourier, isOperator} from "../Network/Authentication";
 import Configuration from "../Network/Configuration";
 import NetworkService from "../Network/NetworkService";
-import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Select from "react-select";
 import {stateOptions} from "../AllOrders";
 import './Cart.css';

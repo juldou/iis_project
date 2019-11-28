@@ -122,13 +122,6 @@ class AddRestaurant extends Component {
                         type="text"
                     />
                 </Form.Group>
-                <label>
-                    Image:
-                    {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
-                </label>
-
-                <ImageUpload onChange={this.handleImageChange}/>
-                <input type="submit" value="Submit" />
 
                 <Button
                     block

@@ -30,7 +30,11 @@ class AllOrders extends Component {
     }
 
     componentWillMount() {
-        this.api.loadData(this.config.GET_ALL_ORDERS).then(items => {
+        let url = this.config.GET_ALL_ORDERS;
+        if(getUserType() === "courier") {
+            url += "/courier"
+        }
+        this.api.loadData(url).then(items => {
                 this.setState({items: items});
             }
         ).catch();
@@ -57,13 +61,17 @@ class AllOrders extends Component {
                 <h1>
                     Order: {item.id}
                 </h1>
-                <p>
-                    Courier:
-                </p>
+
                 {(isOperator()) &&
-                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
-                             defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
+                <div>
+                    <p>
+                        Courier:
+                    </p>
+                    <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
+                    defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
+                </div>
                 }
+
                 <br/>
                 <p>
                     State:
