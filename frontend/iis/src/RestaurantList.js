@@ -40,8 +40,9 @@ class RestaurantList extends  Component {
                             <Card.Img variant="top" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" />
                             <Card.Body >
                                 <Card.Title>{item.name}</Card.Title>
+                                <br/>
                                 <Card.Subtitle>{item.category}</Card.Subtitle>
-                                <Card.Text>
+                                <Card.Text className ="dsc">
                                     {item.description}
                                 </Card.Text>
                                 {this.changeButton(item.id)}
@@ -54,13 +55,14 @@ class RestaurantList extends  Component {
         );
         return (
             <Container className="RestaurantList">
-
-                <ul className="items">
-                    {listItems}
-                </ul>
                 <br/>
                 {this.addButton()}
                 <br/>
+                <br/>
+                <ul className="items">
+                    {listItems}
+                </ul>
+
 
             </Container>
         );
