@@ -67,7 +67,7 @@ export const AppRouter = (
                 <Route exact path="/cart" component={Cart}/>
                 <Route exact path="/edituser/:id" component={EditUSer}/>
                 <Route exact path="/users" component={Users}/>
-                <Route exact path="/createuser" component={CreateUser}/>
+                <Route exact path="/createuser" component={EditUSer}/>
                 <Route exact path="/orders" component={OrderList}/>
                 <Route exact path="/allorders" component={AllOrders}/>
 

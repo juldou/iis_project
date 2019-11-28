@@ -5,8 +5,9 @@ import {NavLink, Redirect} from "react-router-dom";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
-import {validatePhone, validateRequiredField} from "./Validation";
+import {validateemail, validatePhone, validateRequiredField} from "./Validation";
 import {isAdmin, isOperator} from "./Network/Authentication";
+import './login.css';
 
 export const usertypes = [
     { label: "admin", value: "admin" },
@@ -38,11 +39,12 @@ export default class EditUser extends Component {
             repeatPassword: "",
             street: "",
             city: "",
-            phone: false
+            phone: ""
         };
     }
 
     componentDidMount() {
+        if(this.id)
         this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
                 this.setState({
                     email: user.email,
@@ -58,6 +60,8 @@ export default class EditUser extends Component {
     validateForm() {
         this.errors = {
             email: this.state.email.length < 5 ,
+            // email: validateemail(this.state.email) ,
+            password: !this.id && this.state.password === "",
             validatePassword: this.state.password !== this.state.repeatPassword,
             street: validateRequiredField(this.state.street),
             city: validateRequiredField(this.state.city),
@@ -91,11 +95,17 @@ export default class EditUser extends Component {
         if(!!this.state.password) {
             data.password = this.state.password
         }
-
-        this.api.patch(this.config.EDIT_USER + "/" + this.props.match.params.id, JSON.stringify(data)).then(response => {
+        if(!this.id) {
+            this.api.post(this.config.GET_USER_URL, data).then(response => {
+                    this.setState({toHomescreen: true});
+                }
+            );
+        } else {
+            this.api.patch(this.config.EDIT_USER + "/" + this.id, JSON.stringify(data)).then(response => {
                 this.setState({toHomescreen: true});
             }
-        );
+            );
+        }
     };
 
     deleteUser() {

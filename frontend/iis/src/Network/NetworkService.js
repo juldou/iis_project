@@ -62,7 +62,10 @@ class NetworkService {
             data: data
         };
 
-        return axios(requestOptions)
+        return axios(requestOptions).then(response => {
+            return response.data
+
+        })
 
 
     }

@@ -49,19 +49,6 @@ export default class UserProfile extends Component {
                             <Button variant="info"> Edit info</Button>
                         </NavLink>
                 </Jumbotron>
-
-                <div className= "profileContainer">
-                    <b>Email: {this.state.user.email}</b>
-                    <p>Role: {this.state.user.role}</p>
-                    <p>Phone: {this.state.user.phone}</p>
-                <h2>ADDRESS</h2>
-                <h3>Street</h3>
-                <h3>City</h3>
-                <h3>{this.state.user.Address.city}</h3>
-                <NavLink to={"/edituser/" + this.id} className="link">
-                    <Button> Edit info</Button>
-                </NavLink>
-            </div>
             </div>
         );
     }
