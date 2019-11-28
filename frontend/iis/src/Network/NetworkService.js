@@ -91,6 +91,7 @@ class NetworkService {
         };
 
         return axios.get(url, requestOptions).then(response =>{
+            if(!response.data) return [];
             return response.data
         })
 
