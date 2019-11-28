@@ -53,14 +53,17 @@ export default class EditUser extends Component {
                     city: user.Address.city,
                     phone: user.phone
                 });
+                this.validateForm()
+                this.setState({
+                    update:true
+                })
             }
         ).catch();
     }
 
     validateForm() {
         this.errors = {
-            email: this.state.email.length < 5 ,
-            // email: validateemail(this.state.email) ,
+           email: validateemail(this.state.email) ,
             password: !this.id && this.state.password === "",
             validatePassword: this.state.password !== this.state.repeatPassword,
             street: validateRequiredField(this.state.street),

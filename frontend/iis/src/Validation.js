@@ -30,6 +30,18 @@ export function validateemail(text) {
     }
     return true;
 }
+
+export function validatePassword(text) {
+    const re = /^[0-9a-zA-Z]+@[0-9a-zA-Z]+\.[a-zA-Z]+$/;
+
+    // return error
+
+    // if (text.length !== "" && !!text && re.test(text)) {
+    //     return false;
+    // }
+    return text.length < 3;
+}
+
 export function validatePhone(text) {
     const re = /^\+\d{12}$/;
 

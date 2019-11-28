@@ -51,6 +51,11 @@ class AddMeal extends Component {
                         price: meal.price,
                         available: !meal.is_soldout
                     })
+
+                    this.validateForm()
+                    this.setState({
+                        update:true
+                    })
                 }
             }).catch()
         }

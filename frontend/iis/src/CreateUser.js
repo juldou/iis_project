@@ -7,6 +7,7 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 import {usertypes} from "./EditUSer";
+import {validateemail, validatePassword} from "./Validation";
 
 export default class CreateUser extends Component {
     constructor(props) {
@@ -32,8 +33,8 @@ export default class CreateUser extends Component {
 
     validateForm() {
         this.errors = {
-            email: this.state.email.length < 5 ,
-            password: this.state.password.length < 5
+            email: validateemail(this.state.email) ,
+            password: validatePassword(this.state.password)
         };
         return !Object.keys(this.errors).some(x => this.errors[x]);
     }

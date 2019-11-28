@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import {Redirect} from "react-router-dom";
@@ -21,7 +21,7 @@ class AddRestaurant extends Component {
         };
 
         this.errors = {
-            name:false,
+            name: false,
             description: false,
             type: false
         };
@@ -30,14 +30,18 @@ class AddRestaurant extends Component {
     }
 
     componentDidMount() {
-        if(!!this.props.match.params.id) {
-            this.api.loadData(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id).then(restaurant =>
-            {
-                    this.setState({
-                        name: restaurant.name,
-                        type: restaurant.category,
-                        description: restaurant.description
-                    })
+        if (!!this.props.match.params.id) {
+            this.api.loadData(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id).then(restaurant => {
+                this.setState({
+                    name: restaurant.name,
+                    type: restaurant.category,
+                    description: restaurant.description
+                })
+
+                this.validateForm();
+                this.setState({
+                    update: true
+                })
 
             }).catch()
         }
@@ -53,14 +57,15 @@ class AddRestaurant extends Component {
         alert(image);
         this.setState({image: image});
     }
+
     handleSubmit(event) {
         event.preventDefault();
         this.sendData()
     }
 
     render() {
-        if(this.state.homeScreen === true) {
-            return <Redirect to='/' />
+        if (this.state.homeScreen === true) {
+            return <Redirect to='/'/>
         }
         return (
 
@@ -97,46 +102,48 @@ class AddRestaurant extends Component {
             //     </Form>
             // </div>
             <div className="add">
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Group controlId="name">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control className= {this.errors.name ? "error" : ""} autoFocus type="text" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleChange} />
-                </Form.Group>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="name">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control className={this.errors.name ? "error" : ""} autoFocus type="text"
+                                      placeholder="Enter name of a restaurant" value={this.state.name}
+                                      onChange={this.handleChange}/>
+                    </Form.Group>
 
-                <Form.Group controlId="type" bsSize="large">
-                    <Form.Label> Type </Form.Label>
-                    <Form.Control
-                        className= {this.errors.type ? "error" : ""}
-                        autoFocus
-                        type="text"
-                        value={this.state.type}
-                        onChange={this.handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="description" bsSize="large">
-                    <Form.Label> Description </Form.Label>
-                    <Form.Control
-                        className= {this.errors.description ? "error" : ""}
-                        value={this.state.description}
-                        onChange={this.handleChange}
-                        type="text"
-                    />
-                </Form.Group>
+                    <Form.Group controlId="type" bsSize="large">
+                        <Form.Label> Type </Form.Label>
+                        <Form.Control
+                            className={this.errors.type ? "error" : ""}
+                            autoFocus
+                            type="text"
+                            value={this.state.type}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="description" bsSize="large">
+                        <Form.Label> Description </Form.Label>
+                        <Form.Control
+                            className={this.errors.description ? "error" : ""}
+                            value={this.state.description}
+                            onChange={this.handleChange}
+                            type="text"
+                        />
+                    </Form.Group>
 
-                <Button
-                    block
-                    bsSize="large"
-                    disabled={!this.validateForm()}
-                    type="submit"
-                >
-                    CHANGE
-                </Button>
+                    <Button
+                        block
+                        bsSize="large"
+                        disabled={!this.validateForm()}
+                        type="submit"
+                    >
+                        CHANGE
+                    </Button>
 
-                {
-                    this.props.match.params.id &&
-                    <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
-                }
-            </Form>
+                    {
+                        this.props.match.params.id &&
+                        <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
+                    }
+                </Form>
             </div>
         );
     }
@@ -158,7 +165,7 @@ class AddRestaurant extends Component {
             picture_url: ''
         });
 
-        if(!!this.props.match.params.id) {
+        if (!!this.props.match.params.id) {
             this.updateRestaurant(data)
         } else {
             this.createRestaurant(data)
@@ -166,20 +173,22 @@ class AddRestaurant extends Component {
     }
 
     createRestaurant(data) {
-        this.api.post(this.config.GET_RESTAURANT_URL, data).then(response =>{
+        this.api.post(this.config.GET_RESTAURANT_URL, data).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
 
     updateRestaurant(data) {
-        this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response =>{
+        this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
 
     deleteRestaurant() {
-        this.api.delete(this.config.GET_RESTAURANT_URL+ "/" + this.props.match.params.id).then(response =>{
+        this.api.delete(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
-} export default AddRestaurant;
+}
+
+export default AddRestaurant;

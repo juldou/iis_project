@@ -7,6 +7,7 @@ import './login.css';
 import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {withRouter} from "react-router";
+import {validateemail, validatePassword} from "./Validation";
 
 class Login extends Component {
     constructor(props) {
@@ -30,8 +31,8 @@ class Login extends Component {
 
     validateForm() {
         this.errors = {
-            email: this.state.email.length < 5 ,
-            password: this.state.password.length < 5
+            email: validateemail(this.state.email),
+            password: validatePassword(this.state.password)
         };
         return !Object.keys(this.errors).some(x => this.errors[x]);
     }
