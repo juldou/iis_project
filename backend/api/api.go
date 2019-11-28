@@ -58,6 +58,7 @@ func (a *API) Init(r *mux.Router) {
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.CreateAddress)).Methods("POST")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.UpdateAddressById)).Methods("PATCH")
 	userRouter.Handle("/{id:[0-9]+}/address", a.handler(a.DeleteAddressById)).Methods("DELETE")
+	userRouter.Handle("/orders", a.handler(a.GetAllOrdersByUser)).Methods("GET")
 
 	// users methods
 	usersRouter := r.PathPrefix("/users").Subrouter()

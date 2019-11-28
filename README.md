@@ -8,10 +8,8 @@ go build -o server .
 ./server serve
 ```
 
-
 # How to create/drop tables
-- check sql/ directory, run scripts against your db 
-
+- check backend/ directory, run recreate_tables against your db 
 
 #What is DONE:
 ####administrátor:

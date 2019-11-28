@@ -35,8 +35,6 @@ type LoginResponse struct {
 	AuthToken AuthToken
 }
 
-var jwtKey = []byte("my_secret_key")
-
 func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	var input LoginInput
 
@@ -57,7 +55,7 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 		if err != nil {
 			ctx.Logger.WithError(err).Error("unable to get user")
 		}
-		return err
+		return ctx.AuthorizationError()
 	}
 
 	if ok := user.CheckPassword(input.Password); !ok {
@@ -67,7 +65,7 @@ func (a *API) loginHandler(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 
 	// Declare the expiration time of the token
 	// here, we have kept it as 5 minutes
-	expirationTime := time.Now().Add(100 * time.Minute)
+	expirationTime := time.Now().Add(8 * time.Hour)
 	// Create the JWT claims, which includes the username and expiry time
 	claims := &Claims{
 		Username: input.Username,
@@ -129,7 +127,7 @@ func (a *API) refreshToken(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	// Declare the token with the algorithm used for signing, and the claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// Create the JWT string
-	tokenString, err := token.SignedString(jwtKey)
+	tokenString, err := token.SignedString(a.Config.JwtSecret)
 	if err != nil {
 		// If there is an error in creating the JWT return an internal server error
 		w.WriteHeader(http.StatusInternalServerError)
