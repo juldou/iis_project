@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
@@ -15,19 +15,19 @@ class RestaurantDetail extends Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
-            menu: [],
-            meals: [],
-            restaurant: null,
+            menu: null,
+            meals: null,
+            restaurant: undefined,
             id: this.props.restaurantId,
-            category: null
+            category: null,
+            loading: true
         }
     }
 
     componentDidMount() {
-       this.getItems(this.state.category);
+        this.getItems(this.state.category);
         this.api.loadData(this.config.RESTAURANT_DETAIL_URL +
             "/" + this.state.id).then(restaurant => {
-                if(!restaurant) return;
                 this.setState({
                     restaurant: restaurant});
             }
@@ -48,15 +48,12 @@ class RestaurantDetail extends Component {
         }
 
         this.api.loadData(dailyMenuUrl).then(items => {
-                if(!items) return;
 
                 this.setState({menu: items});
             }
         ).catch();
 
         this.api.loadData(mealsUrl).then(items => {
-                if(!items) return;
-
                 this.setState({meals: items});
             }
         ).catch();
@@ -80,51 +77,42 @@ class RestaurantDetail extends Component {
 
 
     render() {
-
-        const menuItems = this.state.menu.map((item) =>{
+        if(this.state.restaurant === null || this.state.restaurant === "") {
+            return (<h3>  Restaurant not found </h3>);
+        }
+        const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
+            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
             return(
                 // <div className="card" key={item.id}>
-                    <Card style={{ width: '30rem' }}>
-                        <Card.Img variant="top" src={"/foods/" + item.picture_url} />
+                    <Card style={{ width: '22rem' }}>
+                        <Card.Img className="card-image" variant="top" src={imageUrl} />
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
-                            <Card.Text>
+                            <Card.Text className="dsc">
                                 {item.description}
                             </Card.Text>
                             <Card.Text>
-
                             {item.is_soldout ? "Sold out" : "Available"}
                             </Card.Text>
 
-                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button
+                            >
+                            { this.ChangeButton(item.id) }
+
                             {this.RemoveButton(item.id)}
                         </Card.Body>
                     </Card>
-
-                // </div>
-                // <div className="card" key={item.id}>
-                //     <div className="card-image">
-                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                //         <span className="card-title">{item.name}</span>
-                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                //         <i className="material-icons">add</i>
-                //     </div>
-                //
-                //     <div className="card-content">
-                //         <p>{item.description}</p>
-                //         <p><b>Price: {item.price}$</b></p>
-                //         {this.RemoveButton(item.id)}
-                //     </div>
-                // </div>
             )
         });
 
-        const mealItems = this.state.meals.map((item) =>{
+        const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) =>{
+            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
+
             return(
                 // <div className="card" key={item.id}>
-                <Card style={{ width: '30rem' }}>
-                    <Card.Img variant="top" src={"/foods/" + item.picture_url} />
+                <Card style={{ width: '22rem' }}>
+                    <Card.Img className="card-image" variant="top" src={imageUrl} />
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
@@ -133,45 +121,32 @@ class RestaurantDetail extends Component {
                         </Card.Text>
                         <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
                         { this.ChangeButton(item.id) }
+                        { this.AddButton(item.id)}
                     </Card.Body>
                 </Card>
-                    // </div>
-
-                // <div className="card" key={item.id}>
-                //     <div className="card-image">
-                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                //         <span className="card-title">{item.name}</span>
-                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                //         <i className="material-icons">add</i>
-                //     </div>
-                //
-                //         <div className="card-content">
-                //         <p>{item.description}</p>
-                //     <p><b>Price: {item.price}$</b></p>
-                //             { this.ChangeButton(item.id) }
-                //
-                //         </div>
-                // </div>
         )
         });
         return (
             <div className="container">
                 {this.RestaurantInfo()}
 
-                <Tabs defaultActiveKey="menu" id="uncontrolled-tab-example">
-                    <Tab eventKey="menu" title="Menu">
+                <Tabs  defaultActiveKey="menu" id="uncontrolled-tab-example">
+                    <Tab className = "menu-tabs" eventKey="menu" title="Daily menu">
+                        <br/>
+                        <h3 className="center">Daily menu</h3>
+                        <br/>
+                        <div className="box">
+                            {menuItems.length === 0 && <h3> Menu is empty</h3>}
+                            {menuItems}
+                        </div>
+                    </Tab>
+                    <Tab className = "nabidka-tabs" eventKey="nabidka" title="Menu">
                         <br/>
                         <h3 className="center">Menu</h3>
                         <br/>
                         <div className="box">
-                            {menuItems}
-                        </div>
-                    </Tab>
-                    <Tab eventKey="nabidka" title="Stala nabidka">
-                        <br/>
-                        <h3 className="center">Stala nabidka</h3>
-                        <br/>
-                        <div className="box">
+                            {mealItems.length === 0 && <h3> There are no meals </h3>}
+
                             {mealItems}
                         </div>
                     </Tab>
@@ -197,10 +172,15 @@ class RestaurantDetail extends Component {
                         <Button variant="info" > Change </Button>
                     </NavLink>
                 <br/>
-                    <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
                 </div>
 
             );
+        return "";
+    }
+
+    AddButton(id) {
+        if(isOperator())
+            return( <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
         return "";
     }
 
@@ -220,9 +200,9 @@ class RestaurantDetail extends Component {
         if(!this.state.restaurant) return;
         return (
             <Jumbotron fluid className="Jumbotron">
-                <h1>{this.state.restaurant.name}</h1>
+                <h2 align="center" >{this.state.restaurant.name}</h2>
                 <br/>
-                <p>{this.state.restaurant.description}</p>
+                <p align="center" >{this.state.restaurant.description}</p>
             </Jumbotron>);
     }
 

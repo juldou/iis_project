@@ -8,7 +8,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: auto;
+    width: 100%;
     height: auto;
     overflow-x: hidden;
     background-color: #f1f1f1;
@@ -20,9 +20,13 @@
 
     grid-auto-rows: auto;
 
-    grid-gap: 3rem;
+    grid-gap: 4rem;
 }
-
+.dsc{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /*body {background-color: #C70025;}*/
 
 /*img {width: 100%;}*/

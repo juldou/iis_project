@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import NetworkService from "./Network/NetworkService";
 import {Button} from "react-bootstrap";
+import {withRouter} from "react-router";
 
-export default class ErrorScreen extends Component {
+class ErrorScreen extends Component {
  render() {
      return(
          <div>
@@ -10,4 +11,4 @@ export default class ErrorScreen extends Component {
          </div>
      )
  }
-}
+} export default withRouter(ErrorScreen)

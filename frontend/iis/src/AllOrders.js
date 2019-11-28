@@ -25,13 +25,12 @@ class AllOrders extends Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
-            items: null,
+            items: undefined,
         };
     }
 
     componentWillMount() {
         this.api.loadData(this.config.GET_ALL_ORDERS).then(items => {
-                if(!items) return;
                 this.setState({items: items});
             }
         ).catch();
@@ -46,9 +45,9 @@ class AllOrders extends Component {
     }
 
     render() {
-        if(!this.state.items) return "";
+        if(this.state.items === undefined) return "";
 
-        if(this.state.items.length === 0) {
+        if(this.state.items === null || this.state.items === "" ) {
             return (
                 <h3> There are no orders</h3>
             )
@@ -59,13 +58,16 @@ class AllOrders extends Component {
                     Order: {item.id}
                 </h1>
                 <p>
-                    State: {item.state}
+                    Courier:
                 </p>
                 {(isOperator()) &&
                 <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
                              defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
                 }
-
+                <br/>
+                <p>
+                    State:
+                </p>
                 { isCourier() &&
                 <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
                         value={this.state.type}

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button} from "react-bootstrap";
+import {Button, FormCheck} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
+import {isOperator} from "./Network/Authentication";
 
 class AddMeal extends Component {
     constructor(props) {
@@ -15,11 +16,14 @@ class AddMeal extends Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
 
+        this.id = this.props.match.params.id
         this.state = {
             name: '',
             type: '',
             description: '',
-            price: ''
+            price: '',
+            available: false,
+            picture_url: ''
         };
 
         this.errors = {
@@ -43,7 +47,8 @@ class AddMeal extends Component {
                         name: meal.name,
                         type: meal.category,
                         description: meal.description,
-                        price: meal.price
+                        price: meal.price,
+                        available: !meal.is_soldout
                     })
                 }
             }).catch()
@@ -61,18 +66,11 @@ class AddMeal extends Component {
     }
 
     handleImageChange(image) {
-        this.setState({image: image});
+        this.setState({image: image, picture_url: this.id + ".png"});
 
         let form_data = new FormData();
         form_data.append('file', this.state.image, this.state.image.name);
         this.api.uploadImage(this.config.GET_MEAL_URL + "/" + this.props.match.params.id + "/picture", form_data).catch()
-
-    }
-
-    uploadImage() {
-        alert(this.state.image)
-
-
 
     }
 
@@ -125,19 +123,28 @@ class AddMeal extends Component {
                         type="text"
                     />
                 </Form.Group>
+                <Form.Group controlId="price" bsSize="large">
+                    <Form.Label> Check </Form.Label>
+                    <input
 
+                        type="checkbox"     className="form-check-input"
+
+                        defaultChecked={true}
+                    />
+                </Form.Group>
+                <input type="checkbox" defaultChecked={this.state.available} onChange={this.handleChange.bind(this)} />
+                {alert(this.state.type)}
                 <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
                              defaultValue={{label: this.state.type, value: this.state.type}}/>
-                }
+
+
+
                 <label>
                     Image:
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
                 </label>
+                {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
 
-                <ImageUpload onChange={this.handleImageChange.bind(this)}/>
-                <input type="submit" value="Submit" />
-                <Button block
-                        bsSize="large" onClick={this.uploadImage.bind(this)}> Upload image</Button>
 
                 <Button
                     block
@@ -182,9 +189,10 @@ class AddMeal extends Component {
             name: this.state.name,
             description: this.state.description,
             category: this.state.type,
-            restaurant_id: this.restaurant_id,
+            restaurant_id: +this.restaurant_id,
             price: +this.state.price,
-            picture_url: ''
+            picture_url: this.state.picture_url,
+            is_soldout: !this.state.available
         });
 
         if(!!this.props.match.params.id) {

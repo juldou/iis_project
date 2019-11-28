@@ -3,21 +3,45 @@
     background-color: #9fcdff;
 
 }
+body{
+    background-color: #f1f1f1;
+}
 .box{
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 
     grid-auto-rows: auto;
 
-    grid-gap: 1rem;
+    grid-gap: 5rem;
+}
+.dsc{
+    white-space: nowrap;
+    overflow: auto;
+    text-overflow: ellipsis;
 }
 .Jumbotron{
     margin-top: 3%;
-    background-image:url('https://media.thatsweetgift.com/wp-content/uploads/2018/04/basic-ingredients.jpg');
-    height:300px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    border-bottom:1px solid #ff6a00
-
+    margin-bottom: 0;
 }
+h2{
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+.card-image{
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    width: 22rem;
+    height: 22rem;
+}
+.center{
+    margin-top: 70px;
+}
+.menu-tabs{
+    background-color: white;
+}
+.nabidka-tabs{
+    background-color: white;
+}
+

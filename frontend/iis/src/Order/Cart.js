@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
-import {Button} from "react-bootstrap";
+import {Button, Jumbotron} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {validatePhone, validateRequiredField} from "../Validation";
-import {getUserID, isAuthenticated} from "../Network/Authentication";
+import {getUserID, isAuthenticated, isCourier, isOperator} from "../Network/Authentication";
 import Configuration from "../Network/Configuration";
 import NetworkService from "../Network/NetworkService";
+import AsyncSelect from "react-select/async/dist/react-select.esm";
+import Select from "react-select";
+import {stateOptions} from "../AllOrders";
+import './Cart.css';
 class Cart extends Component{
 
     constructor(props) {
@@ -84,30 +88,27 @@ class Cart extends Component{
 
             let addedItems = this.state.order.map(item=>{
                     return(
+                        <Jumbotron key={item.id}>
+                            <h1>
+                                {item.name}
+                            </h1>
+                            <p>
+                                {item.desc}
+                            </p>
+                            <p>
+                                <b>Price: {item.price}$</b>
+                            </p>
+                            <p>
+                                <b>Quantity: {item.quantity}</b>
+                            </p>
+                            <Button variant="info" onClick={()=>{this.handleRemove(item.id)}}
+                            >Remove</Button>
+                        </Jumbotron>
 
-                        <li className="collection-item avatar" key={item.id}>
-                            <div className="item-img">
-                                <img src={item.img} alt={item.img}/>
-                            </div>
-                            <div className="item-desc">
-                                <span className="title">{item.name}</span>
-                                <p>{item.desc}</p>
-                                <p><b>Price: {item.price}$</b></p>
-                                <p>
-                                    <b>Quantity: {item.quantity}</b>
-                                </p>
-
-                                <button className="waves-effect waves-light btn pink remove" onClick={()=>{this.handleRemove(item.id)}}
-                                 >Remove</button>
-                            </div>
-                        </li>
                     )
-                })
+                });
 
 
-            // (
-            //     <p>Nothing.</p>
-            // )
         return(
             <div className="container">
                 <div className="cart">
@@ -120,11 +121,11 @@ class Cart extends Component{
 
                     { isAuthenticated() || this.Address()}
                     <Button
-                        className="waves-effect waves-light btn pink send" onClick={this.sendOrder.bind(this)}
+                        variant="info" onClick={this.sendOrder.bind(this)}
                         disabled={this.buttonDisabled()}>Send</Button>
                     { isAuthenticated() ||
                     <Button
-                        className="waves-effect waves-light btn pink send" onClick={this.sendAndRegister.bind(this)}
+                        variant="info" onClick={this.sendAndRegister.bind(this)}
                         disabled={this.buttonDisabled()}>Send order and Register</Button>}
                 </div>
             </div>

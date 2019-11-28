@@ -43,7 +43,7 @@ li a:hover:not(.active) {
 nav {
   float: left;
   width: 100%;
-  background: red;
+  /*background: red;*/
   padding: 5px;
 }
 

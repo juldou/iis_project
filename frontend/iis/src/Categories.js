@@ -3,6 +3,7 @@ import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import './Categories.css'
+import {Button, ButtonGroup} from "react-bootstrap";
 
 class Categories extends Component {
     constructor(props) {
@@ -26,7 +27,8 @@ class Categories extends Component {
 
     render() {
         const listItems = this.state.items.map((item) =>
-            <li key={item.id} onClick={() => {
+
+            <Button variant="outline-info" className = "categories-button" key={item.id} onClick={() => {
                 if(this.state.active === item.id) {
                     this.props.onClick("");
                     this.setState({active: -1})
@@ -38,15 +40,19 @@ class Categories extends Component {
                 <span  >
                     <a className={this.state.active === item.id ? "active" : ""} href="#">{item.name}</a>
                 </span>
-            </li>
+                <br/>
+            </Button>
         );
         return (
-            <div className="Categories">
-                <ul className="filter-items">
-                    {listItems}
-                </ul>
 
-            </div>
+            <ButtonGroup vertical>
+                <br/>
+                <p>Filter</p>
+                <br/>
+                {listItems}
+                <br/>
+            </ButtonGroup>
+
         );
     }
 } export default Categories;

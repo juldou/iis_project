@@ -23,6 +23,7 @@ import createHistory from 'history/createBrowserHistory';
 import setupInterceptors from "../Network/NetworkService";
 import axios from 'axios';
 import context from "react-router/modules/RouterContext";
+import ErrorScreen from "../ErrorScreen";
 
 const history = createHistory();
 
@@ -30,10 +31,10 @@ const history = createHistory();
 axios.interceptors.response.use(response => {
     return response;
 }, error => {
-    if (error.response.status === 401) {
-        history.push('/login')
-        // store.dispatch(logoutUser());
-    }
+    // if (error.response.status === 401) {
+    //     history.push('/login')
+    //     // store.dispatch(logoutUser());
+    // }
     //
     // if (error.response.status === 404) {
     //     history.push('/not-found');
@@ -72,6 +73,8 @@ export const AppRouter = (
                 <Route exact path="/allorders" component={AllOrders}/>
 
                 <Route exact path="/userprofile" component={UserProfile}/>
+            <Route exact path="/notfound" component={ErrorScreen}/>
+
 
 
             {/*</Switch>*/}

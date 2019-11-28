@@ -15,6 +15,7 @@ class RestaurantList extends  Component {
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
         this.state = {
+            items: undefined
         }
     }
 
@@ -24,12 +25,10 @@ class RestaurantList extends  Component {
 
     render() {
         const items = this.state.items;
-        if(!items) return (
+        if(items === undefined) return "";
+        if(items === null || items === "") return (
             <div className="RestaurantList">
-
-                <button type="button" name="button" >New Item</button>
-                <br/>
-
+                There are no restaurants
             </div>
         );
 
@@ -40,8 +39,9 @@ class RestaurantList extends  Component {
                             <Card.Img variant="top" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" />
                             <Card.Body >
                                 <Card.Title>{item.name}</Card.Title>
+                                <br/>
                                 <Card.Subtitle>{item.category}</Card.Subtitle>
-                                <Card.Text>
+                                <Card.Text className ="dsc">
                                     {item.description}
                                 </Card.Text>
                                 {this.changeButton(item.id)}
@@ -54,13 +54,15 @@ class RestaurantList extends  Component {
         );
         return (
             <Container className="RestaurantList">
-
+                <br/>
+                {listItems.length === 0 && <h3> There are no meals </h3>}
+                {this.addButton()}
+                <br/>
+                <br/>
                 <ul className="items">
                     {listItems}
                 </ul>
-                <br/>
-                {this.addButton()}
-                <br/>
+
 
             </Container>
         );
@@ -92,7 +94,6 @@ class RestaurantList extends  Component {
     getItems(idCategory) {
         let url = this.config.RESTAURANT_LIST_URL;
         this.api.loadData(url).then(items => {
-            if(!items) return;
             this.setState({items: items});
             }
         ).catch();
