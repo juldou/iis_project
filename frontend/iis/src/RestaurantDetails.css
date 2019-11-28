@@ -12,4 +12,12 @@
 
     grid-gap: 1rem;
 }
+.Jumbotron{
+    margin-top: 3%;
+    background-image:url('https://media.thatsweetgift.com/wp-content/uploads/2018/04/basic-ingredients.jpg');
+    height:300px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-bottom:1px solid #ff6a00
 
+}
