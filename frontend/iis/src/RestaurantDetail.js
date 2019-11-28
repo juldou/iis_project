@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
-import {Button, Card, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
+import {Button, Card, Container, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
 import './RestaurantDetails.css';
 
 class RestaurantDetail extends Component {
@@ -130,8 +130,7 @@ class RestaurantDetail extends Component {
             <div className="container">
                 {this.RestaurantInfo()}
 
-                <Tabs  defaultActiveKey="menu" id="uncontrolled-tab-example">
-                    <Tab className = "menu-tabs" eventKey="menu" title="Daily menu">
+                <Container className = "menu-container">
                         <br/>
                         <h3 className="center">Daily menu</h3>
                         <br/>
@@ -139,9 +138,9 @@ class RestaurantDetail extends Component {
                             {menuItems.length === 0 && <h3> Menu is empty</h3>}
                             {menuItems}
                         </div>
-                    </Tab>
-                    <Tab className = "nabidka-tabs" eventKey="nabidka" title="Menu">
-                        <br/>
+                </Container>
+
+                    <Container className = "menu-container">
                         <h3 className="center">Menu</h3>
                         <br/>
                         <div className="box">
@@ -149,9 +148,9 @@ class RestaurantDetail extends Component {
 
                             {mealItems}
                         </div>
-                    </Tab>
+                    </Container>
 
-                </Tabs>
+
                 <br/>
                 <br/>
                 <NavLink to={ this.state.id + "/addmeal"} className="link">

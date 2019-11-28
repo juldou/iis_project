@@ -7,6 +7,7 @@ import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 import {usertypes} from "./EditUSer";
+import './EditUser.css';
 
 export default class CreateUser extends Component {
     constructor(props) {
@@ -69,6 +70,7 @@ export default class CreateUser extends Component {
         return (
             <div className="Login">
                 <Form onSubmit={this.handleSubmit}>
+                    <h1><b>Info </b></h1>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email </Form.Label>
 

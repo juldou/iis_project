@@ -6,12 +6,13 @@
 }
 
 .RestaurantDetail{
-    margin-top: 13%;
-    position: absolute;
+    
+    position: sticky;
+    top: 0%;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
+    bottom: auto;
+    transform: translate(-50%);
+    width: 50%;
     height: auto;
     overflow-x: hidden;
     float: right;
