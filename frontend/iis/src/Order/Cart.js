@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
-import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
 import {Button, Col, Jumbotron, ListGroup, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {validatePhone, validateRequiredField} from "../Validation";
