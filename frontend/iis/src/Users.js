@@ -37,7 +37,7 @@ class Users extends Component {
                     <p>Role: {item.role}</p>
                     <br/>
                     <p>
-                        <NavLink to={"/edituser/" + this.id} className="link">
+                        <NavLink to={"/edituser/" + item.id} className="link">
                             <Button variant="info"> Edit info</Button>
                         </NavLink>
                     </p>

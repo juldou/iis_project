@@ -54,7 +54,13 @@ class Login extends Component {
             localStorage.setItem("user_type", response.User.role);
             localStorage.setItem("access_token", response.AuthToken.access_token);
             localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
-        }).catch()
+        }).then(r =>{
+            this.setState({toHomescreen: true})
+        }).catch(error => {
+            if(!!error && error.response.status === 403) {
+                this.setState({wrongCredentials: true})
+            }
+        })
     }
 
     render() {
@@ -63,6 +69,7 @@ class Login extends Component {
         }
         return (
             <div className="Login">
+                {this.state.wrongCredentials && <h3> Wrong username or password</h3>}
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
