@@ -31,11 +31,15 @@ class Cart extends Component{
         }
     }
 
-    //to remove the item completely
     handleRemove = (id)=>{
-        let temp =this.state.order.filter(function(item) {
-            return item.id !== id
-        }) ;
+        let temp =this.state.order
+
+        for (var i = 0; i < temp.length; i++) {
+            if(temp[i].id === id) {
+                temp.splice(i, 1);
+                break;
+            }
+        }
         this.setState({order: temp});
         localStorage.setItem("order", JSON.stringify(temp))
     };
@@ -199,19 +203,22 @@ class Cart extends Component{
             );
             localStorage.removeItem("order")
 
-        })
+        }).catch()
     }
 
     sendAndRegister() {
-        this.sendOrder.then(r => {
-            let data = JSON.stringify({
-                street: this.state.street,
-                city: this.state.city,
-                phone: this.state.phone
-            });
+        let config = new Configuration();
+        let api = new NetworkService(this.props);
+        let data =  JSON.stringify(this.prepareData());
+
+        return api.post(config.ORDER_URL, data).then(r => {
+
+            localStorage.removeItem("order")
             localStorage.setItem("temp_user", data)
 
-            this.setState({toRegister: true})
+            this.setState(
+                {toRegister: true}
+            );
         })
     }
 }

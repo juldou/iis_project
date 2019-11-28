@@ -19,17 +19,18 @@ class ImageUpload extends Component {
 
         reader.onloadend = () => {
             this.setState({
-                file: file,
-                imagePreviewUrl: reader.result
+                file: reader.result,
+                imagePreviewUrl: reader.result,
             });
-            this.onChange(file);
+            this.onChange(reader.result);
         };
 
-        reader.readAsDataURL(file)
+        reader.readAsBinaryString(file)
 
     }
 
     render() {
+
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {

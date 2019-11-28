@@ -22,7 +22,7 @@ export default class UserProfile extends Component {
     componentDidMount() {
         this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
             this.setState({user: user, loading: false})
-        });
+        }).catch();
     }
 
     render() {

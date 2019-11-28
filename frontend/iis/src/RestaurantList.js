@@ -105,7 +105,7 @@ class RestaurantList extends  Component {
             if(!items) return;
             this.setState({items: items});
             }
-        );
+        ).catch();
     }
 
 } export default withRouter(RestaurantList);

@@ -21,12 +21,17 @@ class Categories extends Component {
                 if(!items) return;
                 this.setState({items: items});
             }
-        );
+        ).catch();
     }
 
     render() {
         const listItems = this.state.items.map((item) =>
             <li key={item.id} onClick={() => {
+                if(this.state.active === item.id) {
+                    this.props.onClick("");
+                    this.setState({active: -1})
+                    return
+                }
                 this.props.onClick(item.name);
                 this.setState({active: item.id})
             } }>

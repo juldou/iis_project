@@ -31,7 +31,7 @@ class RestaurantDetail extends Component {
                 this.setState({
                     restaurant: restaurant});
             }
-        );
+        ).catch();
     }
 
     categoryChanged(idCategory) {
@@ -52,24 +52,29 @@ class RestaurantDetail extends Component {
 
                 this.setState({menu: items});
             }
-        );
+        ).catch();
 
         this.api.loadData(mealsUrl).then(items => {
                 if(!items) return;
 
                 this.setState({meals: items});
             }
-        );
+        ).catch();
     }
 
-    handleClick = (id)=>{
+    handleClick = (item)=>{
         var order = localStorage.getItem("order");
         if(!order) {
             order = []
         } else {
             order = JSON.parse(order)
         }
-        order.push(id);
+        if(order.length >= 10) {
+            alert("Cart is full")
+            return
+        }
+        order.push(item);
+        alert(item.name + " added to cart")
         localStorage.setItem("order", JSON.stringify(order));
     };
 
@@ -77,17 +82,21 @@ class RestaurantDetail extends Component {
     render() {
 
         const menuItems = this.state.menu.map((item) =>{
-
             return(
                 // <div className="card" key={item.id}>
                     <Card style={{ width: '30rem' }}>
-                        <Card.Img variant="top" src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" />
+                        <Card.Img variant="top" src={"/foods/" + item.picture_url} />
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
                             <Card.Text>
                                 {item.description}
                             </Card.Text>
+                            <Card.Text>
+
+                            {item.is_soldout ? "Sold out" : "Available"}
+                            </Card.Text>
+
                             <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
                         </Card.Body>
                     </Card>
@@ -113,7 +122,7 @@ class RestaurantDetail extends Component {
             return(
                 // <div className="card" key={item.id}>
                 <Card style={{ width: '30rem' }}>
-                    <Card.Img variant="top" src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" />
+                    <Card.Img variant="top" src={"/foods/" + item.picture_url} />
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
@@ -239,13 +248,13 @@ class RestaurantDetail extends Component {
 
         this.api.post(this.config.UPDATE_MENU_URL, data).then(response => {
             this.getItems(this.state.category)
-        })
+        }).catch()
     }
 
     removeFromMenu(id) {
         this.api.delete(this.config.UPDATE_MENU_URL + "/" + id).then(response => {
             this.getItems(this.state.category)
-        })
+        }).catch()
     }
 }
 

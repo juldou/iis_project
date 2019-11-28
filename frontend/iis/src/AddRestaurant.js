@@ -98,7 +98,7 @@ class AddRestaurant extends Component {
             // </div>
             <div className="add">
             <Form onSubmit={this.handleSubmit}>
-                <Form.Group controlId="name">
+                <Form.Group controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control className= {this.errors.name ? "error" : ""} autoFocus type="text" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleChange} />
                 </Form.Group>
@@ -175,18 +175,18 @@ class AddRestaurant extends Component {
     createRestaurant(data) {
         this.api.post(this.config.GET_RESTAURANT_URL, data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     updateRestaurant(data) {
         this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     deleteRestaurant() {
         this.api.delete(this.config.GET_RESTAURANT_URL+ "/" + this.props.match.params.id).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 } export default AddRestaurant;
