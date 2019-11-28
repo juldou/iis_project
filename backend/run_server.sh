@@ -1,3 +1,3 @@
 #!/bin/bash
 go build -o server .
-./server serve
+nohup ./server serve &
