@@ -4,7 +4,7 @@ import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {getUserType, isAuthenticated, isOperator} from "./Network/Authentication";
 import './RestaurantList.css'
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, Container} from "react-bootstrap";
 import {withRouter} from "react-router";
 
 
@@ -34,16 +34,14 @@ class RestaurantList extends  Component {
         );
 
         const listItems = items.map((item) =>
-            <li key={item.id }>
-                <div className="RestaurantPreview" key={item.id}>
-                    <NavLink to={"restaurant/" + item.id} className="link">
 
-                        <Card style={{ width: '20rem' }}>
+                    <NavLink to={"restaurant/" + item.id} className="link">
+                        <Card style={{ width: '22rem' }} text={"dark"} >
                             <Card.Img variant="top" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" />
-                            <Card.Body>
-                                <Card.Title className="mb-2 text-muted">{item.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">{item.category}</Card.Subtitle>
-                                <Card.Text className="mb-2 text-muted">
+                            <Card.Body >
+                                <Card.Title>{item.name}</Card.Title>
+                                <Card.Subtitle>{item.category}</Card.Subtitle>
+                                <Card.Text>
                                     {item.description}
                                 </Card.Text>
                                 {this.changeButton(item.id)}
@@ -53,15 +51,9 @@ class RestaurantList extends  Component {
                     </NavLink>
 
 
-
-
-
-                </div>
-                <span className="item-name">{item.Name}</span>
-            </li>
         );
         return (
-            <div className="RestaurantList">
+            <Container className="RestaurantList">
 
                 <ul className="items">
                     {listItems}
@@ -70,15 +62,14 @@ class RestaurantList extends  Component {
                 {this.addButton()}
                 <br/>
 
-            </div>
+            </Container>
         );
     }
 
     changeButton(id) {
         if(isOperator())
             return (
-            <NavLink to={ "/editrestaurant/" + id} className="link">
-
+            <NavLink to={ "/editrestaurant/" + id} className="link" style={{display: 'flex', justifyContent: 'center'}}>
                 <Button variant="info" > Change </Button>
             </NavLink>
             );

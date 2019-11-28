@@ -29,9 +29,9 @@ class Header extends Component {
 
     render() {
         return (
-            <Navbar className="navbar" bg="light" expand="lg">
-
-
+            <Navbar className="navbar" collapseOnSelect bg="light" expand="lg" sticky="top">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/cart">Cart</Nav.Link>
@@ -40,7 +40,7 @@ class Header extends Component {
                     }
                      {this.getUserState()}
                 </Nav>
-
+                </Navbar.Collapse>
             </Navbar>
         );
     }
@@ -49,13 +49,11 @@ class Header extends Component {
 
         if(!isAuthenticated()){
             return (
-
                     <Nav className="mr-auto">
                     <Nav.Link href="/login">Login</Nav.Link>
                     <Nav.Link href="/register">Register</Nav.Link>
 
                     </Nav>
-
 
             );
         }
