@@ -54,7 +54,7 @@ export default class EditUser extends Component {
                     phone: user.phone
                 });
             }
-        );
+        ).catch();
     }
 
     validateForm() {
@@ -99,12 +99,12 @@ export default class EditUser extends Component {
             this.api.post(this.config.GET_USER_URL, data).then(response => {
                     this.setState({toHomescreen: true});
                 }
-            );
+            ).catch();
         } else {
             this.api.patch(this.config.EDIT_USER + "/" + this.id, JSON.stringify(data)).then(response => {
                 this.setState({toHomescreen: true});
             }
-            );
+            ).catch();
         }
     };
 
@@ -112,7 +112,7 @@ export default class EditUser extends Component {
         this.api.delete(this.config.DELETE_USER_URL + "/" + this.id).then(response => {
                 this.setState({toHomescreen: true});
             }
-        );
+        ).catch();
     }
     render() {
         if(this.state.toHomescreen === true) {
@@ -186,7 +186,7 @@ export default class EditUser extends Component {
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        CHANGE
+                        {this.id? "CHANGE" : "CREATE"}
                     </Button>
 
                     <Button

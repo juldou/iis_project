@@ -175,18 +175,18 @@ class AddRestaurant extends Component {
     createRestaurant(data) {
         this.api.post(this.config.GET_RESTAURANT_URL, data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     updateRestaurant(data) {
         this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.props.match.params.id, data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     deleteRestaurant() {
         this.api.delete(this.config.GET_RESTAURANT_URL+ "/" + this.props.match.params.id).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 } export default AddRestaurant;

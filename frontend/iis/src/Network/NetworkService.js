@@ -66,8 +66,23 @@ class NetworkService {
             return response.data
 
         })
+    }
 
+    async uploadImage(url, data) {
+        let requestOptions = {
+            method: "POST",
+            url: url,
+            headers: {
+                'content-type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + getAccessToken()
+            },
+            data: data
+        };
 
+        return axios(requestOptions).then(response => {
+            return response.data
+
+        })
     }
 
     async delete(url) {
@@ -91,6 +106,7 @@ class NetworkService {
         };
 
         return axios.get(url, requestOptions).then(response =>{
+            if(!response.data) return [];
             return response.data
         })
 

@@ -46,7 +46,7 @@ class AddMeal extends Component {
                         price: meal.price
                     })
                 }
-            })
+            }).catch()
         }
     }
 
@@ -61,9 +61,24 @@ class AddMeal extends Component {
     }
 
     handleImageChange(image) {
-        alert(image);
         this.setState({image: image});
+        alert(this.state.image)
+
+        let form_data = new FormData();
+        form_data.append('file', "randomimage.png");
+        form_data.append('content', this.state.image);
+
+        this.api.uploadImage(this.config.GET_MEAL_URL + "/" + 1 + "/picture", form_data).catch()
+
     }
+
+    uploadImage() {
+        alert(this.state.image)
+
+
+
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         this.sendData()
@@ -122,8 +137,10 @@ class AddMeal extends Component {
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
                 </label>
 
-                <ImageUpload onChange={this.handleImageChange}/>
+                <ImageUpload onChange={this.handleImageChange.bind(this)}/>
                 <input type="submit" value="Submit" />
+                <Button block
+                        bsSize="large" onClick={this.uploadImage.bind(this)}> Upload image</Button>
 
                 <Button
                     block
@@ -160,7 +177,7 @@ class AddMeal extends Component {
                    return  {label: cat.name, value: cat.name}
                 })
             }
-        );
+        ).catch();
     }
 
     sendData() {
@@ -183,18 +200,18 @@ class AddMeal extends Component {
     createMeal(data) {
         this.api.post(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food", data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     updateMeal(data) {
         this.api.patch(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food/" +this.props.match.params.id, data).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 
     deleteMeal() {
         this.api.delete(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food/" +this.props.match.params.id).then(response =>{
             this.setState({homeScreen: true})
-        })
+        }).catch()
     }
 } export default AddMeal;

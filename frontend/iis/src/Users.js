@@ -24,7 +24,7 @@ class Users extends Component {
                 if(!items) return;
                 this.setState({items: items});
             }
-        );
+        ).catch()
     }
 
     render() {

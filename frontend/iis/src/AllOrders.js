@@ -34,7 +34,7 @@ class AllOrders extends Component {
                 if(!items) return;
                 this.setState({items: items});
             }
-        );
+        ).catch();
     }
 
     loadCouriers() {
@@ -42,7 +42,7 @@ class AllOrders extends Component {
             return couriers.map(courier => {
                 return {label: courier.email, value: courier.id};
             })
-        })
+        }).catch()
     }
 
     render() {
@@ -87,14 +87,14 @@ class AllOrders extends Component {
         let data = {
             courier_id: selectedOption.value
         };
-        this.api.patch(this.config.ORDER_URL + "/" + id, data)
+        this.api.patch(this.config.ORDER_URL + "/" + id, data).catch()
     }
 
     changeOrderState(id, selectedOption) {
         let data = {
             state: selectedOption.value
         };
-        this.api.patch(this.config.ORDER_URL + "/" + id, data)
+        this.api.patch(this.config.ORDER_URL + "/" + id, data).catch()
     }
 
 } export default AllOrders;

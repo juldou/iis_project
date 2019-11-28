@@ -157,6 +157,6 @@ export default class Register extends Component {
 
             this.api.post(this.config.REGISTER_URL, data).then(result => {
                 this.setState({redirect: true});
-            })
+            }).catch()
     };
 }

@@ -59,7 +59,7 @@ export default class CreateUser extends Component {
         this.api.post(this.config.GET_USER_URL, data).then(response => {
                 this.setState({toHomescreen: true});
             }
-        );
+        ).catch();
     };
 
     render() {
