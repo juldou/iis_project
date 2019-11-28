@@ -108,7 +108,7 @@ func initUsers(app *app.App) {
 	app.Database.CreateUser(user)
 
 	user = &model.User{Email: "customer@customer.com", Role: "customer", AddressId: 1, Phone: "+421949111222"}
-	password = "heslo123"
+	password = "customer"
 	user.SetPassword(password)
 	app.Database.CreateUser(user)
 }

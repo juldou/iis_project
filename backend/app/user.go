@@ -69,9 +69,12 @@ func (ctx *Context) validateUser(user *model.User, password string) *ValidationE
 }
 
 func (ctx *Context) UpdateUser(user *model.User) error {
-	//if ctx.User == nil {
-	//	return ctx.AuthorizationError()
-	//}
+	if ctx.User == nil {
+		return ctx.AuthorizationError()
+	}
+	if ctx.User.Role != "admin" && ctx.User.Email != user.Email {
+		return ctx.AuthorizationError()
+	}
 
 	if !strings.Contains(user.Email, "@") {
 		return &ValidationError{"invalid email"}
@@ -81,8 +84,12 @@ func (ctx *Context) UpdateUser(user *model.User) error {
 }
 
 func (ctx *Context) DeleteUser(user *model.User) error {
-	//if ctx.User == nil {
-	//	return ctx.AuthorizationError()
-	//}
+	if ctx.User == nil {
+		return ctx.AuthorizationError()
+	}
+	if ctx.User.Role != "admin" && ctx.User.Email != user.Email {
+		return ctx.AuthorizationError()
+	}
+
 	return ctx.Database.DeleteUser(user)
 }
