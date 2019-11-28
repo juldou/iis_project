@@ -6,6 +6,7 @@ import './Register.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Redirect} from "react-router";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {isAuthenticated} from "./Network/Authentication";
 import {validatePhone, validateRequiredField} from "./Validation";
 
@@ -73,13 +74,16 @@ export default class Register extends Component {
         }
         return (
             <div className="Register">
+
                 <Form onSubmit={this.handleSubmit}>
+                    <p><b>Info</b> </p>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
                         <Form.Control
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
                             type="email"
+                            placeholder="Enter email"
                             value={this.state.email}
                             onChange={this.handleChange}
                         />
@@ -91,8 +95,10 @@ export default class Register extends Component {
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
+                            placeholder="Enter Password"
                         />
                     </Form.Group>
+
                     <Form.Group controlId="repeatPassword" bsSize="large">
                         <Form.Label> Repeat password: </Form.Label>
                         <Form.Control
@@ -100,18 +106,20 @@ export default class Register extends Component {
                             value={this.state.repeatPassword}
                             onChange={this.handleChange}
                             type="password"
+                            placeholder="Repeat password"
                         />
                     </Form.Group>
                     <Form.Group controlId="phone" bsSize="large">
-                        <Form.Label> Phone number </Form.Label>
+                        <Form.Label> Phone number: </Form.Label>
                         <Form.Control
                             className= {this.errors.phone ? "error" : ""}
                             value={this.state.phone}
                             onChange={this.handleChange}
                             type="text"
+                            placeholder="Enter phone number"
                         />
                     </Form.Group>
-                    <h3> Address </h3>
+                    <p><b>Address</b> </p>
                     <Form.Group controlId="street" bsSize="large">
                         <Form.Label> Street </Form.Label>
                         <Form.Control
@@ -119,6 +127,7 @@ export default class Register extends Component {
                             value={this.state.street}
                             onChange={this.handleChange}
                             type="text"
+                            placeholder="Enter name of your street"
                         />
                     </Form.Group>
                     <Form.Group controlId="city" bsSize="large">
@@ -128,10 +137,13 @@ export default class Register extends Component {
                             value={this.state.city}
                             onChange={this.handleChange}
                             type="text"
+                            placeholder="Enter name of your city"
+
                         />
                     </Form.Group>
                     <Button
                         block
+                        variant="info"
                         bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"

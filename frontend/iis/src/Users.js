@@ -35,32 +35,39 @@ class Users extends Component {
         }
         const listItems = this.state.items.map((item) =>
 
-        <div className= "userCard" key={item.id} onClick={() => {
-        } }>
-            <Jumbotron className= "userContainer">
-                <p>Email: {item.email}</p>
-                <p>Role: {item.role}</p>
-                <br/>
-                <p>
-                    <NavLink to={"/edituser/" + item.id} className="link">
-                        <Button variant="info"> Edit info</Button>
-                    </NavLink>
-                </p>
-            </Jumbotron>
-        </div>
+            <div className= "userCard" key={item.id} onClick={() => {
+            } }>
+                <Jumbotron className= "userContainer">
+                    <h1>Info</h1>
+                    <p>Email: {item.email}</p>
+                    <p>Phone number: {item.phone}</p>
+                    <p>Role: {item.role}</p>
+                    <br/>
+                    <h1>Address</h1>
+                    <p>Street: {item.Address.street}</p>
+                    <p>City: {item.Address.city}</p>
+                    <p>
+                        <NavLink to={"/edituser/" + item.id} className="link">
+                            <Button variant="info"> Edit info</Button>
+                        </NavLink>
+                    </p>
+                </Jumbotron>
+            </div>
 
         );
 
         return (
                 <div className="UserList">
+                    <NavLink to= "/createuser/" className="link">
+                        <Button variant="info" >Create new</Button>
+                    </NavLink>
+                    <br/>
+                    <br/>
                     <ul className="user-items">
                         {listItems}
                     </ul>
                     <br/>
                     <br/>
-                    <NavLink to= "/createuser/" className="link">
-                        <Button>CREATE NEW</Button>
-                    </NavLink>
                 </div>
         );
     }

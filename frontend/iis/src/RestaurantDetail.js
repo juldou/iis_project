@@ -83,16 +83,15 @@ class RestaurantDetail extends Component {
         const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
             return(
                 // <div className="card" key={item.id}>
-                    <Card style={{ width: '30rem' }}>
-                        <Card.Img variant="top" src={"/foods/" + item.picture_url} />
+                    <Card style={{ width: '22rem' }}>
+                        <Card.Img className="card-image" variant="top" src={"/foods/" + item.picture_url} />
                         <Card.Body>
                             <Card.Title>{item.name}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
-                            <Card.Text>
+                            <Card.Text className="dsc">
                                 {item.description}
                             </Card.Text>
                             <Card.Text>
-
                             {item.is_soldout ? "Sold out" : "Available"}
                             </Card.Text>
 
@@ -103,30 +102,14 @@ class RestaurantDetail extends Component {
                             {this.RemoveButton(item.id)}
                         </Card.Body>
                     </Card>
-
-                // </div>
-                // <div className="card" key={item.id}>
-                //     <div className="card-image">
-                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                //         <span className="card-title">{item.name}</span>
-                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                //         <i className="material-icons">add</i>
-                //     </div>
-                //
-                //     <div className="card-content">
-                //         <p>{item.description}</p>
-                //         <p><b>Price: {item.price}$</b></p>
-                //         {this.RemoveButton(item.id)}
-                //     </div>
-                // </div>
             )
         });
 
         const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) =>{
             return(
                 // <div className="card" key={item.id}>
-                <Card style={{ width: '30rem' }}>
-                    <Card.Img variant="top" src={"/foods/" + item.picture_url} />
+                <Card style={{ width: '22rem' }}>
+                    <Card.Img className="card-image" variant="top" src={"/foods/" + item.picture_url} />
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
@@ -138,42 +121,25 @@ class RestaurantDetail extends Component {
                         { this.AddButton(item.id)}
                     </Card.Body>
                 </Card>
-                    // </div>
-
-                // <div className="card" key={item.id}>
-                //     <div className="card-image">
-                //         <img src="https://www.omahasteaks.com/blog/wp-content/uploads/2019/09/Grilling-Flat-Irons-BP-1080x610.jpg" alt={item.name} height="200" width="200"/>
-                //         <span className="card-title">{item.name}</span>
-                //         <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={()=>{this.handleClick(item)}}><i className="material-icons">add</i></span>
-                //         <i className="material-icons">add</i>
-                //     </div>
-                //
-                //         <div className="card-content">
-                //         <p>{item.description}</p>
-                //     <p><b>Price: {item.price}$</b></p>
-                //             { this.ChangeButton(item.id) }
-                //
-                //         </div>
-                // </div>
         )
         });
         return (
             <div className="container">
                 {this.RestaurantInfo()}
 
-                <Tabs defaultActiveKey="menu" id="uncontrolled-tab-example">
-                    <Tab eventKey="menu" title="Menu">
+                <Tabs  defaultActiveKey="menu" id="uncontrolled-tab-example">
+                    <Tab className = "menu-tabs" eventKey="menu" title="Daily menu">
                         <br/>
-                        <h3 className="center">Menu</h3>
+                        <h3 className="center">Daily menu</h3>
                         <br/>
                         <div className="box">
                             {menuItems.length === 0 && <h3> Menu is empty</h3>}
                             {menuItems}
                         </div>
                     </Tab>
-                    <Tab eventKey="nabidka" title="Stala nabidka">
+                    <Tab className = "nabidka-tabs" eventKey="nabidka" title="Menu">
                         <br/>
-                        <h3 className="center">Stala nabidka</h3>
+                        <h3 className="center">Menu</h3>
                         <br/>
                         <div className="box">
                             {mealItems.length === 0 && <h3> There are no meals </h3>}
@@ -231,9 +197,9 @@ class RestaurantDetail extends Component {
         if(!this.state.restaurant) return;
         return (
             <Jumbotron fluid className="Jumbotron">
-                <h1>{this.state.restaurant.name}</h1>
+                <h2 align="center" >{this.state.restaurant.name}</h2>
                 <br/>
-                <p>{this.state.restaurant.description}</p>
+                <p align="center" >{this.state.restaurant.description}</p>
             </Jumbotron>);
     }
 

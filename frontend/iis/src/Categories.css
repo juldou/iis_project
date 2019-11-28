@@ -1,3 +1,11 @@
 .filter-items{
-    width: 15%;
+    width: max-content;
+}
+.categories-button{
+    display: inline-block;
+    width: max-content;
+    text-align: center;
+}
+.btn-group-vertical{
+    width: 80%;
 }

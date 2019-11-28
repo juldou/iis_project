@@ -6,6 +6,7 @@ import {Button, Jumbotron} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {getUserID} from "./Network/Authentication";
 import AsyncSelect from 'react-select/async';
+import './OrderList.css'
 
 class OrderList extends Component {
     constructor(props) {
@@ -31,25 +32,26 @@ class OrderList extends Component {
 
         if(this.state.items === null || this.state.items === "" ) {
             return (
+                <Jumbotron>
                 <h3> There are no orders</h3>
+                </Jumbotron>
             )
         }
 
         const listItems = this.state.items.map((item) =>
-            <Jumbotron  key={item.id}>
-                <h1>{item.id}</h1>
+            <Jumbotron key={item.id}>
                 <p>
-                    State: {item.state}
+                    Order ID: <h1>{item.id}</h1>
                 </p>
                 <p>
-                    <Button variant="primary">Learn more</Button>
+                    State: {item.state}
                 </p>
             </Jumbotron>
 
         );
         return (
             <div >
-                <ul>
+                <ul className="orders">
                     {listItems}
                 </ul>
             </div>

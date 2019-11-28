@@ -58,13 +58,16 @@ class AllOrders extends Component {
                     Order: {item.id}
                 </h1>
                 <p>
-                    State: {item.state}
+                    Courier:
                 </p>
                 {(isOperator()) &&
                 <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
                              defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
                 }
-
+                <br/>
+                <p>
+                    State:
+                </p>
                 { isCourier() &&
                 <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
                         value={this.state.type}
