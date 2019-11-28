@@ -24,6 +24,15 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 	return err
 }
 
+type OrdersAdapter struct {
+	State     string  `json:"state"`
+	UserId    uint    `json:"user_id"`
+	CourierId uint    `json:"courier_id"`
+	AddressId uint    `json:"address_id"`
+	Phone     string  `json:"phone"`
+	Foods     []model.Food `json:"foods"`
+}
+
 func (a *API) GetOrders(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	state := r.FormValue("state")
 
@@ -32,7 +41,24 @@ func (a *API) GetOrders(ctx *app.Context, w http.ResponseWriter, r *http.Request
 		return err
 	}
 
-	data, err := json.Marshal(orders)
+	var ordersAdapted []OrdersAdapter
+	for _, order := range orders {
+		foods, err := ctx.GetAllFoodsByOrderId(order.ID)
+		if err != nil {
+			return err
+		}
+		orderAdapted := OrdersAdapter{
+			State:     order.State,
+			UserId:    order.UserId,
+			CourierId: order.CourierId,
+			AddressId: order.AddressId,
+			Phone:     order.Phone,
+			Foods:     foods,
+		}
+		ordersAdapted = append(ordersAdapted, orderAdapted)
+	}
+
+	data, err := json.Marshal(ordersAdapted)
 	if err != nil {
 		return err
 	}

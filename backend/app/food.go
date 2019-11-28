@@ -24,17 +24,17 @@ func (ctx *Context) GetAllOrdersForUser() ([]*model.Order, error) {
 
 	var err error
 	var orders []*model.Order
-	if ctx.User.Role == "courier" {
-		orders, err = ctx.Database.GetAllOrdersByCourierId(ctx.User.ID)
-		if err != nil {
-			return nil, err
-		}
-	} else {
+	//if ctx.User.Role == "courier" {
+	//	orders, err = ctx.Database.GetAllOrdersByCourierId(ctx.User.ID)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//} else {
 		orders, err = ctx.Database.GetAllOrdersByUserId(ctx.User.ID)
 		if err != nil {
 			return nil, err
 		}
-	}
+	//}
 	return orders, nil
 }
 
@@ -44,7 +44,7 @@ func (ctx *Context) GetAllOrdersAssignedToCourier() ([]*model.Order, error) {
 	}
 
 	if ctx.User.Role != "courier" {
-		return nil, ctx.AuthorizationError()
+		return nil, nil
 	}
 
 	orders, err := ctx.Database.GetAllOrdersByCourierId(ctx.User.ID)

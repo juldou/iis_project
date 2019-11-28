@@ -33,7 +33,24 @@ func (a *API) GetAllOrdersAssignedToCourier(ctx *app.Context, w http.ResponseWri
 		return err
 	}
 
-	data, err := json.Marshal(orders)
+	var ordersAdapted []OrdersAdapter
+	for _, order := range orders {
+		foods, err := ctx.GetAllFoodsByOrderId(order.ID)
+		if err != nil {
+			return err
+		}
+		orderAdapted := OrdersAdapter{
+			State:     order.State,
+			UserId:    order.UserId,
+			CourierId: order.CourierId,
+			AddressId: order.AddressId,
+			Phone:     order.Phone,
+			Foods:     foods,
+		}
+		ordersAdapted = append(ordersAdapted, orderAdapted)
+	}
+
+	data, err := json.Marshal(ordersAdapted)
 	if err != nil {
 		return err
 	}
