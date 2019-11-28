@@ -26,7 +26,7 @@ func (db *Database) GetUsers() ([]*model.User, error) {
 
 func (db *Database) GetUserByEmail(email string) (*model.User, error) {
 	var user model.User
-	return &user, errors.Wrap(db.Where("email = ?", email).First(&user).Error, "unable to get user by email")
+	return &user, errors.Wrap(db.Where("email = ? and deleted_at is null", email).First(&user).Error, "unable to get user by email")
 }
 
 func (db *Database) CreateUser(user *model.User) error {

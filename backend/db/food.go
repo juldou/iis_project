@@ -21,12 +21,12 @@ func (db *Database) GetFoodById(id uint) (*model.Food, error) {
 
 func (db *Database) GetAllOrdersByUserId(userId uint) ([]*model.Order, error) {
 	var orders []*model.Order
-	return orders, errors.Wrap(db.Where("user_id = ?", userId).Find(&orders).Error, "unable to get all orders by user id")
+	return orders, errors.Wrap(db.Where("user_id = ? and deleted_at is null", userId).Find(&orders).Error, "unable to get all orders by user id")
 }
 
 func (db *Database) GetAllOrdersByCourierId(courierId uint) ([]*model.Order, error) {
 	var orders []*model.Order
-	return orders, errors.Wrap(db.Where("courier_id = ?", courierId).Find(&orders).Error, "unable to get all orders by user id")
+	return orders, errors.Wrap(db.Where("courier_id = ? and deleted_at is null", courierId).Find(&orders).Error, "unable to get all orders by user id")
 }
 
 func (db *Database) GetFoods() ([]*model.Food, error) {
