@@ -27,7 +27,7 @@ go build -o server .
 
 - vkládá a spravuje provozovny a jejich nabídky ✓ 
 
-- může vkládat obrázky k položkám nabídek 
+- může vkládat obrázky k položkám nabídek ✓
 
 - ukončuje objednávky pro daný den 
 
@@ -59,5 +59,24 @@ go build -o server .
 
 - Každý registrovaný uživatel má možnost editovat svůj profil. ✓  
  
-#Backend TODO
+#FRONTEND TODO
 - rules ✓
+
+Poznamky zo skusania frontendu
+TODO
+- pridat viac dat 
+- operator vie zmenit is_soldout
+- nahratie fotky ✓
+- logout pri 401
+- dat forbidden 403 ked robis nejaky malicious request (nemalo by sa to stavat, ale ked to niekto bude hackovat tak sa moze stat)
+- available pri menu - zmenil by som to na lepsi popis   
+- ked je v tom filtry na jedla oznacene to tlacitko, tak lepsie ho vyznacit lebo teraz neviem ci je ten filter oznaceny alebo nie
+- pridat do orders k tomu emailu aby bolo jasne ze su to kuriery, takisto k tomu stavu ze je to stav
+- to klikanie na navbar, aby to tam nebolo v tom hnusnom stvorci
+- klikanie na items restauracie (a nielen na to), aby sa nepodciarkoval ten text a aby sa nezvyraznovalo tou modrou farbou (mozno by to mohlo dobre vypadat s nejakou jemne jemne sivou)
+- pridat k cene ze aka penazna mena
+- pridat nahratie fotky pre menu ponuku
+- nemiesat anglictinu so slovencinou
+- ked vymazem z permament menu tak tam ostane taky prazdny itemlist
+- pridat viac info k tej order, takisto k users
+- JANI: doriesit to imagePreviewUrl
