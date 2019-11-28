@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {addToCart} from "./Order/CartReducer";
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
-import {Button, Card, Jumbotron, Tab, Tabs} from "react-bootstrap";
+import {Button, Card, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
 import './RestaurantDetails.css';
 
 class RestaurantDetail extends Component {
@@ -219,10 +219,9 @@ class RestaurantDetail extends Component {
     RestaurantInfo() {
         if(!this.state.restaurant) return;
         return (
-            <Jumbotron className="Jumbotron">
-                <h1><b> {this.state.restaurant.name} </b></h1>
+            <Jumbotron fluid className="Jumbotron">
+                <h1>{this.state.restaurant.name}</h1>
                 <br/>
-                <p>{this.state.restaurant.category} </p>
                 <p>{this.state.restaurant.description}</p>
             </Jumbotron>);
     }
