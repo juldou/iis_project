@@ -128,8 +128,6 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		r.Body = http.MaxBytesReader(w, r.Body, 100*1024*1024)
 
-		beginTime := time.Now()
-
 		hijacker, _ := w.(http.Hijacker)
 		w = &statusCodeRecorder{
 			ResponseWriter: w,
@@ -145,13 +143,11 @@ func (a *API) handler(f func(*app.Context, http.ResponseWriter, *http.Request) e
 			if statusCode == 0 {
 				statusCode = 200
 			}
-			duration := time.Since(beginTime)
 
 			logger := ctx.Logger.WithFields(logrus.Fields{
 				"time":        fmt.Sprintf("%d:%d:%d", time.Now().Hour(), time.Now().Minute(), time.Now().Second()),
-				"duration":    duration,
 				"status_code": statusCode,
-				"remote":      ctx.RemoteAddress,
+				//"remote":      ctx.RemoteAddress,
 			})
 			logger.Info(r.Method + " " + r.URL.RequestURI())
 		}()

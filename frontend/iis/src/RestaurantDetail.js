@@ -250,7 +250,7 @@ class RestaurantDetail extends Component {
             food_id: +id
         });
 
-        this.api.post(this.config.UPDATE_MENU_URL, data).then(response => {
+        this.api.patch(this.config.UPDATE_MENU_URL + "/" + id, data).then(response => {
             this.getItems(this.state.category)
         }).catch()
     }

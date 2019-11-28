@@ -1,6 +1,24 @@
 p, admin, /*, (GET)|(POST)|(PATCH)|(DELETE)
 
-g, operator, admin
-g, courier, admin
-g, customer, admin
-g, guest, admin
+p, operator, /food*, (GET)|(POST)|(PATCH)|(DELETE)
+p, operator, /menu*, (GET)|(POST)|(PATCH)|(DELETE)
+p, operator, /restaurant*, (GET)|(POST)|(PATCH)|(DELETE)
+p, operator, /order*, (GET)|(POST)|(PATCH)|(DELETE)
+
+p, courier, /order*, (GET)|(POST)|(PATCH)
+
+p, customer, /user*, (GET)|(POST)|(PATCH)
+
+p, guest, /restaurant-categories*, GET
+p, guest, /food-categories*, GET
+p, guest, /food*, GET
+p, guest, /menu*, GET
+p, guest, /restaurant*, GET
+p, guest, /register*, POST
+p, guest, /login*, POST
+p, guest, /order*, (GET)|(POST)
+p, guest, /user*, GET
+
+g, operator, customer
+g, courier, customer
+g, customer, guest

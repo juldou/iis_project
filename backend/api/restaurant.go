@@ -10,12 +10,12 @@ import (
 
 func (a *API) GetRestaurantById(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
 	id := getIdFromRequest(r)
-	todo, err := ctx.GetRestaurantById(id)
+	restaurant, err := ctx.GetRestaurantById(id)
 	if err != nil {
 		return err
 	}
 
-	data, err := json.Marshal(todo)
+	data, err := json.Marshal(restaurant)
 	if err != nil {
 		return err
 	}

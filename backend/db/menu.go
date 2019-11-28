@@ -9,7 +9,7 @@ import (
 
 func (db *Database) GetMenuByRestaurantId(id uint) ([]*model.Menu, error) {
 	var menus []*model.Menu
-	if err := db.Joins("join food on food.id=menu.food_id").Where("food.restaurant_id=?", id).Find(&menus).Error; err != nil {
+	if err := db.Joins("join food on food.id=menu.food_id").Where("food.restaurant_id=? and menu.deleted_at is null", id).Find(&menus).Error; err != nil {
 		log.Fatal(err)
 		return nil, err
 	}
