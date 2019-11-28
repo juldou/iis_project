@@ -89,8 +89,10 @@ class RestaurantDetail extends Component {
                                 {item.description}
                             </Card.Text>
                             <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                            {this.RemoveButton(item.id)}
                         </Card.Body>
                     </Card>
+
                 // </div>
                 // <div className="card" key={item.id}>
                 //     <div className="card-image">
@@ -121,6 +123,7 @@ class RestaurantDetail extends Component {
                             {item.description}
                         </Card.Text>
                         <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                        { this.ChangeButton(item.id) }
                     </Card.Body>
                 </Card>
                     // </div>
@@ -184,7 +187,7 @@ class RestaurantDetail extends Component {
 
                         <Button variant="info" > Change </Button>
                     </NavLink>
-
+                <br/>
                     <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>
                 </div>
 

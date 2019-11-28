@@ -62,13 +62,12 @@ class RestaurantList extends  Component {
         );
         return (
             <div className="RestaurantList">
-                <br/>
-                {this.addButton()}
-                <br/>
+
                 <ul className="items">
                     {listItems}
                 </ul>
                 <br/>
+                {this.addButton()}
                 <br/>
 
             </div>

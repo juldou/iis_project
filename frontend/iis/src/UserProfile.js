@@ -38,13 +38,11 @@ export default class UserProfile extends Component {
                     <h1>Info</h1>
                     <p>Email: {this.state.user.email}</p>
                     <p>Role: {this.state.user.role}</p>
-                    <p>Phone> {this.state.user.phone}</p>
+                    <p>Phone: {this.state.user.phone}</p>
                     <br/>
                     <h1>My address</h1>
-                    <p>Street: </p>
-                    <h3>{this.state.user.Address.street}</h3>
-                    <p>City</p>
-                    <h3>{this.state.user.Address.city}</h3>
+                    <p>Street: {this.state.user.Address.street}</p>
+                    <p>City: {this.state.user.Address.city}</p>
                         <NavLink to={"/edituser/" + this.id} className="link">
                             <Button variant="info"> Edit info</Button>
                         </NavLink>
