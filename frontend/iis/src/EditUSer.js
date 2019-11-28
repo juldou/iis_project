@@ -7,7 +7,7 @@ import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 import {validateemail, validatePhone, validateRequiredField} from "./Validation";
 import {isAdmin, isOperator} from "./Network/Authentication";
-import './login.css';
+import './EditUser.css';
 
 export const usertypes = [
     { label: "admin", value: "admin" },
@@ -124,6 +124,7 @@ export default class EditUser extends Component {
         return (
             <div className="Login">
                 <Form onSubmit={this.handleSubmit}>
+                    <h1><b> Info </b></h1>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
                         <Form.Control
@@ -161,7 +162,7 @@ export default class EditUser extends Component {
                             type="text"
                         />
                     </Form.Group>
-                    <h3> Address </h3>
+                    <h1><b> Address </b></h1>
                     <Form.Group controlId="street" bsSize="large">
                         <Form.Label> Street </Form.Label>
                         <Form.Control
