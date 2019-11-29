@@ -93,7 +93,7 @@ class RestaurantDetail extends Component {
                     <Card.Img className="card-image" variant="top" src={imageUrl}/>
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}Kč</b></Card.Subtitle>
                         <Card.Text className="dsc">
                             {item.description}
                         </Card.Text>
@@ -203,7 +203,7 @@ class RestaurantDetail extends Component {
                 <div>
                     <NavLink to={this.state.id + "/editmeal/" + id} className="link">
 
-                        <Button variant="info"> {"Change"}</Button>
+                        <Button variant="primary"> {"Change"}</Button>
                     </NavLink>
                     <br/>
                 </div>
@@ -214,7 +214,7 @@ class RestaurantDetail extends Component {
 
     AddButton(id) {
         if (isOperator())
-            return (<Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
+            return (<Button variant="primary" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
         return "";
     }
 
@@ -223,7 +223,7 @@ class RestaurantDetail extends Component {
             return (
                 <div>
 
-                    <Button variant="info" onClick={this.removeFromMenu.bind(this, id)}> Remove </Button>
+                    <Button variant="primary" onClick={this.removeFromMenu.bind(this, id)}> Remove </Button>
                 </div>
 
             );

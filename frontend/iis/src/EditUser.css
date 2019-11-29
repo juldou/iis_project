@@ -13,9 +13,9 @@ form{
 
 
 .Login{
-    margin-top: 20%;
+    margin-top: 3%;
     position: relative;
-    left: 50%;
-    top: 40%;
-    width: 40%;
+    left: 25%;
+    right: 25%;
+    width: 50%;
 }

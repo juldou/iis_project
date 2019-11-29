@@ -72,7 +72,7 @@ class RestaurantList extends  Component {
         if(isOperator())
             return (
             <NavLink to={ "/editrestaurant/" + id} className="link" style={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant="info" > Change </Button>
+                <Button variant="primary" > Change </Button>
             </NavLink>
             );
         return "";
