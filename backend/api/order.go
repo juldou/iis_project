@@ -25,15 +25,15 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 }
 
 type OrdersAdapter struct {
-	ID        uint        `json:"id"`
-	State     string        `json:"state"`
-	UserId    uint          `json:"user_id"`
-	CourierId uint          `json:"courier_id"`
-	AddressId uint          `json:"address_id"`
+	ID        uint           `json:"id"`
+	State     string         `json:"state"`
+	UserId    uint           `json:"user_id"`
+	CourierId uint           `json:"courier_id"`
+	AddressId uint           `json:"address_id"`
 	Address   *model.Address `json:"Address"`
 	Courier   *model.User    `json:"Courier"`
-	Phone     string        `json:"phone"`
-	Foods     []model.Food  `json:"foods"`
+	Phone     string         `json:"phone"`
+	Foods     []model.Food   `json:"foods"`
 }
 
 func (a *API) GetOrders(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
@@ -140,6 +140,7 @@ func (a *API) CreateOrder(ctx *app.Context, w http.ResponseWriter, r *http.Reque
 
 	if input.UserId != nil {
 		user, err := ctx.GetUserById(*input.UserId)
+		order.UserId = *input.UserId
 		if err != nil {
 			return err
 		}
