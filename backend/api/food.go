@@ -48,6 +48,7 @@ func (a *API) GetAllOrdersAssignedToCourier(ctx *app.Context, w http.ResponseWri
 			return err
 		}
 		orderAdapted := OrdersAdapter{
+			ID:        order.ID,
 			State:     order.State,
 			UserId:    order.UserId,
 			CourierId: order.CourierId,

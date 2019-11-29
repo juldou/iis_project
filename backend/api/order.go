@@ -25,6 +25,7 @@ func (a *API) GetOrderById(ctx *app.Context, w http.ResponseWriter, r *http.Requ
 }
 
 type OrdersAdapter struct {
+	ID        uint        `json:"id"`
 	State     string        `json:"state"`
 	UserId    uint          `json:"user_id"`
 	CourierId uint          `json:"courier_id"`
@@ -58,6 +59,7 @@ func (a *API) GetOrders(ctx *app.Context, w http.ResponseWriter, r *http.Request
 			return err
 		}
 		orderAdapted := OrdersAdapter{
+			ID:        order.ID,
 			State:     order.State,
 			UserId:    order.UserId,
 			CourierId: order.CourierId,
