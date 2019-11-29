@@ -41,11 +41,16 @@ class OrderList extends Component {
         const listItems = this.state.items.map((item) =>
             <Jumbotron key={item.id}>
                 <p>
-                    Order ID: <h1>{item.id}</h1>
+                    Order ID: <b>{item.id}</b>
                 </p>
                 <p>
-                    State: {item.state}
+                    State: <b>{item.state}</b>
                 </p>
+                <p>
+                    Ordered food:
+
+                </p>
+
             </Jumbotron>
 
         );
