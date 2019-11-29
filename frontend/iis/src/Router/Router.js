@@ -10,7 +10,6 @@ import AddRestaurant from "../AddRestaurant";
 import Cart from "../Order/Cart";
 import {Provider} from "react-redux";
 import {createStore} from "redux";
-import cartReducer from "../Order/CartReducer";
 import {Switch} from "react-bootstrap";
 import EditUSer from "../EditUSer";
 import Users from "../Users";

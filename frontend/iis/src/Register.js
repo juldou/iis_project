@@ -8,7 +8,7 @@ import NetworkService from "./Network/NetworkService";
 import {Redirect} from "react-router";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {isAuthenticated} from "./Network/Authentication";
-import {validatePhone, validateRequiredField} from "./Validation";
+import {validateemail, validatePassword, validatePhone, validateRequiredField} from "./Validation";
 
 export default class Register extends Component {
     constructor(props) {
@@ -50,8 +50,8 @@ export default class Register extends Component {
 
     validateForm() {
         this.errors = {
-            email: this.state.email.length < 5 ,
-            password: this.state.password.length < 5,
+            email: validateemail(this.state.email) ,
+            password: validatePassword(this.state.password),
             validatePassword: this.state.password !== this.state.repeatPassword,
             street: validateRequiredField(this.state.street),
             city: validateRequiredField(this.state.city),

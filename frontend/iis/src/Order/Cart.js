@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
-import {addQuantity, removeItem, subtractQuantity} from "./CartReducer";
-import {Button, Jumbotron} from "react-bootstrap";
+import {Button, Col, Jumbotron, ListGroup, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {validatePhone, validateRequiredField} from "../Validation";
 import {getUserID, isAuthenticated, isCourier, isOperator} from "../Network/Authentication";
@@ -88,21 +87,26 @@ class Cart extends Component{
 
             let addedItems = this.state.order.map(item=>{
                     return(
+
                         <Jumbotron key={item.id}>
-                            <h1>
-                                {item.name}
-                            </h1>
-                            <p>
-                                {item.desc}
-                            </p>
-                            <p>
-                                <b>Price: {item.price}$</b>
-                            </p>
-                            <p>
-                                <b>Quantity: {item.quantity}</b>
-                            </p>
-                            <Button variant="info" onClick={()=>{this.handleRemove(item.id)}}
-                            >Remove</Button>
+                            <Row>
+                                <Col>
+                                    <p>
+                                        <b> {item.name}</b>
+                                    </p>
+                                </Col>
+                                <Col>
+                                </Col>
+                                <Col>
+                                    <p>
+                                        <b>{item.price}$</b>
+                                    </p>
+                                </Col>
+                                <Col>
+                                    <Button variant="info" onClick={()=>{this.handleRemove(item.id)}}
+                                    >Remove</Button>
+                                </Col>
+                            </Row>
                         </Jumbotron>
 
                     )
@@ -113,11 +117,26 @@ class Cart extends Component{
             <div className="container">
                 <div className="cart">
                     <h5>You have ordered:</h5>
-                    <ul className="collection">
-                        {addedItems}
-                    </ul>
+                    <br/>
+                    <Row>
+                        <Col>
+                            <p>Item name</p>
+                        </Col>
+                        <Col>
+                        </Col>
+                        <Col>
+                            <p>Price</p>
+                        </Col>
+                        <Col>
+                        </Col>
 
-                    <h3> Total: {this.calculatePrice()}E</h3>
+                    </Row>
+
+                    <li className="collection">
+                        {addedItems}
+                    </li>
+
+                    <h3> Total: {this.calculatePrice()}$</h3>
 
                     { isAuthenticated() || this.Address()}
                     <Button

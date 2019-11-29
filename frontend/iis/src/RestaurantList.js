@@ -36,7 +36,7 @@ class RestaurantList extends  Component {
 
                     <NavLink to={"restaurant/" + item.id} className="link">
                         <Card style={{ width: '22rem' }} text={"dark"} >
-                            <Card.Img variant="top" src="https://www.damejidlo.cz/public/delivery-type/2-all-21941.png" />
+                            <Card.Img variant="top" src="/restaurant.png" />
                             <Card.Body >
                                 <Card.Title>{item.name}</Card.Title>
                                 <br/>
@@ -79,11 +79,11 @@ class RestaurantList extends  Component {
     }
 
     addButton() {
-        if(isAuthenticated()) {
+        if(isOperator()) {
             return(
                 // <p Add new item to a Restaurant list./p>
                 <NavLink to="/addrestaurant/" className="link">
-                <Button variant="info" name="button">ADD NEW ITEM</Button>
+                <Button variant="info" name="button">Add new restaurant</Button>
                 </NavLink>
             );
         }

@@ -37,7 +37,7 @@ export default class UserProfile extends Component {
                 <Jumbotron>
                     <h1>Info</h1>
                     <p>Email: {this.state.user.email}</p>
-                    <p>Role: {this.state.user.role}</p>
+                    <p>Account type: {this.state.user.role}</p>
                     <p>Phone: {this.state.user.phone}</p>
                     <br/>
                     <h1>My address</h1>

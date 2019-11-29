@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
 import {isOperator} from "./Network/Authentication";
+import Checkbox from "./Widgets/Checkbox";
 
 class AddMeal extends Component {
     constructor(props) {
@@ -50,6 +51,11 @@ class AddMeal extends Component {
                         price: meal.price,
                         available: !meal.is_soldout
                     })
+
+                    this.validateForm()
+                    this.setState({
+                        update:true
+                    })
                 }
             }).catch()
         }
@@ -59,6 +65,14 @@ class AddMeal extends Component {
         this.setState({
             [event.target.id]: event.target.value
         });
+
+    };
+
+    handleCheck= event => {
+        this.setState({
+            available: !this.state.available
+        });
+
     };
 
     handleTypeChange(event) {
@@ -123,19 +137,16 @@ class AddMeal extends Component {
                         type="text"
                     />
                 </Form.Group>
-                <Form.Group controlId="price" bsSize="large">
-                    <Form.Label> Check </Form.Label>
-                    <input
+                <br>
+                </br>
+                <label> Available </label>
 
-                        type="checkbox"     className="form-check-input"
-
-                        defaultChecked={true}
-                    />
-                </Form.Group>
-                <input type="checkbox" defaultChecked={this.state.available} onChange={this.handleChange.bind(this)} />
-                {alert(this.state.type)}
+                <input type="checkbox" key={this.state.available} className="form-check-input" defaultChecked={this.state.available} onChange={this.handleCheck.bind(this)} />
+                <br>
+                </br>
                 <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
-                             defaultValue={{label: this.state.type, value: this.state.type}}/>
+                             defaultValue={{label: this.state.type, value: this.state.type}}
+                             key={this.state.type}/>
 
 
 
@@ -159,7 +170,9 @@ class AddMeal extends Component {
                     this.props.match.params.id &&
                     <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
                 }
+
             </Form>
+
         );
     }
 
