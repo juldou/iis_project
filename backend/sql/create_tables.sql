@@ -306,7 +306,7 @@ insert into "order"(state, address_id, user_id, courier_id, created_at, updated_
 values ('new',
         1,
         1,
-        1,
+        3,
         current_timestamp,
         current_timestamp);
 

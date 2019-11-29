@@ -39,11 +39,21 @@ func (a *API) GetAllOrdersAssignedToCourier(ctx *app.Context, w http.ResponseWri
 		if err != nil {
 			return err
 		}
+		address, err := ctx.GetAddressById(order.AddressId)
+		if err != nil {
+			return err
+		}
+		courier, err := ctx.GetUserById(order.CourierId)
+		if err != nil {
+			return err
+		}
 		orderAdapted := OrdersAdapter{
 			State:     order.State,
 			UserId:    order.UserId,
 			CourierId: order.CourierId,
 			AddressId: order.AddressId,
+			Address:   address,
+			Courier:   courier,
 			Phone:     order.Phone,
 			Foods:     foods,
 		}
