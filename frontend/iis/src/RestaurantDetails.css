@@ -21,7 +21,7 @@ body{
     text-overflow: ellipsis;
 }
 .Jumbotron{
-    margin-top: 50%;
+    margin-top: 50px;
 }
 h2{
     text-transform: uppercase;
@@ -35,4 +35,7 @@ h2{
     height: 22rem;
 }
 
+.menu-container {
+    margin-bottom: 32px;
+}
 
