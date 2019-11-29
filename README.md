@@ -12,6 +12,7 @@ go build -o server .
 `nohup ./server serve &`
 - logs are in nohup.out
 - you can consume logs by `tailf -f nohup.out`
+- check ports `lsof -iTCP -sTCP:LISTEN`
 
 # How to create/drop tables
 - check backend/ directory, run recreate_tables against your db 
@@ -80,3 +81,5 @@ TODO
 - ked vymazem z permament menu tak tam ostane taky prazdny itemlist
 - pridat viac info k tej order, takisto k users
 - JANI: doriesit to imagePreviewUrl ✓
+- Wrong username or password - upravit to
+- upravit v menu tu hlasku ze ked tam nie je ziadne menu
