@@ -115,6 +115,7 @@ class AddMeal extends Component {
                     <Form.Group controlId="name" bsSize="large">
                         <Form.Label> Name </Form.Label>
                         <Form.Control
+                            required
                             className={this.errors.name ? "error" : ""}
                             autoFocus
                             type="text"
@@ -125,6 +126,7 @@ class AddMeal extends Component {
                     <Form.Group controlId="description" bsSize="large">
                         <Form.Label> Description </Form.Label>
                         <Form.Control
+                            required
                             className={this.errors.description ? "error" : ""}
                             value={this.state.description}
                             onChange={this.handleChange}
@@ -136,6 +138,7 @@ class AddMeal extends Component {
                             <Form.Group controlId="price" bsSize="large">
                                 <Form.Label> Price (Kč)</Form.Label>
                                 <Form.Control
+                                    required
                                     className={this.errors.price ? "error" : ""}
                                     value={this.state.price}
                                     onChange={this.handleChange}
@@ -149,6 +152,7 @@ class AddMeal extends Component {
                                 <Form.Label> Available </Form.Label>
 
                                 <Form.Control
+                                    required
                                     type="checkbox"
                                     key={this.state.available}
                                     className="form-check-input"

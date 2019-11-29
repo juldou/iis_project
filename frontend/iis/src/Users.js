@@ -4,7 +4,8 @@ import './index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import './Users.css';
-import {Button, Jumbotron} from "react-bootstrap";
+import {Button, Col, Jumbotron, Row} from "react-bootstrap";
+import './Order.css';
 
 
 class Users extends Component {
@@ -38,14 +39,30 @@ class Users extends Component {
             <div className= "userCard" key={item.id} onClick={() => {
             } }>
                 <Jumbotron className= "userContainer">
-                    <h1>Info</h1>
-                    <p>Email: {item.email}</p>
-                    <p>Phone number: {item.phone}</p>
-                    <p>Role: {item.role}</p>
+                    <h1>User ID: {item.id}</h1>
+                    <div className="striped-border"> </div>
+                    <p><b> Info</b></p>
+                    <Row>
+                        <Col>
+                            <p><b>Email:</b> {item.email}</p>
+                        </Col>
+                        <Col>
+                                <p><b>Account type:</b> {item.role}</p>
+                        </Col>
+                    </Row>
+                    <p><b>Phone number:</b> {item.phone}</p>
                     <br/>
-                    <h1>Address</h1>
-                    <p>Street: {item.Address.street}</p>
-                    <p>City: {item.Address.city}</p>
+                    <div className="striped-border"> </div>
+                    <p><b>Address</b></p>
+                    <Row>
+                        <Col>
+                            <p><b>Street:</b> {item.Address.street}</p>
+                        </Col>
+                        <Col>
+                            <p><b>City:</b> {item.Address.city}</p>
+                        </Col>
+                    </Row>
+                    <br/>
                     <p>
                         <NavLink to={"/edituser/" + item.id} className="link">
                             <Button variant="info"> Edit info</Button>

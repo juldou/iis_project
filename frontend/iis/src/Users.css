@@ -10,10 +10,7 @@
 }
 
 /* Add some padding inside the card container */
-.userContainer{
-    background-color: white;
-    padding: 2px 16px;
-}
+
 
 #UserPreview {width:90%;margin:0 auto;display:flex;flex-wrap:wrap;
     justify-content:space-between;}

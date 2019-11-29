@@ -72,7 +72,7 @@ class Login extends Component {
             return <Redirect to='/' />
         }
         return (
-            <div className="Login">
+            <div className="Login-start">
                 {this.state.wrongCredentials && <h3> Wrong username or password</h3>}
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">

@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import {isCourier, isOperator} from "./Network/Authentication";
 import Select from "react-select";
-import {Button, Jumbotron} from "react-bootstrap";
+import {Button, Col, Jumbotron, Row} from "react-bootstrap";
 import {stateOptions} from "./AllOrders";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
+import './Order.css'
 
 export default class Order extends Component {
     constructor(props) {
@@ -27,15 +28,23 @@ export default class Order extends Component {
                 <h1>
                     Order: {item.id}
                 </h1>
-                <p>Phone: {item.phone}</p>
-                {this.Address(item.Address)}
-                {this.Foods(item.foods)}
-
-                {(isOperator()) &&
-                this.Courier(item)
-                }
-
                 <br/>
+                <p><b>Info:</b></p>
+                <p><b> Phone:</b> {item.phone}</p>
+                <div className="striped-border"> </div>
+                <p><b>Address:</b></p>
+                {this.Address(item.Address)}
+                <div className="striped-border"> </div>
+                <p><b>You ordered:</b></p>
+                {this.Foods(item.foods)}
+                <div className="striped-border"> </div>
+                <Row>
+                    <Col>
+                        {(isOperator()) &&
+                        this.Courier(item)
+                        }
+                    </Col>
+                    <Col>
                 <p>
                     State:
                 </p>
@@ -48,9 +57,11 @@ export default class Order extends Component {
                     ||
                     <h3> {item.state}</h3>
                 }
-
+                    </Col>
+                </Row>
+                <br/>
                 {
-                    isCourier() && <Button onClick={this.send.bind(this)}> Change </Button>
+                    isCourier() && <Button variant="info" onClick={this.send.bind(this)}> Change </Button>
                 }
 
             </Jumbotron>
@@ -77,8 +88,14 @@ export default class Order extends Component {
         if (address == null || address == "") return ""
         return (
             <div>
-                <p>Street: {address.street}</p>
-                <p>City: {address.city}</p>
+                <Row>
+                    <Col>
+                        <p><b> Street: </b>{address.street}</p>
+                    </Col>
+                    <Col>
+                        <p><b>City: </b>{address.city}</p>
+                    </Col>
+                </Row>
             </div>
         )
     }
@@ -91,9 +108,14 @@ export default class Order extends Component {
                 totalPrice += item.price
                 return (
                     <div className="food-item">
-                        <h5>{item.name}</h5>
-                        <h5>{item.price} Kč</h5>
-
+                        <Row>
+                            <Col>
+                                <p>{item.name}</p>
+                            </Col>
+                            <Col>
+                                <p>{item.price} Kč</p>
+                            </Col>
+                        </Row>
                     </div>
                 )
             }
