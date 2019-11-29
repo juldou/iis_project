@@ -11,15 +11,13 @@ form{
 
 /*}*/
 
-.Login{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -moz-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+.Login-start{
+    position: relative;
+    right: 25%;
+    left: 25%;
+    margin-top: 10%;
+    width: 50%;
+
 }
 
 .error {

@@ -107,13 +107,14 @@ class AddRestaurant extends Component {
                     <Form.Group controlId="name">
                         <Form.Label>Name</Form.Label>
                         <Form.Control className={this.errors.name ? "error" : ""} autoFocus type="text"
-                                      placeholder="Enter name of a restaurant" value={this.state.name}
+                                      required placeholder="Enter name of a restaurant" value={this.state.name}
                                       onChange={this.handleChange}/>
                     </Form.Group>
 
                     <Form.Group controlId="type" bsSize="large">
                         <Form.Label> Type </Form.Label>
                         <Form.Control
+                            required
                             className={this.errors.type ? "error" : ""}
                             autoFocus
                             placeholder="Enter type of a restaurant"
@@ -125,6 +126,7 @@ class AddRestaurant extends Component {
                     <Form.Group controlId="description" bsSize="large">
                         <Form.Label> Description </Form.Label>
                         <Form.Control
+                            required
                             placeholder="Enter restaurant description"
                             className={this.errors.description ? "error" : ""}
                             value={this.state.description}

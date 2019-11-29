@@ -89,7 +89,7 @@ class Cart extends Component{
             let addedItems = this.state.order.map(item=>{
                     return(
 
-                        <Jumbotron className="order-jumbotron" key={item.id}>
+                        <div className="order-div" key={item.id}>
                             <Row>
                                 <Col>
                                     <p>
@@ -100,15 +100,15 @@ class Cart extends Component{
                                 </Col>
                                 <Col>
                                     <p>
-                                        <b>{item.price}$</b>
+                                        <b>{item.price}Kč</b>
                                     </p>
                                 </Col>
                                 <Col>
-                                    <Button variant="info" onClick={()=>{this.handleRemove(item.id)}}
+                                    <Button variant="danger" size="sm" onClick={()=>{this.handleRemove(item.id)}}
                                     >Remove</Button>
                                 </Col>
                             </Row>
-                        </Jumbotron>
+                        </div>
 
                     )
                 });
@@ -133,11 +133,11 @@ class Cart extends Component{
 
                     </Row>
 
-                    <li className="collection">
+                    <ul className="collection">
                         {addedItems}
-                    </li>
+                    </ul>
 
-                    <h3> Total: {this.calculatePrice()}$</h3>
+                    <h3> Total: {this.calculatePrice()}Kč</h3>
 
                     { isAuthenticated() || this.Address()}
                     <Button

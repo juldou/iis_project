@@ -7,3 +7,10 @@
     width: 40%;
     height: 50%;
 }
+.striped-border {
+    border: 1px dashed #000;
+    width: 100%;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}

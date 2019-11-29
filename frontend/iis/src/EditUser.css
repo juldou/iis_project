@@ -13,10 +13,9 @@ form{
 
 
 .Login{
-    margin-top: 5%;
-    position: absolute;
+    margin-top: 20%;
+    position: relative;
     left: 50%;
     top: 40%;
-    transform: translate(-50%, -50%);
     width: 40%;
 }
