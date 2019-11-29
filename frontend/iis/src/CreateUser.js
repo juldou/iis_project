@@ -65,6 +65,8 @@ export default class CreateUser extends Component {
     };
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if(this.state.toHomescreen === true) {
             return <Redirect to='/#' />
         }
@@ -98,7 +100,7 @@ export default class CreateUser extends Component {
                     <Button
                         block
                         bsSize="large"
-                        disabled={!this.validateForm()}
+                        disabled={buttonDisabled}
                         type="submit"
                     >
                         CREATE

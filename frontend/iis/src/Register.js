@@ -67,6 +67,8 @@ export default class Register extends Component {
     };
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if(this.state.redirect === true) {
             return (
                 <Redirect to="/"/>
@@ -145,7 +147,7 @@ export default class Register extends Component {
                         block
                         variant="info"
                         bsSize="large"
-                        disabled={!this.validateForm()}
+                        disabled={buttonDisabled}
                         type="submit"
                     >
                         REGISTER

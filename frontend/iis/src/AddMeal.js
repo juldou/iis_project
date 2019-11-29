@@ -96,7 +96,7 @@ class AddMeal extends Component {
     validateForm() {
         this.errors = {
             name: validateRequiredField(this.state.name) ,
-            description:  validateRequiredField(this.state.name),
+            description:  validateRequiredField(this.state.description),
             price: this.validatePrice(),
             type: validateRequiredField(this.state.type)
         };
@@ -104,6 +104,8 @@ class AddMeal extends Component {
     }
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if(this.state.homeScreen === true) {
             return <Redirect to={'/restaurant/' + this.restaurant_id}/>
         }
@@ -160,7 +162,7 @@ class AddMeal extends Component {
                 <Button
                     block
                     bsSize="large"
-                    disabled={!this.validateForm()}
+                    disabled={buttonDisabled}
                     type="submit"
                 >
                     CHANGE

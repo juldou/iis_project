@@ -65,6 +65,8 @@ class Login extends Component {
     }
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if(this.state.toHomescreen === true) {
             return <Redirect to='/' />
         }
@@ -96,7 +98,7 @@ class Login extends Component {
                     <Button
                         block
                         bsSize="large"
-                        disabled={!this.validateForm()}
+                        disabled={buttonDisabled}
                         type="submit"
                     >
                         Login

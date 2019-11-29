@@ -10,9 +10,7 @@ const AppContext = React.createContext(null)
 // TODO rename,  actually restaurant detail
 class Homescreen extends React.Component {
 
-    triggerCategoryChange(idCategory) {
-        this.list.categoryChanged(idCategory)
-    }
+
   render() {
     return (
         <div className="Application">
@@ -21,7 +19,6 @@ class Homescreen extends React.Component {
                     <RestaurantDetail ref={list => this.list = list} restaurantId={this.props.match.params.restaurantId}/>
               </div>
                 <div className="Categories">
-                    <Categories onClick={this.triggerCategoryChange.bind(this)}/>
                 </div>
             </section>
         </div>

@@ -5,8 +5,9 @@ import {NavLink, Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
-import {Button, Card, Container, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
+import {Button, ButtonGroup, Card, Container, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
 import './RestaurantDetails.css';
+import Categories from "./Categories";
 
 class RestaurantDetail extends Component {
     constructor(props) {
@@ -17,10 +18,13 @@ class RestaurantDetail extends Component {
             menu: null,
             meals: null,
             restaurant: undefined,
-            id: this.props.restaurantId,
+            id: this.props.match.params.restaurantId,
             category: null,
             loading: true
         }
+    }
+    triggerCategoryChange(idCategory) {
+        this.categoryChanged(idCategory)
     }
 
     componentDidMount() {
@@ -95,11 +99,14 @@ class RestaurantDetail extends Component {
                             {item.is_soldout ? "Sold out" : "Available"}
                             </Card.Text>
 
+                            <div className="center">
                             <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button
                             >
                             { this.ChangeButton(item.id) }
 
                             {this.RemoveButton(item.id)}
+
+                        </div>
                         </Card.Body>
                     </Card>
             )
@@ -118,9 +125,12 @@ class RestaurantDetail extends Component {
                         <Card.Text>
                             {item.description}
                         </Card.Text>
+                        <div className="center">
+
                         <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
                         { this.ChangeButton(item.id) }
                         { this.AddButton(item.id)}
+                        </div>
                     </Card.Body>
                 </Card>
         )
@@ -128,19 +138,31 @@ class RestaurantDetail extends Component {
         return (
             <div className="container">
                 {this.RestaurantInfo()}
+                <div className="center">
+                    <Categories onClick={this.triggerCategoryChange.bind(this)}/>
+                </div>
+                {
+                    isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
+                        <div className="center">
+                            <Button className="btn btn-primary btn-lg" onClick={this.addMeal}> Add meal </Button>
+                            <br/>
+                            <br/>
+                        </div>
+                    </NavLink>
+                }
 
                 <Container className = "menu-container">
                         <br/>
                         <h3 className="center">Daily menu</h3>
                         <br/>
                         <div className="box">
-                            {menuItems.length === 0 && <h3> Menu is empty</h3>}
+                            {menuItems.length === 0 && <h3> There are no meals</h3>}
                             {menuItems}
                         </div>
                 </Container>
 
                     <Container className = "menu-container">
-                        <h3 className="center">Menu</h3>
+                        <h3 className="center">Permanent offer</h3>
                         <br/>
                         <div className="box">
                             {mealItems.length === 0 && <h3> There are no meals </h3>}
@@ -148,17 +170,6 @@ class RestaurantDetail extends Component {
                             {mealItems}
                         </div>
                     </Container>
-
-
-                <br/>
-                <br/>
-                {
-                    isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
-                        <Button className="add-meal" variant="info" onClick={this.addMeal}> Add meal </Button>
-                    </NavLink>
-                }
-
-
             </div>
         );
     }
@@ -169,7 +180,7 @@ class RestaurantDetail extends Component {
                 <div>
                     <NavLink to={  this.state.id + "/editmeal/" + id} className="link">
 
-                        <Button variant="info" > Change </Button>
+                        <Button variant="info" > {"Change \n "}</Button>
                     </NavLink>
                 <br/>
                 </div>
@@ -202,24 +213,10 @@ class RestaurantDetail extends Component {
             <Jumbotron fluid className="Jumbotron">
                 <h2 align="center" >{this.state.restaurant.name}</h2>
                 <br/>
+                <p align="center" >{this.state.restaurant.category}</p>
+                <br/>
                 <p align="center" >{this.state.restaurant.description}</p>
             </Jumbotron>);
-    }
-
-    DeactivateButton() {
-        if(isOperator())
-            return (
-                <div>
-
-                    <Button variant="info" onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
-                </div>
-
-            );
-        return "";
-    }
-
-    deactivateOrders() {
-        // TODO
     }
 
     addToMenu(id) {

@@ -56,7 +56,7 @@ export const AppRouter = (
             <Header/>
             {/*<Switch >*/}
                 <Route exact path="/" component={RestaurantList} />
-                <Route exact path="/restaurant/:restaurantId" component={Homescreen} />
+                <Route exact path="/restaurant/:restaurantId" component={RestaurantDetail} />
                 <Route exact path="/restaurant/:restaurantId/addmeal" component={AddMeal}/>
                 <Route exact path="/restaurant/:restaurantId/editmeal/:id" component={AddMeal}/>
                 <Route exact path="/register" component={Register}/>

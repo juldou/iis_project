@@ -35,12 +35,13 @@ class AddRestaurant extends Component {
                 this.setState({
                     name: restaurant.name,
                     type: restaurant.category,
-                    description: restaurant.description
+                    description: restaurant.description,
+                    update: false
                 })
 
                 this.validateForm();
                 this.setState({
-                    update: true
+                    update: !this.state.update
                 })
 
             }).catch()
@@ -48,15 +49,12 @@ class AddRestaurant extends Component {
     }
 
     handleChange = event => {
+        event.preventDefault()
         this.setState({
             [event.target.id]: event.target.value
         });
-    };
 
-    handleImageChange(image) {
-        alert(image);
-        this.setState({image: image});
-    }
+    };
 
     handleSubmit(event) {
         event.preventDefault();
@@ -64,6 +62,8 @@ class AddRestaurant extends Component {
     }
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if (this.state.homeScreen === true) {
             return <Redirect to='/'/>
         }
@@ -133,7 +133,7 @@ class AddRestaurant extends Component {
                     <Button
                         block
                         bsSize="large"
-                        disabled={!this.validateForm()}
+                        disabled={buttonDisabled}
                         type="submit"
                     >
                         CHANGE
@@ -149,11 +149,16 @@ class AddRestaurant extends Component {
     }
 
     validateForm() {
+
         this.errors = {
             name: validateRequiredField(this.state.name),
             description: validateRequiredField(this.state.description),
             type: validateRequiredField(this.state.type),
         };
+        // alert(JSON.stringify({"name": this.errors.name, "dec": this.errors.description, "type": this.errors.type}))
+        // this.setState({
+        //     update: !this.state.update
+        // })
         return !Object.keys(this.errors).some(x => this.errors[x]);
     }
 

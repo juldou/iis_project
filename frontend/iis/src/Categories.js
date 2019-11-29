@@ -28,7 +28,7 @@ class Categories extends Component {
     render() {
         const listItems = this.state.items.map((item) =>
 
-            <Button variant="outline-info" className = "categories-button" key={item.id} onClick={() => {
+            <Button variant="outline-primary" className = {this.state.active === item.id ? "active" : ""} key={item.id} onClick={() => {
                 if(this.state.active === item.id) {
                     this.props.onClick("");
                     this.setState({active: -1})
@@ -37,22 +37,23 @@ class Categories extends Component {
                 this.props.onClick(item.name);
                 this.setState({active: item.id})
             } }>
-                <span  >
-                    <a className={this.state.active === item.id ? "active" : ""} href="#">{item.name}</a>
-                </span>
+                {item.name}
                 <br/>
             </Button>
         );
         return (
+            <div className="categories">
+                <div className="center">
+            <h5>Categories</h5>
+                </div>
 
-            <ButtonGroup vertical>
+            <ButtonGroup horizontal>
                 <br/>
-                <p>Filter</p>
                 <br/>
                 {listItems}
                 <br/>
             </ButtonGroup>
-
+            </div>
         );
     }
 } export default Categories;
