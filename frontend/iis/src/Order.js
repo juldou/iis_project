@@ -38,13 +38,11 @@ export default class Order extends Component {
                 <p><b>You ordered:</b></p>
                 {this.Foods(item.foods)}
                 <div className="striped-border"> </div>
-                <Row>
-                    <Col>
+
                         {(isOperator()) &&
                         this.Courier(item)
                         }
-                    </Col>
-                    <Col>
+    <br/>
                 <p>
                     State:
                 </p>
@@ -57,11 +55,10 @@ export default class Order extends Component {
                     ||
                     <h3> {item.state}</h3>
                 }
-                    </Col>
-                </Row>
+
                 <br/>
                 {
-                    isCourier() && <Button variant="info" onClick={this.send.bind(this)}> Change </Button>
+                    isCourier() && <Button variant="primary" onClick={this.send.bind(this)}> Change </Button>
                 }
 
             </Jumbotron>

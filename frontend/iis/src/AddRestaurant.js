@@ -106,7 +106,7 @@ class AddRestaurant extends Component {
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="name">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control className={this.errors.name ? "error" : ""} autoFocus type="text"
+                        <Form.Control className={this.errors.name ? "error" : ""} type="text"
                                       required placeholder="Enter name of a restaurant" value={this.state.name}
                                       onChange={this.handleChange}/>
                     </Form.Group>
@@ -116,7 +116,6 @@ class AddRestaurant extends Component {
                         <Form.Control
                             required
                             className={this.errors.type ? "error" : ""}
-                            autoFocus
                             placeholder="Enter type of a restaurant"
                             type="text"
                             value={this.state.type}
@@ -134,10 +133,9 @@ class AddRestaurant extends Component {
                             type="text"
                         />
                     </Form.Group>
-                    <Row>
-                        <Col>
+
                                 <Button
-                                    variant="info"
+                                    variant="primary"
                                     block
                                     bsSize="large"
                                     disabled={buttonDisabled}
@@ -145,8 +143,6 @@ class AddRestaurant extends Component {
                                 >
                                     CHANGE
                                 </Button>
-                        </Col>
-                        <Col>
 
                                 {
                                     this.props.match.params.id &&
@@ -158,8 +154,7 @@ class AddRestaurant extends Component {
                                         DELETE
                                     </Button>
                                 }
-                        </Col>
-                    </Row>
+
                 </Form>
             </div>
         );

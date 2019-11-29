@@ -141,11 +141,12 @@ class Cart extends Component{
 
                     { isAuthenticated() || this.Address()}
                     <Button
-                        variant="info" onClick={this.sendOrder.bind(this)}
+                        variant="primary" block onClick={this.sendOrder.bind(this)}
                         disabled={buttonDisabled}>Send</Button>
+                    <br/>
                     { isAuthenticated() ||
                     <Button
-                        variant="info" onClick={this.sendAndRegister.bind(this)}
+                        variant="primary" block onClick={this.sendAndRegister.bind(this)}
                         disabled={buttonDisabled}>Send order and Register</Button>}
                 </div>
             </div>
@@ -156,7 +157,7 @@ class Cart extends Component{
         return (
             <div>
                 <Form.Group controlId="phone" bsSize="large">
-                    <Form.Label> Phone number </Form.Label>
+                    <Form.Label> Phone number (+421 xxx xxx xxx) </Form.Label>
                     <Form.Control
                         className= {this.errors.phone ? "error" : ""}
                         value={this.state.phone}

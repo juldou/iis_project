@@ -163,7 +163,7 @@ export default class EditUser extends Component {
                         </Col>
                     </Row>
                     <Form.Group controlId="phone" bsSize="large">
-                        <Form.Label> Phone number </Form.Label>
+                        <Form.Label> Phone number (+421 xxx xxx xxx)</Form.Label>
                         <Form.Control
                             className= {this.errors.phone ? "error" : ""}
                             value={this.state.phone}
@@ -201,22 +201,20 @@ export default class EditUser extends Component {
                     <label> Type </label>
                     {isAdmin() && <Select id="type" options = {usertypes} onChange={this.typeChange} value = {{label: this.state.type, value: this.state.type}} />}
                         </Col>
-                        <Col> </Col>
+
                     </Row>
                     <br/>
-                    <Row>
-                        <Col>
+
                             <Button
                                 block
-                                variant="info"
+                                variant="primary"
                                 bsSize="large"
                                 disabled={buttonDisabled}
                                 type="submit"
                             >
                                 {this.id? "CHANGE" : "CREATE"}
                             </Button>
-                        </Col>
-                        <Col>
+
                             <Button
                                 block
                                 variant="danger"
@@ -225,8 +223,7 @@ export default class EditUser extends Component {
                             >
                                 DELETE
                             </Button>
-                        </Col>
-                    </Row>
+
                 </Form>
             </div>
         );

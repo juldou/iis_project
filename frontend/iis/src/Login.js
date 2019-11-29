@@ -100,7 +100,7 @@ class Login extends Component {
                         <Col>
                         <Button
                             block
-                            variant="info"
+                            variant="primary"
                             bsSize="large"
                             disabled={buttonDisabled}
                             type="submit"

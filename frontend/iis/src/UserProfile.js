@@ -59,7 +59,7 @@ export default class UserProfile extends Component {
                         </Col>
                     </Row>
                         <NavLink to={"/edituser/" + this.id} className="link">
-                            <Button variant="info"> Edit info</Button>
+                            <Button variant="primary"> Edit info</Button>
                         </NavLink>
                 </Jumbotron>
             </div>
