@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Bootstrap from "react-bootstrap";
+import Bootstrap, {Col, Row} from "react-bootstrap";
 import './Register.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
@@ -88,27 +88,32 @@ export default class Register extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group controlId="password" bsSize="large">
-                        <Form.Label> Password: </Form.Label>
-                        <Form.Control
-                            className= {this.errors.password ? "error" : ""}
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type="password"
-                            placeholder="Enter Password"
-                        />
-                    </Form.Group>
-
-                    <Form.Group controlId="repeatPassword" bsSize="large">
-                        <Form.Label> Repeat password: </Form.Label>
-                        <Form.Control
-                            className= {this.errors.repeatPassword ? "error" : ""}
-                            value={this.state.repeatPassword}
-                            onChange={this.handleChange}
-                            type="password"
-                            placeholder="Repeat password"
-                        />
-                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="password" bsSize="large">
+                                <Form.Label> Password: </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.password ? "error" : ""}
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                    placeholder="Enter Password"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group controlId="repeatPassword" bsSize="large">
+                                <Form.Label> Repeat password: </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.repeatPassword ? "error" : ""}
+                                    value={this.state.repeatPassword}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                    placeholder="Repeat password"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
                     <Form.Group controlId="phone" bsSize="large">
                         <Form.Label> Phone number: </Form.Label>
                         <Form.Control
@@ -120,36 +125,51 @@ export default class Register extends Component {
                         />
                     </Form.Group>
                     <p><b>Address</b> </p>
-                    <Form.Group controlId="street" bsSize="large">
-                        <Form.Label> Street </Form.Label>
-                        <Form.Control
-                            className= {this.errors.street ? "error" : ""}
-                            value={this.state.street}
-                            onChange={this.handleChange}
-                            type="text"
-                            placeholder="Enter name of your street"
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="city" bsSize="large">
-                        <Form.Label> City </Form.Label>
-                        <Form.Control
-                            className= {this.errors.city ? "error" : ""}
-                            value={this.state.city}
-                            onChange={this.handleChange}
-                            type="text"
-                            placeholder="Enter name of your city"
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="street" bsSize="large">
+                                <Form.Label> Street </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.street ? "error" : ""}
+                                    value={this.state.street}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                    placeholder="Enter name of your street"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group controlId="city" bsSize="large">
+                                <Form.Label> City </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.city ? "error" : ""}
+                                    value={this.state.city}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                    placeholder="Enter name of your city"
 
-                        />
-                    </Form.Group>
-                    <Button
-                        block
-                        variant="info"
-                        bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        REGISTER
-                    </Button>
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+
+                    <div className="register-button">
+                        <Row>
+                            <Col> </Col>
+                            <Col>
+                                <Button
+                                    block
+                                    variant="info"
+                                    bsSize="large"
+                                    disabled={!this.validateForm()}
+                                    type="submit"
+                                >
+                                    REGISTER
+                                </Button>
+                            </Col>
+                            <Col> </Col>
+                    </Row>
+                    </div>
                 </Form>
             </div>
         );

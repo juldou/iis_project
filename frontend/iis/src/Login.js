@@ -8,6 +8,7 @@ import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {withRouter} from "react-router";
 import {validateemail, validatePassword} from "./Validation";
+import {Col, Row} from "react-bootstrap";
 
 class Login extends Component {
     constructor(props) {
@@ -92,15 +93,21 @@ class Login extends Component {
                             type="password"
                         />
                     </Form.Group>
-
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        Login
-                    </Button>
+                <Row>
+                    <Col> </Col>
+                        <Col>
+                        <Button
+                            block
+                            variant="info"
+                            bsSize="large"
+                            disabled={!this.validateForm()}
+                            type="submit"
+                        >
+                            Login
+                        </Button>
+                        </Col>
+                    <Col> </Col>
+                </Row>
                 </Form>
             </div>
         );

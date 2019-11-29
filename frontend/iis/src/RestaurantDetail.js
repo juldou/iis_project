@@ -5,7 +5,7 @@ import {NavLink, Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
-import {Button, Card, Container, Image, Jumbotron, Tab, Tabs} from "react-bootstrap";
+import {Button, Card, Col, Container, Image, Jumbotron, Row, Tab, Tabs} from "react-bootstrap";
 import './RestaurantDetails.css';
 
 class RestaurantDetail extends Component {
@@ -94,12 +94,21 @@ class RestaurantDetail extends Component {
                             <Card.Text>
                             {item.is_soldout ? "Sold out" : "Available"}
                             </Card.Text>
-
-                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button
-                            >
-                            { this.ChangeButton(item.id) }
-
-                            {this.RemoveButton(item.id)}
+                            <div className="add-btn">
+                                <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                            </div>
+                            <br/>
+                            <div className="flex-btn">
+                            <Row>
+                                <Col>
+                                    { this.ChangeButton(item.id) }
+                                </Col>
+                                <Col> </Col>
+                                <Col>
+                                    {this.RemoveButton(item.id)}
+                                </Col>
+                            </Row>
+                            </div>
                         </Card.Body>
                     </Card>
             )
@@ -118,9 +127,21 @@ class RestaurantDetail extends Component {
                         <Card.Text>
                             {item.description}
                         </Card.Text>
-                        <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
-                        { this.ChangeButton(item.id) }
-                        { this.AddButton(item.id)}
+                        <div className="add-btn">
+                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                        </div>
+                        <br/>
+                        <div>
+                        <Row>
+                            <Col>
+                                { this.ChangeButton(item.id) }
+                            </Col>
+                            <Col> </Col>
+                            <Col>
+                                { this.AddButton(item.id)}
+                            </Col>
+                        </Row>
+                        </div>
                     </Card.Body>
                 </Card>
         )
@@ -130,6 +151,15 @@ class RestaurantDetail extends Component {
                 {this.RestaurantInfo()}
 
                 <Container className = "menu-container">
+
+                    <div className="add-meal-btn">
+                        {
+                            isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
+                                <Button className="add-meal" variant="info" onClick={this.addMeal}>
+                                    Add meal </Button>
+                            </NavLink>
+                        }
+                    </div>
                         <br/>
                         <h3 className="center">Daily menu</h3>
                         <br/>
@@ -149,14 +179,6 @@ class RestaurantDetail extends Component {
                         </div>
                     </Container>
 
-
-                <br/>
-                <br/>
-                {
-                    isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
-                        <Button className="add-meal" variant="info" onClick={this.addMeal}> Add meal </Button>
-                    </NavLink>
-                }
 
 
             </div>
@@ -189,7 +211,7 @@ class RestaurantDetail extends Component {
             return (
                 <div>
 
-                    <Button onClick={this.removeFromMenu.bind(this, id)}> Remove from menu </Button>
+                    <Button variant="info" onClick={this.removeFromMenu.bind(this, id)}> Remove </Button>
                 </div>
 
             );
@@ -211,7 +233,7 @@ class RestaurantDetail extends Component {
             return (
                 <div>
 
-                    <Button variant="info" onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
+                    <Button variant="danger" onClick={this.deactivateOrders.bind(this)}> Stop orders </Button>
                 </div>
 
             );

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button, FormCheck} from "react-bootstrap";
+import {Button, Col, FormCheck, Row} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
 import {isOperator} from "./Network/Authentication";
 import Checkbox from "./Widgets/Checkbox";
+import './AddMeal.css';
 
 class AddMeal extends Component {
     constructor(props) {
@@ -108,7 +109,8 @@ class AddMeal extends Component {
             return <Redirect to={'/restaurant/' + this.restaurant_id}/>
         }
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <div className="add-meal">
+            <Form  onSubmit={this.handleSubmit}>
                 <Form.Group controlId="name" bsSize="large">
                     <Form.Label> Name </Form.Label>
                     <Form.Control
@@ -128,50 +130,77 @@ class AddMeal extends Component {
                         type="text"
                     />
                 </Form.Group>
-                <Form.Group controlId="price" bsSize="large">
-                    <Form.Label> Price </Form.Label>
-                    <Form.Control
-                        className= {this.errors.price ? "error" : ""}
-                        value={this.state.price}
-                        onChange={this.handleChange}
-                        type="text"
-                    />
-                </Form.Group>
-                <br>
-                </br>
-                <label> Available </label>
+                <Row>
+                    <Col>
+                        <Form.Group controlId="price" bsSize="large">
+                            <Form.Label> Price (Kč)</Form.Label>
+                            <Form.Control
+                                className= {this.errors.price ? "error" : ""}
+                                value={this.state.price}
+                                onChange={this.handleChange}
+                                type="text"
+                            />
+                        </Form.Group>
+                    </Col>
 
-                <input type="checkbox" key={this.state.available} className="form-check-input" defaultChecked={this.state.available} onChange={this.handleCheck.bind(this)} />
-                <br>
-                </br>
-                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
-                             defaultValue={{label: this.state.type, value: this.state.type}}
-                             key={this.state.type}/>
+                    <Col>
+                        <Form.Group controlId="price" bsSize="large">
+                            <Form.Label> Available </Form.Label>
 
+                            <Form.Control
+                                type="checkbox"
+                                key={this.state.available}
+                                className="form-check-input"
+                                defaultChecked={this.state.available}
+                                onChange={this.handleCheck.bind(this)}
+                            />
 
-
+                        </Form.Group>
+                    </Col>
+                    <Col> </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <label>
+                            Type:
+                        </label>
+                            <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
+                                         defaultValue={{label: this.state.type, value: this.state.type}}
+                                         key={this.state.type}/>
+                    </Col>
+                    <Col> </Col>
+                    <Col> </Col>
+                </Row>
+                <br/>
                 <label>
                     Image:
                     {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
                 </label>
+
                 {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
 
-
+                <Row>
+                <Col>
                 <Button
                     block
+                    variant="info"
                     bsSize="large"
                     disabled={!this.validateForm()}
                     type="submit"
                 >
                     CHANGE
                 </Button>
+                </Col>
+                    <Col>
 
                 {
                     this.props.match.params.id &&
                     <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
                 }
-
+                    </Col>
+                </Row>
             </Form>
+            </div>
 
         );
     }
