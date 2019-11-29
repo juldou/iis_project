@@ -75,11 +75,12 @@ export default class Register extends Component {
         return (
             <div className="Register">
 
-                <Form onSubmit={this.handleSubmit}>
+                <Form className="login-form" onSubmit={this.handleSubmit}>
                     <p><b>Info</b> </p>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
                             type="email"
@@ -91,6 +92,7 @@ export default class Register extends Component {
                     <Form.Group controlId="password" bsSize="large">
                         <Form.Label> Password: </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}
@@ -102,6 +104,7 @@ export default class Register extends Component {
                     <Form.Group controlId="repeatPassword" bsSize="large">
                         <Form.Label> Repeat password: </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.repeatPassword ? "error" : ""}
                             value={this.state.repeatPassword}
                             onChange={this.handleChange}
@@ -112,6 +115,7 @@ export default class Register extends Component {
                     <Form.Group controlId="phone" bsSize="large">
                         <Form.Label> Phone number: </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.phone ? "error" : ""}
                             value={this.state.phone}
                             onChange={this.handleChange}
@@ -123,6 +127,7 @@ export default class Register extends Component {
                     <Form.Group controlId="street" bsSize="large">
                         <Form.Label> Street </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.street ? "error" : ""}
                             value={this.state.street}
                             onChange={this.handleChange}
@@ -133,6 +138,7 @@ export default class Register extends Component {
                     <Form.Group controlId="city" bsSize="large">
                         <Form.Label> City </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.city ? "error" : ""}
                             value={this.state.city}
                             onChange={this.handleChange}

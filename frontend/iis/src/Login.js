@@ -71,11 +71,12 @@ class Login extends Component {
         return (
             <div className="Login">
                 {this.state.wrongCredentials && <h3> Wrong username or password</h3>}
-                <Form onSubmit={this.handleSubmit}>
+                <Form className="login-form" onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
 
                         <Form.Control
+                            required
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
                             type="text"
@@ -86,6 +87,7 @@ class Login extends Component {
                     <Form.Group controlId="password" bsSize="large">
                         <Form.Label> Password: </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}

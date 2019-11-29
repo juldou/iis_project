@@ -88,7 +88,7 @@ class Cart extends Component{
             let addedItems = this.state.order.map(item=>{
                     return(
 
-                        <Jumbotron key={item.id}>
+                        <Jumbotron className="order-jumbotron" key={item.id}>
                             <Row>
                                 <Col>
                                     <p>
