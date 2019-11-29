@@ -86,6 +86,14 @@ class Cart extends Component{
             return <Redirect to='/orders' />
         }
 
+        if(this.state.order.length === 0) {
+            return (
+                <div className="center">
+                    <h3>Cart is empty</h3>
+                </div>
+                )
+        }
+
             let addedItems = this.state.order.map(item=>{
                     return(
 
@@ -141,11 +149,12 @@ class Cart extends Component{
 
                     { isAuthenticated() || this.Address()}
                     <Button
-                        variant="info" onClick={this.sendOrder.bind(this)}
+                        variant="primary" block onClick={this.sendOrder.bind(this)}
                         disabled={buttonDisabled}>Send</Button>
+                    <br/>
                     { isAuthenticated() ||
                     <Button
-                        variant="info" onClick={this.sendAndRegister.bind(this)}
+                        variant="primary" block onClick={this.sendAndRegister.bind(this)}
                         disabled={buttonDisabled}>Send order and Register</Button>}
                 </div>
             </div>
@@ -156,7 +165,7 @@ class Cart extends Component{
         return (
             <div>
                 <Form.Group controlId="phone" bsSize="large">
-                    <Form.Label> Phone number </Form.Label>
+                    <Form.Label> Phone number (+421 xxx xxx xxx) </Form.Label>
                     <Form.Control
                         className= {this.errors.phone ? "error" : ""}
                         value={this.state.phone}

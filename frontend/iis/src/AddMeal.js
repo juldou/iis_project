@@ -146,6 +146,16 @@ class AddMeal extends Component {
                                 />
                             </Form.Group>
                         </Col>
+                    </Row>
+                        <label>
+                            Type:
+                        </label>
+                        <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)}
+                                     onChange={this.handleTypeChange.bind(this)}
+                                     defaultValue={{label: this.state.type, value: this.state.type}}
+                                     key={this.state.type}/>
+                    <br/>
+                    <Row>
 
                         <Col>
                             <Form.Group controlId="price" bsSize="large">
@@ -161,18 +171,7 @@ class AddMeal extends Component {
                                 />
 
                             </Form.Group>
-                        </Col>
-                        <Col> </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <label>
-                                Type:
-                            </label>
-                            <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)}
-                                         onChange={this.handleTypeChange.bind(this)}
-                                         defaultValue={{label: this.state.type, value: this.state.type}}
-                                         key={this.state.type}/>
+
                         </Col>
                         <Col> </Col>
                         <Col> </Col>
@@ -184,27 +183,23 @@ class AddMeal extends Component {
                     }
 
                     {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
+                    <br/>
 
-                    <Row>
-                        <Col>
                             <Button
                                 block
-                                variant="info"
+                                variant="primary"
                                 bsSize="large"
                                 disabled={buttonDisabled}
                                 type="submit"
                             >
                                 CHANGE
                             </Button>
-                        </Col>
-                        <Col>
 
                             {
                                 this.props.match.params.id &&
-                                <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
+                                <Button variant="danger" block bsSize="large" onClick={this.deleteMeal.bind(this)}> DELETE</Button>
                             }
-                        </Col>
-                    </Row>
+
                 </Form>
             </div>
 

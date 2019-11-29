@@ -65,7 +65,7 @@ class Users extends Component {
                     <br/>
                     <p>
                         <NavLink to={"/edituser/" + item.id} className="link">
-                            <Button variant="info"> Edit info</Button>
+                            <Button variant="primary"> Edit info</Button>
                         </NavLink>
                     </p>
                 </Jumbotron>
@@ -76,7 +76,7 @@ class Users extends Component {
         return (
                 <div className="UserList">
                     <NavLink to= "/createuser/" className="link">
-                        <Button variant="info" >Create new</Button>
+                        <Button variant="primary" >Create new</Button>
                     </NavLink>
                     <br/>
                     <br/>
