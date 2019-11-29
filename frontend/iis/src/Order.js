@@ -11,7 +11,6 @@ export default class Order extends Component {
     constructor(props) {
         super(props)
 
-
         this.config = new Configuration();
         this.api = new NetworkService(this.props);
 
@@ -54,14 +53,13 @@ export default class Order extends Component {
                     isCourier() && <Button onClick={this.send.bind(this)}> Change </Button>
                 }
 
-
             </Jumbotron>
         )
     }
 
     Courier(order) {
         let defaultVal = {
-            label: order.Courier && order.Courier.email,
+            label: order.Courier && order.Courier.email || "Not assigned yet",
             value: order.Courier && order.Courier.id
         }
         return (<div>

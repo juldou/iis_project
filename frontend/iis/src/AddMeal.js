@@ -152,10 +152,13 @@ class AddMeal extends Component {
 
 
 
-                <label>
-                    Image:
-                    {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
-                </label>
+                {
+                    this.id &&
+                    <label>
+                        Image:
+                        {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
+                    </label>
+                }
                 {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
 
 
