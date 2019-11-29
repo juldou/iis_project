@@ -78,6 +78,7 @@ class Cart extends Component{
         return this.state.order.length === 0 || !this.validateForm()
     }
     render(){
+        let buttonDisabled = this.buttonDisabled()
         if(this.state.toRegister === true) {
             return <Redirect to='/register' />
         }
@@ -141,11 +142,11 @@ class Cart extends Component{
                     { isAuthenticated() || this.Address()}
                     <Button
                         variant="info" onClick={this.sendOrder.bind(this)}
-                        disabled={this.buttonDisabled()}>Send</Button>
+                        disabled={buttonDisabled}>Send</Button>
                     { isAuthenticated() ||
                     <Button
                         variant="info" onClick={this.sendAndRegister.bind(this)}
-                        disabled={this.buttonDisabled()}>Send order and Register</Button>}
+                        disabled={buttonDisabled}>Send order and Register</Button>}
                 </div>
             </div>
         )

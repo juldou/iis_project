@@ -21,7 +21,7 @@ export function validateRequiredField(text) {
 }
 
 export function validateemail(text) {
-    const re = /^[0-9a-zA-Z]+@[0-9a-zA-Z]+\.[a-zA-Z]+$/;
+    const re = /^[0-9a-zA-Z.-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]+$/;
 
     // return error
 

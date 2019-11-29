@@ -5,8 +5,9 @@ import {AppRouter} from "./Router/Router";
 class App extends Component {
     render() {
         return (
-            AppRouter
-
+            <div className="app">
+                {AppRouter}
+                 </div>
         );
     }
 }

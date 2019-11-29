@@ -112,33 +112,5 @@ class NetworkService {
 
     }
 
-    handleResponse(response) {
-        if(!response.data) {
-            throw new Error("4004")
-        }
-        return response.data;
-    }
-
-    handleResponseError(response) {
-        throw new Error("HTTP error, status = " + response.status);
-    }
-    handleError(error) {
-        alert(error)
-        if (+error === 401) {
-            this.logout()
-        }
-        if(!!this.errorCallback) {
-            this.errorCallback(error)
-        }
-    }
-
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem("user");
-        localStorage.removeItem("user_type");
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("access_token_expires_in");
-        this.props.history.push("/")
-    }
 }
 export default (NetworkService);

@@ -7,6 +7,7 @@ import {NavLink} from "react-router-dom";
 import {getUserID} from "./Network/Authentication";
 import AsyncSelect from 'react-select/async';
 import './OrderList.css'
+import Order from "./Order";
 
 class OrderList extends Component {
     constructor(props) {
@@ -39,19 +40,7 @@ class OrderList extends Component {
         }
 
         const listItems = this.state.items.map((item) =>
-            <Jumbotron key={item.id}>
-                <p>
-                    Order ID: <b>{item.id}</b>
-                </p>
-                <p>
-                    State: <b>{item.state}</b>
-                </p>
-                <p>
-                    Ordered food:
-
-                </p>
-
-            </Jumbotron>
+           <Order order={item}/>
 
         );
         return (

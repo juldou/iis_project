@@ -1,5 +1,5 @@
 body {
-  padding-top: 70px;
+  padding-top: 50px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -56,10 +56,10 @@ nav {
 }
 
 .navbar {
-  padding-bottom: 70px;
+  padding-bottom: 50px;
 }
 .fixed-top {
-  top: -70px; /* you'll have to figure out the exact number here */
+  top: -50px; /* you'll have to figure out the exact number here */
 }
 section:after {
   content: "";
@@ -99,4 +99,12 @@ section:after {
 }
 .login-form input:invalid {
   border-left-color: salmon;
+}
+
+.root {
+  background-color: #f1f1f1;
+}
+
+.app {
+  padding-top: 20px;
 }

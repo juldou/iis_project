@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {isAuthenticated} from "./Network/Authentication";
 import {validateemail, validatePassword, validatePhone, validateRequiredField} from "./Validation";
 
-export default class Register extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
 
@@ -179,4 +179,4 @@ export default class Register extends Component {
                 this.setState({redirect: true});
             }).catch()
     };
-}
+} export default Register;
