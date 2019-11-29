@@ -10,6 +10,7 @@ import Form from "react-bootstrap/Form";
 import {usertypes} from "./EditUSer";
 import Select from 'react-select';
 import './AllOrders.css';
+import Order from "./Order";
 
 export const stateOptions = [
     {label: "new", value: "new"},
@@ -40,13 +41,7 @@ class AllOrders extends Component {
         ).catch();
     }
 
-    loadCouriers() {
-        return this.api.loadData(this.config.GET_ALL_USERS_URL + "?role=courier").then(couriers=> {
-            return couriers.map(courier => {
-                return {label: courier.email, value: courier.id};
-            })
-        }).catch()
-    }
+
 
     render() {
         if(this.state.items === undefined) return "";
@@ -57,31 +52,7 @@ class AllOrders extends Component {
             )
         }
         const listItems = this.state.items.map((item) =>
-            <Jumbotron  key={item.id}>
-                <h1>
-                    Order: {item.id}
-                </h1>
-
-                {(isOperator()) &&
-                <div>
-                    <p>
-                        Courier:
-                    </p>
-                    <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCouriers.bind(this)} onChange={this.changeCourier.bind(this, item.id)}
-                    defaultValue={{label: item.Courier.email, value: item.Courier.id}}/>
-                </div>
-                }
-
-                <br/>
-                <p>
-                    State:
-                </p>
-                { isCourier() &&
-                <Select id="type" options={stateOptions} onChange={this.changeOrderState.bind(this, item.id)}
-                        value={this.state.type}
-                        defaultValue={{label: item.state, value: item.state}}/>
-                }
-            </Jumbotron>
+            <Order order={item}/>
 
         );
         return (
@@ -91,20 +62,6 @@ class AllOrders extends Component {
                 </ul>
             </div>
         );
-    }
-
-    changeCourier(id, selectedOption) {
-        let data = {
-            courier_id: selectedOption.value
-        };
-        this.api.patch(this.config.ORDER_URL + "/" + id, data).catch()
-    }
-
-    changeOrderState(id, selectedOption) {
-        let data = {
-            state: selectedOption.value
-        };
-        this.api.patch(this.config.ORDER_URL + "/" + id, data).catch()
     }
 
 } export default AllOrders;

@@ -83,7 +83,9 @@ class RestaurantList extends  Component {
             return(
                 // <p Add new item to a Restaurant list./p>
                 <NavLink to="/addrestaurant/" className="link">
-                <Button variant="info" name="button">Add new restaurant</Button>
+                    <div className="add-restaurant-btn">
+                <Button className="btn btn-primary btn-lg " name="button">Add new restaurant</Button>
+                        </div>
                 </NavLink>
             );
         }

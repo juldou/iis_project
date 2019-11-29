@@ -1,4 +1,5 @@
 body {
+  padding-top: 70px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -54,8 +55,12 @@ nav {
   width: 30%;
 }
 
-
-
+.navbar {
+  padding-bottom: 70px;
+}
+.fixed-top {
+  top: -70px; /* you'll have to figure out the exact number here */
+}
 section:after {
   content: "";
   display: table;
