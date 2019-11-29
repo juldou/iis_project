@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {NavLink, Redirect} from "react-router-dom";
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
 import {Button, Card, Col, Container, Image, Jumbotron, Row, Tab, Tabs} from "react-bootstrap";
@@ -23,6 +23,7 @@ class RestaurantDetail extends Component {
             loading: true
         }
     }
+
     triggerCategoryChange(idCategory) {
         this.categoryChanged(idCategory)
     }
@@ -32,7 +33,8 @@ class RestaurantDetail extends Component {
         this.api.loadData(this.config.RESTAURANT_DETAIL_URL +
             "/" + this.state.id).then(restaurant => {
                 this.setState({
-                    restaurant: restaurant});
+                    restaurant: restaurant
+                });
             }
         ).catch();
     }
@@ -43,9 +45,9 @@ class RestaurantDetail extends Component {
     }
 
     getItems(idCategory) {
-        let dailyMenuUrl = this.config.RESTAURANT_DETAIL_URL + "/" +this.state.id + "/menu?name=daily";
-        let mealsUrl = this.config.RESTAURANT_DETAIL_URL + "/" +this.state.id + "/menu?name=permanent";
-        if(!!idCategory) {
+        let dailyMenuUrl = this.config.RESTAURANT_DETAIL_URL + "/" + this.state.id + "/menu?name=daily";
+        let mealsUrl = this.config.RESTAURANT_DETAIL_URL + "/" + this.state.id + "/menu?name=permanent";
+        if (!!idCategory) {
             dailyMenuUrl += "&category=" + idCategory;
             mealsUrl += "&category=" + idCategory
         }
@@ -62,14 +64,14 @@ class RestaurantDetail extends Component {
         ).catch();
     }
 
-    handleClick = (item)=>{
+    handleClick = (item) => {
         var order = localStorage.getItem("order");
-        if(!order) {
+        if (!order) {
             order = []
         } else {
             order = JSON.parse(order)
         }
-        if(order.length >= 10) {
+        if (order.length >= 10) {
             alert("Cart is full")
             return
         }
@@ -80,51 +82,53 @@ class RestaurantDetail extends Component {
 
 
     render() {
-        if(this.state.restaurant === null || this.state.restaurant === "") {
-            return (<h3>  Restaurant not found </h3>);
+        if (this.state.restaurant === null || this.state.restaurant === "") {
+            return (<h3> Restaurant not found </h3>);
         }
-        const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) =>{
-            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
-            return(
+        const menuItems = this.state.menu == null ? [] : this.state.menu.map((item) => {
+            let imageUrl = "/foods/" + (item.picture_url !== "" ? item.picture_url : "placeholder.png")
+            return (
                 // <div className="card" key={item.id}>
-                    <Card style={{ width: '22rem' }}>
-                        <Card.Img className="card-image" variant="top" src={imageUrl} />
-                        <Card.Body>
-                            <Card.Title>{item.name}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
-                            <Card.Text className="dsc">
-                                {item.description}
-                            </Card.Text>
-                            <Card.Text>
+                <Card style={{width: '22rem'}}>
+                    <Card.Img className="card-image" variant="top" src={imageUrl}/>
+                    <Card.Body>
+                        <Card.Title>{item.name}</Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
+                        <Card.Text className="dsc">
+                            {item.description}
+                        </Card.Text>
+                        <Card.Text>
                             {item.is_soldout ? "Sold out" : "Available"}
-                            </Card.Text>
-                            <div className="add-btn">
-                                <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
-                            </div>
-                            <br/>
-                            <div className="flex-btn">
+                        </Card.Text>
+                        <div className="add-btn">
+                            <Button variant="primary" onClick={() => {
+                                this.handleClick(item)
+                            }}> Add to cart</Button>
+                        </div>
+                        <br/>
+                        <div className="flex-btn">
                             <Row>
                                 <Col>
-                                    { this.ChangeButton(item.id) }
+                                    {this.ChangeButton(item.id)}
                                 </Col>
                                 <Col> </Col>
                                 <Col>
                                     {this.RemoveButton(item.id)}
                                 </Col>
                             </Row>
-                            </div>
-                        </Card.Body>
-                    </Card>
+                        </div>
+                    </Card.Body>
+                </Card>
             )
         });
 
-        const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) =>{
-            let imageUrl ="/foods/" +  (item.picture_url !== "" ? item.picture_url : "placeholder.png")
+        const mealItems = this.state.meals == null ? [] : this.state.meals.map((item) => {
+            let imageUrl = "/foods/" + (item.picture_url !== "" ? item.picture_url : "placeholder.png")
 
-            return(
+            return (
                 // <div className="card" key={item.id}>
-                <Card style={{ width: '22rem' }}>
-                    <Card.Img className="card-image" variant="top" src={imageUrl} />
+                <Card style={{width: '22rem'}}>
+                    <Card.Img className="card-image" variant="top" src={imageUrl}/>
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted"><b>Price: {item.price}$</b></Card.Subtitle>
@@ -132,23 +136,25 @@ class RestaurantDetail extends Component {
                             {item.description}
                         </Card.Text>
                         <div className="add-btn">
-                            <Button variant="primary" onClick={()=>{this.handleClick(item)}}> Add to cart</Button>
+                            <Button variant="primary" onClick={() => {
+                                this.handleClick(item)
+                            }}> Add to cart</Button>
                         </div>
                         <br/>
                         <div>
-                        <Row>
-                            <Col>
-                                { this.ChangeButton(item.id) }
-                            </Col>
-                            <Col> </Col>
-                            <Col>
-                                { this.AddButton(item.id)}
-                            </Col>
-                        </Row>
+                            <Row>
+                                <Col>
+                                    {this.ChangeButton(item.id)}
+                                </Col>
+                                <Col> </Col>
+                                <Col>
+                                    {this.AddButton(item.id)}
+                                </Col>
+                            </Row>
                         </div>
                     </Card.Body>
                 </Card>
-        )
+            )
         });
         return (
             <div className="container">
@@ -157,56 +163,49 @@ class RestaurantDetail extends Component {
                     <Categories onClick={this.triggerCategoryChange.bind(this)}/>
                 </div>
                 {
-                    isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
-                        <div className="center">
-                            <Button className="btn btn-primary btn-lg" onClick={this.addMeal}> Add meal </Button>
-                            <br/>
-                            <br/>
-                        </div>
-                    </NavLink>
+                    isOperator() && <div className="add-meal-btn">
+                        <NavLink to={this.state.id + "/addmeal"} className="link">
+                            <Button className="add-meal btn-lg" variant="primary" onClick={this.addMeal}>
+                                Add meal </Button>
+                        </NavLink>
+
+                    </div>
                 }
 
-                <Container className = "menu-container">
+                <Container className="menu-container">
 
-                    <div className="add-meal-btn">
-                        {
-                            isOperator() && <NavLink to={ this.state.id + "/addmeal"} className="link">
-                                <Button className="add-meal" variant="info" onClick={this.addMeal}>
-                                    Add meal </Button>
-                            </NavLink>
-                        }
+
+                    <br/>
+                    <h3 className="center">Daily menu</h3>
+                    <br/>
+                    <div className="box">
+                        {menuItems.length === 0 && <h3> There are no meals</h3>}
+                        {menuItems}
                     </div>
-                        <br/>
-                        <h3 className="center">Daily menu</h3>
-                        <br/>
-                        <div className="box">
-                            {menuItems.length === 0 && <h3> There are no meals</h3>}
-                            {menuItems}
-                        </div>
                 </Container>
 
-                    <Container className = "menu-container">
-                        <h3 className="center">Permanent offer</h3>
-                        <br/>
-                        <div className="box">
-                            {mealItems.length === 0 && <h3> There are no meals </h3>}
+                <Container className="menu-container">
+                    <h3 className="center">Permanent offer</h3>
+                    <br/>
+                    <div className="box">
+                        {mealItems.length === 0 && <h3> There are no meals </h3>}
 
-                            {mealItems}
-                        </div>
-                    </Container>
+                        {mealItems}
+                    </div>
+                </Container>
             </div>
         );
     }
 
     ChangeButton(id) {
-        if(isOperator())
+        if (isOperator())
             return (
                 <div>
-                    <NavLink to={  this.state.id + "/editmeal/" + id} className="link">
+                    <NavLink to={this.state.id + "/editmeal/" + id} className="link">
 
-                        <Button variant="info" > {"Change \n "}</Button>
+                        <Button variant="info"> {"Change"}</Button>
                     </NavLink>
-                <br/>
+                    <br/>
                 </div>
 
             );
@@ -214,13 +213,13 @@ class RestaurantDetail extends Component {
     }
 
     AddButton(id) {
-        if(isOperator())
-            return( <Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
+        if (isOperator())
+            return (<Button variant="info" onClick={this.addToMenu.bind(this, id)}> Add to menu </Button>)
         return "";
     }
 
     RemoveButton(id) {
-        if(isOperator())
+        if (isOperator())
             return (
                 <div>
 
@@ -232,14 +231,14 @@ class RestaurantDetail extends Component {
     }
 
     RestaurantInfo() {
-        if(!this.state.restaurant) return;
+        if (!this.state.restaurant) return;
         return (
             <Jumbotron fluid className="Jumbotron">
-                <h2 align="center" >{this.state.restaurant.name}</h2>
+                <h2 align="center">{this.state.restaurant.name}</h2>
                 <br/>
-                <p align="center" >{this.state.restaurant.category}</p>
+                <p align="center">{this.state.restaurant.category}</p>
                 <br/>
-                <p align="center" >{this.state.restaurant.description}</p>
+                <p align="center">{this.state.restaurant.description}</p>
             </Jumbotron>);
     }
 
