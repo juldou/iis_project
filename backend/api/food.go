@@ -128,6 +128,26 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 		return err
 	}
 
+	foodCategories, err := ctx.GetFoodCategories()
+	if err != nil {
+		return err
+	}
+	found := false
+	for _, foodCategory := range foodCategories {
+		if foodCategory.Name == input.Category {
+			found = true
+			break
+		}
+	}
+	if !found {
+		foodCategory := &model.FoodCategory{
+			Name:  input.Category,
+		}
+		if err := ctx.CreateFoodCategory(foodCategory); err != nil {
+			return err
+		}
+	}
+
 	food := &model.Food{
 		Category:     input.Category,
 		Name:         input.Name,

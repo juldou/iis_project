@@ -43,6 +43,10 @@ func (db *Database) CreateFood(food *model.Food) error {
 	return db.Create(food).Error
 }
 
+func (db *Database) CreateFoodCategory(foodCategory *model.FoodCategory) error {
+	return db.Create(foodCategory).Error
+}
+
 func (db *Database) UpdateFood(food *model.Food) error {
 	return errors.Wrap(db.Save(food).Error, "unable to update food")
 }

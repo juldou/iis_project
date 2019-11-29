@@ -151,10 +151,6 @@ ALTER TABLE ONLY order_food
 ALTER TABLE ONLY order_food
     ADD CONSTRAINT order_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
 
-
--- ALTER TABLE ONLY "menu"
---     ADD CONSTRAINT menu_belongs_to_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY "menu"
     ADD CONSTRAINT menu_has_food FOREIGN KEY (food_id) REFERENCES food (id) ON DELETE CASCADE;
 
