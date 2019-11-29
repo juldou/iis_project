@@ -5,7 +5,6 @@
     flex: 3;
     position: relative;
     height: auto;
-    background-color: #f1f1f1;
 }
 .items{
     display: grid;

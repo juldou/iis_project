@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import {Button, FormCheck} from "react-bootstrap";
+import {Button, Col, FormCheck, Row} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
 import {isOperator} from "./Network/Authentication";
 import Checkbox from "./Widgets/Checkbox";
+import './AddMeal.css';
 
 class AddMeal extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class AddMeal extends Component {
         };
 
         this.errors = {
-            name:false,
+            name: false,
             description: false,
             type: false,
             price: false
@@ -40,10 +41,9 @@ class AddMeal extends Component {
     }
 
     componentDidMount() {
-        if(!!this.props.match.params.id) {
-            this.api.loadData(this.config.GET_MEAL_URL + "/" + this.props.match.params.id).then(meal =>
-            {
-                if(!!meal) {
+        if (!!this.props.match.params.id) {
+            this.api.loadData(this.config.GET_MEAL_URL + "/" + this.props.match.params.id).then(meal => {
+                if (!!meal) {
                     this.setState({
                         name: meal.name,
                         type: meal.category,
@@ -54,7 +54,7 @@ class AddMeal extends Component {
 
                     this.validateForm()
                     this.setState({
-                        update:true
+                        update: true
                     })
                 }
             }).catch()
@@ -68,7 +68,7 @@ class AddMeal extends Component {
 
     };
 
-    handleCheck= event => {
+    handleCheck = event => {
         this.setState({
             available: !this.state.available
         });
@@ -95,8 +95,8 @@ class AddMeal extends Component {
 
     validateForm() {
         this.errors = {
-            name: validateRequiredField(this.state.name) ,
-            description:  validateRequiredField(this.state.name),
+            name: validateRequiredField(this.state.name),
+            description: validateRequiredField(this.state.description),
             price: this.validatePrice(),
             type: validateRequiredField(this.state.type)
         };
@@ -104,74 +104,105 @@ class AddMeal extends Component {
     }
 
     render() {
-        if(this.state.homeScreen === true) {
+        let buttonDisabled = !this.validateForm()
+
+        if (this.state.homeScreen === true) {
             return <Redirect to={'/restaurant/' + this.restaurant_id}/>
         }
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Group controlId="name" bsSize="large">
-                    <Form.Label> Name </Form.Label>
-                    <Form.Control
-                        className= {this.errors.name ? "error" : ""}
-                        autoFocus
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="description" bsSize="large">
-                    <Form.Label> Description </Form.Label>
-                    <Form.Control
-                        className= {this.errors.description ? "error" : ""}
-                        value={this.state.description}
-                        onChange={this.handleChange}
-                        type="text"
-                    />
-                </Form.Group>
-                <Form.Group controlId="price" bsSize="large">
-                    <Form.Label> Price </Form.Label>
-                    <Form.Control
-                        className= {this.errors.price ? "error" : ""}
-                        value={this.state.price}
-                        onChange={this.handleChange}
-                        type="text"
-                    />
-                </Form.Group>
-                <br>
-                </br>
-                <label> Available </label>
+            <div className="add-meal">
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Group controlId="name" bsSize="large">
+                        <Form.Label> Name </Form.Label>
+                        <Form.Control
+                            className={this.errors.name ? "error" : ""}
+                            autoFocus
+                            type="text"
+                            value={this.state.name}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="description" bsSize="large">
+                        <Form.Label> Description </Form.Label>
+                        <Form.Control
+                            className={this.errors.description ? "error" : ""}
+                            value={this.state.description}
+                            onChange={this.handleChange}
+                            type="text"
+                        />
+                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="price" bsSize="large">
+                                <Form.Label> Price (Kč)</Form.Label>
+                                <Form.Control
+                                    className={this.errors.price ? "error" : ""}
+                                    value={this.state.price}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                />
+                            </Form.Group>
+                        </Col>
 
-                <input type="checkbox" key={this.state.available} className="form-check-input" defaultChecked={this.state.available} onChange={this.handleCheck.bind(this)} />
-                <br>
-                </br>
-                <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)} onChange={this.handleTypeChange.bind(this)}
-                             defaultValue={{label: this.state.type, value: this.state.type}}
-                             key={this.state.type}/>
+                        <Col>
+                            <Form.Group controlId="price" bsSize="large">
+                                <Form.Label> Available </Form.Label>
 
+                                <Form.Control
+                                    type="checkbox"
+                                    key={this.state.available}
+                                    className="form-check-input"
+                                    defaultChecked={this.state.available}
+                                    onChange={this.handleCheck.bind(this)}
+                                />
 
+                            </Form.Group>
+                        </Col>
+                        <Col> </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <label>
+                                Type:
+                            </label>
+                            <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)}
+                                         onChange={this.handleTypeChange.bind(this)}
+                                         defaultValue={{label: this.state.type, value: this.state.type}}
+                                         key={this.state.type}/>
+                        </Col>
+                        <Col> </Col>
+                        <Col> </Col>
+                    </Row>
+                    <br/>
+                    {
+                        this.id &&
+                        <label>Image:</label>
+                    }
 
-                <label>
-                    Image:
-                    {/*<input type="text" value={this.state.value} onChange={this.handleChange} />*/}
-                </label>
-                {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
+                    {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
 
+                    <Row>
+                        <Col>
+                            <Button
+                                block
+                                variant="info"
+                                bsSize="large"
+                                disabled={buttonDisabled}
+                                type="submit"
+                            >
+                                CHANGE
+                            </Button>
+                        </Col>
+                        <Col>
 
-                <Button
-                    block
-                    bsSize="large"
-                    disabled={!this.validateForm()}
-                    type="submit"
-                >
-                    CHANGE
-                </Button>
-
-                {
-                    this.props.match.params.id &&
-                    <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
-                }
-
-            </Form>
+                            {
+                                this.props.match.params.id &&
+                                <Button onClick={this.deleteMeal.bind(this)}> DELETE</Button>
+                            }
+                        </Col>
+                    </Row>
+                </Form>
+            </div>
 
         );
     }
@@ -189,9 +220,9 @@ class AddMeal extends Component {
 
     loadCategories() {
         return this.api.loadData(this.config.CATEGORIES_URL).then(items => {
-                if(!items) return;
-                return items.map(cat=> {
-                   return  {label: cat.name, value: cat.name}
+                if (!items) return;
+                return items.map(cat => {
+                    return {label: cat.name, value: cat.name}
                 })
             }
         ).catch();
@@ -208,7 +239,7 @@ class AddMeal extends Component {
             is_soldout: !this.state.available
         });
 
-        if(!!this.props.match.params.id) {
+        if (!!this.props.match.params.id) {
             this.updateMeal(data)
         } else {
             this.createMeal(data)
@@ -216,20 +247,22 @@ class AddMeal extends Component {
     }
 
     createMeal(data) {
-        this.api.post(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food", data).then(response =>{
+        this.api.post(this.config.GET_RESTAURANT_URL + "/" + this.restaurant_id + "/food", data).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
 
     updateMeal(data) {
-        this.api.patch(this.config.API_URL + "/food/" +this.props.match.params.id, data).then(response =>{
+        this.api.patch(this.config.API_URL + "/food/" + this.props.match.params.id, data).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
 
     deleteMeal() {
-        this.api.delete(this.config.API_URL + "/food/" +this.props.match.params.id).then(response =>{
+        this.api.delete(this.config.API_URL + "/food/" + this.props.match.params.id).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
-} export default AddMeal;
+}
+
+export default AddMeal;

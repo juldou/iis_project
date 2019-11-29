@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import Homescreen from "../Homescreen";
+import { Route, Link, BrowserRouter} from 'react-router-dom'
 import RestaurantDetail from "../RestaurantDetail";
 import AddMeal from "../AddMeal";
 import Register from "../Register";
@@ -19,44 +18,25 @@ import RestaurantList from "../RestaurantList";
 import UserProfile from "../UserProfile";
 import AllOrders from "../AllOrders";
 import createHistory from 'history/createBrowserHistory';
-import setupInterceptors from "../Network/NetworkService";
 import axios from 'axios';
 import context from "react-router/modules/RouterContext";
 import ErrorScreen from "../ErrorScreen";
-
-const history = createHistory();
-
-
-axios.interceptors.response.use(response => {
-    return response;
-}, error => {
-    // if (error.response.status === 401) {
-    //     history.push('/login')
-    //     // store.dispatch(logoutUser());
-    // }
-    //
-    // if (error.response.status === 404) {
-    //     history.push('/not-found');
-    // }
-    //
-    // if (error.response.status === 500) {
-    //     history.push('/');
-    // }
-
-    return Promise.reject(error);
-});
+import {useHistory} from "react-router";
+import NetworkService from "../Network/NetworkService";
+import Authentication from "../Network/Authentication";
 
 
+let history = createHistory()
+Authentication.setupInterceptors(history);
 
-// setupInterceptors(history);
 
 export const AppRouter = (
-    <Router history={history}>
-        <div>
+
+    <BrowserRouter history={history} >
             <Header/>
-            {/*<Switch >*/}
+            <Switch >
                 <Route exact path="/" component={RestaurantList} />
-                <Route exact path="/restaurant/:restaurantId" component={Homescreen} />
+                <Route exact path="/restaurant/:restaurantId" component={RestaurantDetail} />
                 <Route exact path="/restaurant/:restaurantId/addmeal" component={AddMeal}/>
                 <Route exact path="/restaurant/:restaurantId/editmeal/:id" component={AddMeal}/>
                 <Route exact path="/register" component={Register}/>
@@ -76,7 +56,6 @@ export const AppRouter = (
 
 
 
-            {/*</Switch>*/}
-        </div>
-    </Router>
+            </Switch>
+    </BrowserRouter>
 );

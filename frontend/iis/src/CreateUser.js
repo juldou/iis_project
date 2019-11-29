@@ -65,17 +65,20 @@ export default class CreateUser extends Component {
     };
 
     render() {
+        let buttonDisabled = !this.validateForm()
+
         if(this.state.toHomescreen === true) {
             return <Redirect to='/#' />
         }
         return (
             <div className="Login">
-                <Form onSubmit={this.handleSubmit}>
+                <Form className="login-form" onSubmit={this.handleSubmit}>
                     <h1><b>Info </b></h1>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email </Form.Label>
 
                         <Form.Control
+                            required
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
                             type="text"
@@ -86,6 +89,7 @@ export default class CreateUser extends Component {
                     <Form.Group controlId="password" bsSize="large">
                         <Form.Label> Password </Form.Label>
                         <Form.Control
+                            required
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}
@@ -98,7 +102,7 @@ export default class CreateUser extends Component {
                     <Button
                         block
                         bsSize="large"
-                        disabled={!this.validateForm()}
+                        disabled={buttonDisabled}
                         type="submit"
                     >
                         CREATE

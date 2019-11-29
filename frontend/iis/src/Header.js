@@ -14,8 +14,6 @@ import {
 } from "./Network/Authentication";
 import {withRouter} from "react-router-dom";
 import {Nav, Navbar} from "react-bootstrap";
-import NetworkService from "./Network/NetworkService";
-
 
 class Header extends Component {
 
@@ -64,17 +62,12 @@ class Header extends Component {
                 <Nav className="mr-auto">
                 <Nav.Link href="/orders">My Orders</Nav.Link>
                 <Nav.Link href="/userprofile">Profile</Nav.Link>
-                <Nav.Link href="" onClick={this.logout.bind(this)}>Logout</Nav.Link>
-
+                <Nav.Link href="/" onClick={logout}>Logout</Nav.Link>
                 </Nav>
-
 
         );
 
     }
 
-    logout(){
-        let api = new NetworkService(this.props);
-        api.logout()
-    }
+
 } export default withRouter(Header);
