@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import ImageUpload from "./ImageUpload";
 import Configuration from "./Network/Configuration";
 import {Redirect} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import NetworkService from "./Network/NetworkService";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
+import './AddRestaurant.css';
 
 class AddRestaurant extends Component {
     constructor(props) {
@@ -115,6 +116,7 @@ class AddRestaurant extends Component {
                         <Form.Control
                             className={this.errors.type ? "error" : ""}
                             autoFocus
+                            placeholder="Enter type of a restaurant"
                             type="text"
                             value={this.state.type}
                             onChange={this.handleChange}
@@ -123,42 +125,50 @@ class AddRestaurant extends Component {
                     <Form.Group controlId="description" bsSize="large">
                         <Form.Label> Description </Form.Label>
                         <Form.Control
+                            placeholder="Enter restaurant description"
                             className={this.errors.description ? "error" : ""}
                             value={this.state.description}
                             onChange={this.handleChange}
                             type="text"
                         />
                     </Form.Group>
+                    <Row>
+                        <Col>
+                                <Button
+                                    variant="info"
+                                    block
+                                    bsSize="large"
+                                    disabled={buttonDisabled}
+                                    type="submit"
+                                >
+                                    CHANGE
+                                </Button>
+                        </Col>
+                        <Col>
 
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={buttonDisabled}
-                        type="submit"
-                    >
-                        CHANGE
-                    </Button>
-
-                    {
-                        this.props.match.params.id &&
-                        <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
-                    }
+                                {
+                                    this.props.match.params.id &&
+                                    <Button
+                                        variant="danger"
+                                        block
+                                        bsSize="large"
+                                        onClick={this.deleteRestaurant.bind(this)}>
+                                        DELETE
+                                    </Button>
+                                }
+                        </Col>
+                    </Row>
                 </Form>
             </div>
         );
     }
 
     validateForm() {
-
         this.errors = {
             name: validateRequiredField(this.state.name),
             description: validateRequiredField(this.state.description),
             type: validateRequiredField(this.state.type),
         };
-        // alert(JSON.stringify({"name": this.errors.name, "dec": this.errors.description, "type": this.errors.type}))
-        // this.setState({
-        //     update: !this.state.update
-        // })
         return !Object.keys(this.errors).some(x => this.errors[x]);
     }
 

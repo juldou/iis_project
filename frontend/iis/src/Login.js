@@ -8,6 +8,7 @@ import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {withRouter} from "react-router";
 import {validateemail, validatePassword} from "./Validation";
+import {Col, Row} from "react-bootstrap";
 
 class Login extends Component {
     constructor(props) {
@@ -73,12 +74,11 @@ class Login extends Component {
         return (
             <div className="Login">
                 {this.state.wrongCredentials && <h3> Wrong username or password</h3>}
-                <Form className="login-form" onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
 
                         <Form.Control
-                            required
                             className= {this.errors.email ? "error" : ""}
                             autoFocus
                             type="text"
@@ -89,22 +89,27 @@ class Login extends Component {
                     <Form.Group controlId="password" bsSize="large">
                         <Form.Label> Password: </Form.Label>
                         <Form.Control
-                            required
                             className= {this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
                         />
                     </Form.Group>
-
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={buttonDisabled}
-                        type="submit"
-                    >
-                        Login
-                    </Button>
+                <Row>
+                    <Col> </Col>
+                        <Col>
+                        <Button
+                            block
+                            variant="info"
+                            bsSize="large"
+                            disabled={buttonDisabled}
+                            type="submit"
+                        >
+                            Login
+                        </Button>
+                        </Col>
+                    <Col> </Col>
+                </Row>
                 </Form>
             </div>
         );

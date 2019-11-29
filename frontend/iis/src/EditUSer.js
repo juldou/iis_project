@@ -8,6 +8,7 @@ import Select from 'react-select';
 import {validateemail, validatePhone, validateRequiredField} from "./Validation";
 import {isAdmin, isOperator} from "./Network/Authentication";
 import './EditUser.css';
+import {Col, Row} from "react-bootstrap";
 
 export const usertypes = [
     { label: "admin", value: "admin" },
@@ -137,24 +138,30 @@ export default class EditUser extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group controlId="password" bsSize="large">
-                        <Form.Label> Password: </Form.Label>
-                        <Form.Control
-                            className= {this.errors.password ? "error" : ""}
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type="password"
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="repeatPassword" bsSize="large">
-                        <Form.Label> Repeat password: </Form.Label>
-                        <Form.Control
-                            className= {this.errors.repeatPassword ? "error" : ""}
-                            value={this.state.repeatPassword}
-                            onChange={this.handleChange}
-                            type="password"
-                        />
-                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="password" bsSize="large">
+                                <Form.Label> Password: </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.password ? "error" : ""}
+                                    value={this.state.password}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group controlId="repeatPassword" bsSize="large">
+                                <Form.Label> Repeat password: </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.repeatPassword ? "error" : ""}
+                                    value={this.state.repeatPassword}
+                                    onChange={this.handleChange}
+                                    type="password"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
                     <Form.Group controlId="phone" bsSize="large">
                         <Form.Label> Phone number </Form.Label>
                         <Form.Control
@@ -165,43 +172,61 @@ export default class EditUser extends Component {
                         />
                     </Form.Group>
                     <h1><b> Address </b></h1>
-                    <Form.Group controlId="street" bsSize="large">
-                        <Form.Label> Street </Form.Label>
-                        <Form.Control
-                            className= {this.errors.street ? "error" : ""}
-                            value={this.state.street}
-                            onChange={this.handleChange}
-                            type="text"
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="city" bsSize="large">
-                        <Form.Label> City </Form.Label>
-                        <Form.Control
-                            className= {this.errors.city ? "error" : ""}
-                            value={this.state.city}
-                            onChange={this.handleChange}
-                            type="text"
-                        />
-                    </Form.Group>
-
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="street" bsSize="large">
+                                <Form.Label> Street </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.street ? "error" : ""}
+                                    value={this.state.street}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group controlId="city" bsSize="large">
+                                <Form.Label> City </Form.Label>
+                                <Form.Control
+                                    className= {this.errors.city ? "error" : ""}
+                                    value={this.state.city}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
                     <label> Type </label>
                     {isAdmin() && <Select id="type" options = {usertypes} onChange={this.typeChange} value = {{label: this.state.type, value: this.state.type}} />}
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={buttonDisabled}
-                        type="submit"
-                    >
-                        {this.id? "CHANGE" : "CREATE"}
-                    </Button>
-
-                    <Button
-                        block
-                        bsSize="large"
-                        onClick = { this.deleteUser.bind(this)}
-                    >
-                        DELETE
-                    </Button>
+                        </Col>
+                        <Col> </Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                        <Col>
+                            <Button
+                                block
+                                variant="info"
+                                bsSize="large"
+                                disabled={buttonDisabled}
+                                type="submit"
+                            >
+                                {this.id? "CHANGE" : "CREATE"}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                block
+                                variant="danger"
+                                bsSize="large"
+                                onClick = { this.deleteUser.bind(this)}
+                            >
+                                DELETE
+                            </Button>
+                        </Col>
+                    </Row>
                 </Form>
             </div>
         );
