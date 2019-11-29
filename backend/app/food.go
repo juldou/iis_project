@@ -89,6 +89,14 @@ func (ctx *Context) CreateFood(food *model.Food) error {
 	//}
 }
 
+func (ctx *Context) CreateFoodCategory(foodCategory *model.FoodCategory) error {
+	//if ctx.User.Role == "admin" || ctx.User.Role == "operator" {
+	return ctx.Database.CreateFoodCategory(foodCategory)
+	//} else {
+	//	return ctx.AuthorizationError()
+	//}
+}
+
 const maxFoodNameLength = 100
 
 func (ctx *Context) validateFood(food *model.Food) *ValidationError {
