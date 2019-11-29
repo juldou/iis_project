@@ -86,6 +86,14 @@ class Cart extends Component{
             return <Redirect to='/orders' />
         }
 
+        if(this.state.order.length === 0) {
+            return (
+                <div className="center">
+                    <h3>Cart is empty</h3>
+                </div>
+                )
+        }
+
             let addedItems = this.state.order.map(item=>{
                     return(
 
