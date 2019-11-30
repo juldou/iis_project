@@ -214,7 +214,7 @@ export default class EditUser extends Component {
                         disabled={buttonDisabled}
                         type="submit"
                     >
-                        {!!this.id ?? "Change info" || "Create user"}
+                        {!!this.id && "Change info" || "Create user"}
 
                     </Button>
 

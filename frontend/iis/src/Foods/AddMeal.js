@@ -192,7 +192,7 @@ class AddMeal extends Component {
                         disabled={buttonDisabled}
                         type="submit"
                     >
-                        {!!this.props.match.params.id ?? "Change info" || "Create food"}
+                        {!!this.props.match.params.id && "Change info" || "Create food"}
 
                     </Button>
 

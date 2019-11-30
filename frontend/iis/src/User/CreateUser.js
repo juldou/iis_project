@@ -105,7 +105,7 @@ export default class CreateUser extends Component {
                         disabled={buttonDisabled}
                         type="submit"
                     >
-                        {!!this.props.match.params.id ?? "Change info" || "Create user"}
+                        {!!this.props.match.params.id && "Change info" || "Create user"}
 
                     </Button>
 
