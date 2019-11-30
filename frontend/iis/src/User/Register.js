@@ -3,12 +3,11 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap, {Col, Row} from "react-bootstrap";
 import '../Styles/Register.css';
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import {Redirect} from "react-router";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {isAuthenticated} from "./Network/Authentication";
-import {validateemail, validatePassword, validatePhone, validateRequiredField} from "./Validation";
+import {validateemail, validatePassword, validatePhone, validateRequiredField} from "../Validation";
 
 class Register extends Component {
     constructor(props) {

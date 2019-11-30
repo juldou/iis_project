@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {isCourier, isOperator} from "../Network/Authentication";
 import Select from "react-select";
 import {Button, Col, Jumbotron, Row} from "react-bootstrap";
 import {stateOptions} from "../AllOrders";
@@ -7,6 +6,7 @@ import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Configuration from "../Network/Configuration";
 import NetworkService from "../Network/NetworkService";
 import '../Styles/Order.css'
+import {isCourier, isOperator} from "../Network/Authentication";
 
 export default class Order extends Component {
     constructor(props) {

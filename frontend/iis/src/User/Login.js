@@ -4,10 +4,10 @@ import Button from 'react-bootstrap/Button'
 import {login, loginBody} from "../Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
 import '../Styles/login.css';
-import NetworkService from "./Network/NetworkService";
-import Configuration from "./Network/Configuration";
+import NetworkService from "../Network/NetworkService";
+import Configuration from "../Network/Configuration";
 import {withRouter} from "react-router";
-import {validateemail, validatePassword} from "./Validation";
+import {validateemail, validatePassword} from "../Validation";
 import {Col, Row} from "react-bootstrap";
 
 class Login extends Component {

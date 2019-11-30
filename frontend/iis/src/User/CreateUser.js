@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import {login} from "../Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
 import Configuration from "../Network/Configuration";
 import NetworkService from "../Network/NetworkService";

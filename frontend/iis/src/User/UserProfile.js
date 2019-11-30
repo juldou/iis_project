@@ -3,9 +3,9 @@ import NetworkService from "../Network/NetworkService";
 import {Button, Col, Jumbotron, Row} from "react-bootstrap";
 import ErrorScreen from "../ErrorScreen";
 import Configuration from "../Network/Configuration";
-import {getUserID} from "../Network/Authentication";
 import {NavLink} from "react-router-dom";
 import '../Styles/UserProfile.css'
+import {getUserID} from "../Network/Authentication";
 
 export default class UserProfile extends Component {
     constructor(props) {

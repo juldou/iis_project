@@ -10,7 +10,7 @@ import NetworkService from "../Network/NetworkService";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Select from "react-select";
 import {stateOptions} from "../AllOrders";
-import './Cart.css';
+import '../Styles/Cart.css';
 
 class Cart extends Component {
 

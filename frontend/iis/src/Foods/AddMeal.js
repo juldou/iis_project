@@ -8,7 +8,6 @@ import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "../Validation";
 import {isOperator} from "../Network/Authentication";
-import Checkbox from "../Widgets/Checkbox";
 import '../Styles/AddMeal.css';
 
 class AddMeal extends Component {
