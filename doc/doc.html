@@ -1,0 +1,133 @@
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset="iso-8859-2">
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Jídelna: objednávka a rozvoz jídel</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Martin Ročkár <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xrocka00@stud.fit.vutbr.cz">xrocka00@stud.fit.vutbr.cz</a> -
+		UI design, Front-end, databáza, dokumentácia
+	</dd>
+	<dd>Ján Zauška <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xzausk00@stud.fit.vutbr.cz">xzausk00@stud.fit.vutbr.cz</a> - 
+		Front-end, Back-end, UI design
+	</dd>
+  <dd>Július Marko <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xmarko17@stud.fit.vutbr.cz">xmarko17@stud.fit.vutbr.cz</a> - 
+		Back-end, databáza
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="http://78.128.250.217:3000/">http://78.128.250.217:3000/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>admin@admin.com</td><td>admin</td><td>Administrátor</td></tr>
+<tr><td>courier@courier.com</td><td>courier</td><td>Kuriéer</td></tr>
+<tr><td>customer@customer.com</td><td>customer</td><td>Zákazník</td></tr>
+<tr><td>operator@operator.com</td><td>operator</td><td>Operátor</td></tr>
+</tbody></table>
+
+<p>IS implementuje role a případy užití definované zadáním</p> 
+
+<h2>Implementace</h2>
+<h3>Úvod</h3>
+<p>
+V projekte sme sa rozhodli rozdeliť backend od užívateľského rozhrania. Backend predstavuje jednoduché 
+REST API napísané v jazyku Go, ktoré sa dotazuje na databázový server PostgreSQL. Užívateľské rozhranie už
+ potom iba dotazuje REST API, ktoré zaisťuje konzistenciu dát. Zaistenie konzistencie dát sme neponechali 
+ iba na samotnú aplikáciu, ale aj na databázu. 
+ </p>
+ 
+ <h3>Frontend</h3>
+ <p>
+ Komponenty užívateľského rozhrania sú implementované pomocou react bootstrap
+ </p>
+ <p>Frontend sa nachádza v zložke frontend/iis/ a má nasledujúcu štruktúru:</p>
+ <ul>
+<li>	Foods/-pridávanie jedla</li>
+<li>	Network/-overovanie </li>
+<li>	Order/-nákupný košík a informácie k objednávkam)</li>
+<li>	Restaurants/-informácie k reštauráciám, jedlám, filter pre výber jedál, pridanie reštaurácie</li>
+<li>	Router/-presmerovanie na podstránky</li>
+<li>	Styles/-css súbory</li>
+<li>	User/-Vytváranie nového užívateľa, prihlásenie, registrácia, profil, editácia užívateľa</li>
+<li>	AllOrders.js - zoznam všetkých vytvorených objednávok</li>
+<li>	Header.js - Navbar</li>
+</ul>
+ <h3>Backend - REST API</h3>
+ <p>API sa nachádza v zložke backend/ a má nasledujúcu štruktúru:</p>
+ <ul>
+<li>	api/-api</li>
+<li>	app/-logika aplikácie </li>
+<li>	db/-dotazovanie databázy</li>
+<li>	model/-modelovanie objektov databázy</li>
+<li>	sql/-skripty pre vytvorenie/zmazanie  </li>
+<li>	api-playground/-skripty pre dotazovanie api pomocou nástroja curl</li>
+</ul>
+ <p>V projekte sme použili knižnicu gorm určenú pre objektovo-relačné mapovanie, 
+ pomocou ktorej sme implementovali rôzne asociácie. </p>
+<h3>Zabezpečenie</h3>
+<p>
+Náš informačný systém poskytuje možnosť prihlásenia užívateľov. Autorizácia je zaistená pomocou JSON Web Tokens.
+Klient pošle v karte login užívateľské údaje na api, ktoré potom čo overí že meno a heslo užívateľa sedí (heslo je zahešované v databáze), 
+vytvorí token ktorý obsahuje meno užívateľa a jeho rolu, typ tokenu a expiráciu. Expirovanie tokenu sme nastavili na 8 hodín, čo by malo na bežný 
+deň stačiť. Po danej dobe token expiruje a klient sa musí prihlásiť znovu. 
+Klient si tento token uloží a v každom ďalšom dotaze na api tento token posiela v hlavičke Authorization typu Bearer.
+Ak serveru príde neplatný alebo expirovaný token, vracia 401 Unauthorized.
+ </p>
+ <h3>Práva</h3>
+<p>
+V systéme máme 4 rôzne kategórie registrovaných užívateľov (admin, operator, courier, customer) a 1 kategóriu pre neregistrovaných užívateľov (guest). 
+Na zaistenie práv som použil knižnicu casbin. 
+Práva sú definované mimo kód v konfiguračnom súbore. Výhodou je lepšia prehľadnosť na jednom mieste.  
+ <p>Krátka ukážka zo súboru:</p>
+ <ul>
+<li>p - je pravidlo, ktoré nastavuje danej roli na konkrétny dotaz právo</li>
+<li>p, operator, /food*, (GET)|(POST)|(PATCH)|(DELETE)</li>
+<li>g – zabezpečí dedenie (takže operátov dedí všetky pravidlá pre customera)</li>
+<li>g, operator, customer</li>
+</ul>
+
+ </p>
+<h3>Databáze</h3>
+<img src="db-model.png" alt="Databázový model" width="600" height="400">
+
+<h2>Instalace</h2>
+<h3>postgers DB-docker</h3>
+<ul>
+<li>nainštalovať docker</li>
+<li>"docker run --name postgres-iis -e POSTGRES_DB=food_delivery -e POSTGRES_USER=postgres_iis -e 
+POSTGRES_PASSWORD=secret123 -d -p 5432:5432 postgres"</li>
+</ul>
+
+<h3>spustenie serveru</h3>
+<ul>
+<li>"go build -o server ."</li>
+<li>"./server serve"</li>
+</ul>
+
+<h3>spustenie serveru na pozadí</h3>
+<ul>
+<li>"nohup ./server serve &"</li>
+
+<ul>
+<li>logy v nohup.out</li>
+</ul>
+
+</ul>
+
+</body></html>
