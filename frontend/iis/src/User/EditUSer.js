@@ -164,7 +164,7 @@ export default class EditUser extends Component {
                         </Col>
                     </Row>
                     <Form.Group controlId="phone" bsSize="large">
-                        <Form.Label> Phone number (+421 xxx xxx xxx)</Form.Label>
+                        <Form.Label> Phone number (+421123456789)</Form.Label>
                         <Form.Control
                             className={this.errors.phone ? "error" : ""}
                             value={this.state.phone}
