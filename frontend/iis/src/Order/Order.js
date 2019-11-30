@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {isCourier, isOperator} from "./Network/Authentication";
+import {isCourier, isOperator} from "../Network/Authentication";
 import Select from "react-select";
 import {Button, Col, Jumbotron, Row} from "react-bootstrap";
-import {stateOptions} from "./AllOrders";
+import {stateOptions} from "../AllOrders";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
-import './Styles/Order.css'
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
+import '../Styles/Order.css'
 
 export default class Order extends Component {
     constructor(props) {
@@ -31,18 +31,18 @@ export default class Order extends Component {
                 <br/>
                 <p><b>Info:</b></p>
                 <p><b> Phone:</b> {item.phone}</p>
-                <div className="striped-border"> </div>
+                <div className="striped-border"></div>
                 <p><b>Address:</b></p>
                 {this.Address(item.Address)}
-                <div className="striped-border"> </div>
+                <div className="striped-border"></div>
                 <p><b>You ordered:</b></p>
                 {this.Foods(item.foods)}
-                <div className="striped-border"> </div>
+                <div className="striped-border"></div>
 
-                        {(isOperator()) &&
-                        this.Courier(item)
-                        }
-    <br/>
+                {(isOperator()) &&
+                this.Courier(item)
+                }
+                <br/>
                 <p>
                     State:
                 </p>

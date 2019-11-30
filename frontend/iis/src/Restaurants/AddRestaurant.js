@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import ImageUpload from "./ImageUpload";
-import Configuration from "./Network/Configuration";
+import ImageUpload from "../ImageUpload";
+import Configuration from "../Network/Configuration";
 import {Redirect} from "react-router-dom";
 import {Button, Col, Row} from "react-bootstrap";
-import NetworkService from "./Network/NetworkService";
+import NetworkService from "../Network/NetworkService";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
-import {validateRequiredField} from "./Validation";
-import './Styles/AddRestaurant.css';
+import {validateRequiredField} from "../Validation";
+import '../Styles/AddRestaurant.css';
 
 class AddRestaurant extends Component {
     constructor(props) {
@@ -69,39 +69,6 @@ class AddRestaurant extends Component {
             return <Redirect to='/'/>
         }
         return (
-
-            // <div className="add">
-            //     <Form onSubmit={this.handleSubmit}>
-            //         <Form.Group controlId="formBasicName">
-            //             <Form.Label>Name</Form.Label>
-            //             <Form.Control className= {this.errors.name ? "error" : ""} autoFocus type="text" placeholder="Enter name of a restaurant" value={this.state.name} onChange={this.handleChange} />
-            //         </Form.Group>
-            //
-            //         <Form.Group controlId="formBasicType">
-            //             <Form.Label>Type</Form.Label>
-            //             <Form.Control className= {this.errors.type ? "error" : ""} autoFocus type="text" placeholder="Enter type of a restaurant" value={this.state.type} onChange={this.handleChange}  />
-            //         </Form.Group>
-            //
-            //         <Form.Group controlId="formBasicDescription">
-            //             <Form.Label>Description</Form.Label>
-            //             <Form.Control type="description" placeholder="Enter restaurant description" value={this.state.description} onChange={this.handleDescriptionChange}  />
-            //         </Form.Group>
-            //
-            //         <Form.Group controlId="formBasicImage">
-            //             <Form.Label>Image</Form.Label>
-            //         </Form.Group>
-            //
-            //         <ImageUpload onChange={this.handleImageChange}/>
-            //         <br/>
-            //         <Button variant="primary" type="submit">
-            //             Submit
-            //         </Button>
-            //         {
-            //             this.props.match.params.id &&
-            //             <Button onClick={this.deleteRestaurant.bind(this)}> DELETE</Button>
-            //         }
-            //     </Form>
-            // </div>
             <div className="add">
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group controlId="name">
@@ -134,26 +101,26 @@ class AddRestaurant extends Component {
                         />
                     </Form.Group>
 
-                                <Button
-                                    variant="primary"
-                                    block
-                                    bsSize="large"
-                                    disabled={buttonDisabled}
-                                    type="submit"
-                                >
-                                    CHANGE
-                                </Button>
+                    <Button
+                        variant="primary"
+                        block
+                        bsSize="large"
+                        disabled={buttonDisabled}
+                        type="submit"
+                    >
+                        {!!this.props.match.params.id ?? "Change info" || "Create restaurant"}
+                    </Button>
 
-                                {
-                                    this.props.match.params.id &&
-                                    <Button
-                                        variant="danger"
-                                        block
-                                        bsSize="large"
-                                        onClick={this.deleteRestaurant.bind(this)}>
-                                        DELETE
-                                    </Button>
-                                }
+                    {
+                        this.props.match.params.id &&
+                        <Button
+                            variant="danger"
+                            block
+                            bsSize="large"
+                            onClick={this.deleteRestaurant.bind(this)}>
+                            DELETE
+                        </Button>
+                    }
 
                 </Form>
             </div>

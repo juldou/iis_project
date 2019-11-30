@@ -4,7 +4,7 @@ import axios from 'axios';
 import {withRouter} from "react-router";
 
 export function getHeaders() {
-    if(isAuthenticated()) {
+    if (isAuthenticated()) {
         return {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ class NetworkService {
         this.errorCallback = callback
     }
 
-     async patch(url, data) {
+    async patch(url, data) {
         let requestOptions = {
             method: "PATCH",
             url: url,
@@ -54,7 +54,7 @@ class NetworkService {
 
     }
 
-     async post(url, data) {
+    async post(url, data) {
         let requestOptions = {
             method: "POST",
             url: url,
@@ -105,12 +105,13 @@ class NetworkService {
             headers: getHeaders()
         };
 
-        return axios.get(url, requestOptions).then(response =>{
-            if(!response.data) return [];
+        return axios.get(url, requestOptions).then(response => {
+            if (!response.data) return [];
             return response.data
         })
 
     }
 
 }
+
 export default (NetworkService);

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './Styles/index.css';
+import React, {Component} from 'react';
+import '../Styles/index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import './Styles/Categories.css'
@@ -19,7 +19,7 @@ class Categories extends Component {
 
     componentWillMount() {
         this.api.loadData(this.config.CATEGORIES_URL).then(items => {
-                if(!items) return;
+                if (!items) return;
                 this.setState({items: items});
             }
         ).catch();
@@ -28,15 +28,16 @@ class Categories extends Component {
     render() {
         const listItems = this.state.items.map((item) =>
 
-            <Button variant="outline-primary" className = {this.state.active === item.id ? "active" : ""} key={item.id} onClick={() => {
-                if(this.state.active === item.id) {
-                    this.props.onClick("");
-                    this.setState({active: -1})
-                    return
-                }
-                this.props.onClick(item.name);
-                this.setState({active: item.id})
-            } }>
+            <Button variant="outline-primary" className={this.state.active === item.id ? "active" : ""} key={item.id}
+                    onClick={() => {
+                        if (this.state.active === item.id) {
+                            this.props.onClick("");
+                            this.setState({active: -1})
+                            return
+                        }
+                        this.props.onClick(item.name);
+                        this.setState({active: item.id})
+                    }}>
                 {item.name}
                 <br/>
             </Button>
@@ -44,16 +45,18 @@ class Categories extends Component {
         return (
             <div className="categories">
                 <div className="center">
-            <h5>Categories</h5>
+                    <h5>Categories</h5>
                 </div>
 
-            <ButtonGroup horizontal>
-                <br/>
-                <br/>
-                {listItems}
-                <br/>
-            </ButtonGroup>
+                <ButtonGroup horizontal>
+                    <br/>
+                    <br/>
+                    {listItems}
+                    <br/>
+                </ButtonGroup>
             </div>
         );
     }
-} export default Categories;
+}
+
+export default Categories;

@@ -10,7 +10,7 @@ export function validateOptionalField(text) {
 }
 
 export function validateRequiredField(text) {
-    const re = /^[0-9a-zA-Z \b]+$/;
+    const re = /^[0-9a-zA-Z-. \b]+$/;
 
     // return error
 
@@ -39,7 +39,7 @@ export function validatePassword(text) {
     // if (text.length !== "" && !!text && re.test(text)) {
     //     return false;
     // }
-    return text.length < 3;
+    return text.length < 5;
 }
 
 export function validatePhone(text) {

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {Button, Col, Jumbotron, ListGroup, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
@@ -11,13 +11,14 @@ import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Select from "react-select";
 import {stateOptions} from "../AllOrders";
 import './Cart.css';
-class Cart extends Component{
+
+class Cart extends Component {
 
     constructor(props) {
         super(props);
 
         var order = localStorage.getItem("order");
-        if(!order) {
+        if (!order) {
             order = []
         } else {
             order = JSON.parse(order)
@@ -34,11 +35,11 @@ class Cart extends Component{
         }
     }
 
-    handleRemove = (id)=>{
-        let temp =this.state.order
+    handleRemove = (id) => {
+        let temp = this.state.order
 
         for (var i = 0; i < temp.length; i++) {
-            if(temp[i].id === id) {
+            if (temp[i].id === id) {
                 temp.splice(i, 1);
                 break;
             }
@@ -72,57 +73,60 @@ class Cart extends Component{
     }
 
     buttonDisabled() {
-        if(isAuthenticated()) {
+        if (isAuthenticated()) {
             return this.state.order.length === 0
         }
         return this.state.order.length === 0 || !this.validateForm()
     }
-    render(){
+
+    render() {
         let buttonDisabled = this.buttonDisabled()
-        if(this.state.toRegister === true) {
-            return <Redirect to='/register' />
+        if (this.state.toRegister === true) {
+            return <Redirect to='/register'/>
         }
-        if(this.state.redirect === true) {
-            return <Redirect to='/orders' />
+        if (this.state.redirect === true) {
+            return <Redirect to='/orders'/>
         }
 
-        if(this.state.order.length === 0) {
+        if (this.state.order.length === 0) {
             return (
                 <div className="center">
                     <h3>Cart is empty</h3>
                 </div>
-                )
+            )
         }
 
-            let addedItems = this.state.order.map(item=>{
-                    return(
+        let addedItems = this.state.order.map(item => {
+            return (
 
-                        <div className="order-div" key={item.id}>
-                            <Row>
-                                <Col>
-                                    <p>
-                                        <b> {item.name}</b>
-                                    </p>
-                                </Col>
-                                <Col>
-                                </Col>
-                                <Col>
-                                    <p>
-                                        <b>{item.price}Kč</b>
-                                    </p>
-                                </Col>
-                                <Col>
-                                    <Button variant="danger" size="sm" onClick={()=>{this.handleRemove(item.id)}}
-                                    >Remove</Button>
-                                </Col>
-                            </Row>
-                        </div>
+                <div className="order-div" key={item.id}>
+                    <Row>
+                        <Col>
+                            <p>
+                                <b> {item.name}</b>
+                            </p>
+                        </Col>
+                        <Col>
+                        </Col>
+                        <Col>
+                            <p>
+                                <b>{item.price}Kč</b>
+                            </p>
+                        </Col>
+                        <Col>
+                            <Button variant="danger" size="sm" onClick={() => {
+                                this.handleRemove(item.id)
+                            }}
+                            >Remove</Button>
+                        </Col>
+                    </Row>
+                </div>
 
-                    )
-                });
+            )
+        });
 
 
-        return(
+        return (
             <div className="container">
                 <div className="cart">
                     <h5>You have ordered:</h5>
@@ -147,12 +151,12 @@ class Cart extends Component{
 
                     <h3> Total: {this.calculatePrice()}Kč</h3>
 
-                    { isAuthenticated() || this.Address()}
+                    {isAuthenticated() || this.Address()}
                     <Button
                         variant="primary" block onClick={this.sendOrder.bind(this)}
                         disabled={buttonDisabled}>Send</Button>
                     <br/>
-                    { isAuthenticated() ||
+                    {isAuthenticated() ||
                     <Button
                         variant="primary" block onClick={this.sendAndRegister.bind(this)}
                         disabled={buttonDisabled}>Send order and Register</Button>}
@@ -167,7 +171,7 @@ class Cart extends Component{
                 <Form.Group controlId="phone" bsSize="large">
                     <Form.Label> Phone number (+421 xxx xxx xxx) </Form.Label>
                     <Form.Control
-                        className= {this.errors.phone ? "error" : ""}
+                        className={this.errors.phone ? "error" : ""}
                         value={this.state.phone}
                         onChange={this.handleChange}
                         type="text"
@@ -177,7 +181,7 @@ class Cart extends Component{
                 <Form.Group controlId="street" bsSize="large">
                     <Form.Label> Street </Form.Label>
                     <Form.Control
-                        className= {this.errors.street ? "error" : ""}
+                        className={this.errors.street ? "error" : ""}
                         value={this.state.street}
                         onChange={this.handleChange}
                         type="text"
@@ -186,7 +190,7 @@ class Cart extends Component{
                 <Form.Group controlId="city" bsSize="large">
                     <Form.Label> City </Form.Label>
                     <Form.Control
-                        className= {this.errors.city ? "error" : ""}
+                        className={this.errors.city ? "error" : ""}
                         value={this.state.city}
                         onChange={this.handleChange}
                         type="text"
@@ -198,7 +202,7 @@ class Cart extends Component{
 
     getOrderedFoods() {
         var order = localStorage.getItem("order");
-        if(!order) {
+        if (!order) {
             order = []
         } else {
             order = JSON.parse(order)
@@ -209,7 +213,7 @@ class Cart extends Component{
 
 
     prepareData() {
-        if(isAuthenticated())
+        if (isAuthenticated())
             return {
                 user_id: +getUserID(),
                 food_ids: this.getOrderedFoods()
@@ -225,9 +229,9 @@ class Cart extends Component{
     sendOrder() {
         let config = new Configuration();
         let api = new NetworkService(this.props);
-        let data =  JSON.stringify(this.prepareData());
+        let data = JSON.stringify(this.prepareData());
 
-       return api.post(config.ORDER_URL, data).then(r => {
+        return api.post(config.ORDER_URL, data).then(r => {
             this.setState(
                 {redirect: true}
             );
@@ -239,7 +243,7 @@ class Cart extends Component{
     sendAndRegister() {
         let config = new Configuration();
         let api = new NetworkService(this.props);
-        let data =  JSON.stringify(this.prepareData());
+        let data = JSON.stringify(this.prepareData());
 
         return api.post(config.ORDER_URL, data).then(r => {
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class ImageUpload extends Component {
     constructor(props) {
@@ -34,15 +34,17 @@ class ImageUpload extends Component {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} style={{ "max-height": "500px"}}/>);
+            $imagePreview = (<img src={imagePreviewUrl} style={{"max-height": "500px"}}/>);
         }
 
         return (
             <div>
-                    <input type="file" onChange={this._handleImageChange} />
+                <input type="file" onChange={this._handleImageChange}/>
                 {$imagePreview}
             </div>
         )
     }
 
-} export default ImageUpload;
+}
+
+export default ImageUpload;

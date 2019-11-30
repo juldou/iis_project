@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import ImageUpload from "./ImageUpload";
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import ImageUpload from "../ImageUpload";
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import {Button, Col, FormCheck, Row} from "react-bootstrap";
 import Redirect from "react-router-dom/es/Redirect";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
-import {validateRequiredField} from "./Validation";
-import {isOperator} from "./Network/Authentication";
-import Checkbox from "./Widgets/Checkbox";
-import './Styles/AddMeal.css';
+import {validateRequiredField} from "../Validation";
+import {isOperator} from "../Network/Authentication";
+import Checkbox from "../Widgets/Checkbox";
+import '../Styles/AddMeal.css';
 
 class AddMeal extends Component {
     constructor(props) {
@@ -147,13 +147,13 @@ class AddMeal extends Component {
                             </Form.Group>
                         </Col>
                     </Row>
-                        <label>
-                            Type:
-                        </label>
-                        <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)}
-                                     onChange={this.handleTypeChange.bind(this)}
-                                     defaultValue={{label: this.state.type, value: this.state.type}}
-                                     key={this.state.type}/>
+                    <label>
+                        Type:
+                    </label>
+                    <AsyncSelect cacheOptions defaultOptions loadOptions={this.loadCategories.bind(this)}
+                                 onChange={this.handleTypeChange.bind(this)}
+                                 defaultValue={{label: this.state.type, value: this.state.type}}
+                                 key={this.state.type}/>
                     <br/>
                     <Row>
 
@@ -185,20 +185,22 @@ class AddMeal extends Component {
                     {this.id && <ImageUpload onChange={this.handleImageChange.bind(this)}/>}
                     <br/>
 
-                            <Button
-                                block
-                                variant="primary"
-                                bsSize="large"
-                                disabled={buttonDisabled}
-                                type="submit"
-                            >
-                                CHANGE
-                            </Button>
+                    <Button
+                        block
+                        variant="primary"
+                        bsSize="large"
+                        disabled={buttonDisabled}
+                        type="submit"
+                    >
+                        {!!this.props.match.params.id ?? "Change info" || "Create food"}
 
-                            {
-                                this.props.match.params.id &&
-                                <Button variant="danger" block bsSize="large" onClick={this.deleteMeal.bind(this)}> DELETE</Button>
-                            }
+                    </Button>
+
+                    {
+                        this.props.match.params.id &&
+                        <Button variant="danger" block bsSize="large"
+                                onClick={this.deleteMeal.bind(this)}> DELETE</Button>
+                    }
 
                 </Form>
             </div>
@@ -208,8 +210,6 @@ class AddMeal extends Component {
 
     validatePrice() {
         const re = /^[0-9\b]+$/;
-
-        // if value is not blank, then test the regex
 
         if (this.state.price !== '' && re.test(this.state.price)) {
             return false;

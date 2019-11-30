@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import {NavLink, Redirect} from "react-router-dom";
 import {connect} from 'react-redux'
-import {getUserType, isOperator} from "./Network/Authentication";
+import {getUserType, isOperator} from "../Network/Authentication";
 import {withRouter} from "react-router";
 import {Button, Card, Col, Container, Image, Jumbotron, Row, Tab, Tabs} from "react-bootstrap";
-import './Styles/RestaurantDetails.css';
-import Categories from "./Categories";
+import '../Styles/RestaurantDetails.css';
+import Categories from "./Restaurants/Categories";
 
 class RestaurantDetail extends Component {
     constructor(props) {

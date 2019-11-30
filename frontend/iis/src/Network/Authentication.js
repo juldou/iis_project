@@ -38,6 +38,12 @@ export default {
                 window.location.href = window.location.href;
             }
 
+            if (error && error.response && error.response.status === 403) {
+                logout();
+                history.push('/login');
+                window.location.href = window.location.href;
+            }
+
             return Promise.reject(error);
         });
     },
