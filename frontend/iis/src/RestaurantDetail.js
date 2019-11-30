@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {getUserType, isOperator} from "./Network/Authentication";
 import {withRouter} from "react-router";
 import {Button, Card, Col, Container, Image, Jumbotron, Row, Tab, Tabs} from "react-bootstrap";
-import './RestaurantDetails.css';
+import './Styles/RestaurantDetails.css';
 import Categories from "./Categories";
 
 class RestaurantDetail extends Component {

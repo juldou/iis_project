@@ -7,7 +7,7 @@ import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 import {validateemail, validatePhone, validateRequiredField} from "./Validation";
 import {isAdmin, isOperator} from "./Network/Authentication";
-import './EditUser.css';
+import './Styles/EditUser.css';
 import {Col, Row} from "react-bootstrap";
 
 export const usertypes = [

@@ -8,7 +8,7 @@ import NetworkService from "./Network/NetworkService";
 import Select from 'react-select';
 import {usertypes} from "./EditUSer";
 import {validateemail, validatePassword} from "./Validation";
-import './EditUser.css';
+import './Styles/EditUser.css';
 
 export default class CreateUser extends Component {
     constructor(props) {

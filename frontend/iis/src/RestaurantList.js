@@ -3,7 +3,7 @@ import {NavLink, useHistory} from "react-router-dom";
 import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {getUserType, isAuthenticated, isOperator} from "./Network/Authentication";
-import './RestaurantList.css'
+import './Styles/RestaurantList.css'
 import {Button, Card, Container} from "react-bootstrap";
 import {withRouter} from "react-router";
 

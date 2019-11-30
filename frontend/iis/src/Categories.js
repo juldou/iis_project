@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './index.css';
+import './Styles/index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import './Categories.css'
+import './Styles/Categories.css'
 import {Button, ButtonGroup} from "react-bootstrap";
 
 class Categories extends Component {

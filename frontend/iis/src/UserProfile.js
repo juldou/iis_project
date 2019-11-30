@@ -5,7 +5,7 @@ import ErrorScreen from "./ErrorScreen";
 import Configuration from "./Network/Configuration";
 import {getUserID} from "./Network/Authentication";
 import {NavLink} from "react-router-dom";
-import './UserProfile.css'
+import './Styles/UserProfile.css'
 
 export default class UserProfile extends Component {
     constructor(props) {

@@ -6,7 +6,7 @@ import {stateOptions} from "./AllOrders";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import './Order.css'
+import './Styles/Order.css'
 
 export default class Order extends Component {
     constructor(props) {

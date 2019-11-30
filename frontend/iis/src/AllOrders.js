@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+import './Styles/index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button, Jumbotron} from "react-bootstrap";
@@ -9,7 +9,7 @@ import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Form from "react-bootstrap/Form";
 import {usertypes} from "./EditUSer";
 import Select from 'react-select';
-import './AllOrders.css';
+import './Styles/AllOrders.css';
 import Order from "./Order";
 
 export const stateOptions = [

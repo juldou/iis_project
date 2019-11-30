@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import React, { Component } from 'react';
-import './index.css';
+import './Styles/index.css';
 import Register from "./Register";
 import {
     getUserID,

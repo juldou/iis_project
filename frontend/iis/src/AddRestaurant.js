@@ -7,7 +7,7 @@ import NetworkService from "./Network/NetworkService";
 import Form from "react-bootstrap/Form";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import {validateRequiredField} from "./Validation";
-import './AddRestaurant.css';
+import './Styles/AddRestaurant.css';
 
 class AddRestaurant extends Component {
     constructor(props) {

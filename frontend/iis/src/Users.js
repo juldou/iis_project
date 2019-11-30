@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {NavLink} from "react-router-dom";
-import './index.css';
+import './Styles/index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
-import './Users.css';
+import './Styles/Users.css';
 import {Button, Col, Jumbotron, Row} from "react-bootstrap";
-import './Order.css';
+import './Styles/Order.css';
 
 
 class Users extends Component {

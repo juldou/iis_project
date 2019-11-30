@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {login, loginBody} from "./Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
-import './login.css';
+import './Styles/login.css';
 import NetworkService from "./Network/NetworkService";
 import Configuration from "./Network/Configuration";
 import {withRouter} from "react-router";
