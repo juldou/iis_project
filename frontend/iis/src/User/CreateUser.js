@@ -1,14 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import {login} from "./Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import Select from 'react-select';
 import {usertypes} from "./EditUSer";
-import {validateemail, validatePassword} from "./Validation";
-import './EditUser.css';
+import {validateemail, validatePassword} from "../Validation";
+import '../Styles/EditUser.css';
 
 export default class CreateUser extends Component {
     constructor(props) {
@@ -34,7 +33,7 @@ export default class CreateUser extends Component {
 
     validateForm() {
         this.errors = {
-            email: validateemail(this.state.email) ,
+            email: validateemail(this.state.email),
             password: validatePassword(this.state.password)
         };
         return !Object.keys(this.errors).some(x => this.errors[x]);
@@ -67,8 +66,8 @@ export default class CreateUser extends Component {
     render() {
         let buttonDisabled = !this.validateForm()
 
-        if(this.state.toHomescreen === true) {
-            return <Redirect to='/#' />
+        if (this.state.toHomescreen === true) {
+            return <Redirect to='/#'/>
         }
         return (
             <div className="Login">
@@ -79,7 +78,7 @@ export default class CreateUser extends Component {
 
                         <Form.Control
                             required
-                            className= {this.errors.email ? "error" : ""}
+                            className={this.errors.email ? "error" : ""}
                             autoFocus
                             type="text"
                             value={this.state.email}
@@ -90,7 +89,7 @@ export default class CreateUser extends Component {
                         <Form.Label> Password </Form.Label>
                         <Form.Control
                             required
-                            className= {this.errors.password ? "error" : ""}
+                            className={this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
@@ -98,14 +97,15 @@ export default class CreateUser extends Component {
                     </Form.Group>
 
                     <label> Type </label>
-                    <Select id="type" options = {usertypes} onChange={this.typeChange}  />
+                    <Select id="type" options={usertypes} onChange={this.typeChange}/>
                     <Button
                         block
                         bsSize="large"
                         disabled={buttonDisabled}
                         type="submit"
                     >
-                        CREATE
+                        {!!this.props.match.params.id && "Change info" || "Create user"}
+
                     </Button>
 
                 </Form>

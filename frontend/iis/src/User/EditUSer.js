@@ -1,20 +1,20 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {NavLink, Redirect} from "react-router-dom";
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import Select from 'react-select';
-import {validateemail, validatePhone, validateRequiredField} from "./Validation";
-import {isAdmin, isOperator} from "./Network/Authentication";
-import './EditUser.css';
+import {validateemail, validatePhone, validateRequiredField} from "../Validation";
+import {isAdmin, isOperator} from "../Network/Authentication";
+import '../Styles/EditUser.css';
 import {Col, Row} from "react-bootstrap";
 
 export const usertypes = [
-    { label: "admin", value: "admin" },
-    { label: "operator", value: "operator" },
-    { label: "courier", value: "courier" },
-    { label: "customer", value: "customer" },
+    {label: "admin", value: "admin"},
+    {label: "operator", value: "operator"},
+    {label: "courier", value: "courier"},
+    {label: "customer", value: "customer"},
 ];
 
 export default class EditUser extends Component {
@@ -45,26 +45,26 @@ export default class EditUser extends Component {
     }
 
     componentDidMount() {
-        if(this.id)
-        this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
-                this.setState({
-                    email: user.email,
-                    type: user.role,
-                    street: user.Address.street,
-                    city: user.Address.city,
-                    phone: user.phone
-                });
-                this.validateForm()
-                this.setState({
-                    update:true
-                })
-            }
-        ).catch();
+        if (this.id)
+            this.api.loadData(this.config.GET_USER_URL + "/" + this.id).then(user => {
+                    this.setState({
+                        email: user.email,
+                        type: user.role,
+                        street: user.Address.street,
+                        city: user.Address.city,
+                        phone: user.phone
+                    });
+                    this.validateForm()
+                    this.setState({
+                        update: true
+                    })
+                }
+            ).catch();
     }
 
     validateForm() {
         this.errors = {
-           email: validateemail(this.state.email) ,
+            email: validateemail(this.state.email),
             password: !this.id && this.state.password === "",
             validatePassword: this.state.password !== this.state.repeatPassword,
             street: validateRequiredField(this.state.street),
@@ -96,18 +96,18 @@ export default class EditUser extends Component {
             phone: this.state.phone
         };
 
-        if(!!this.state.password) {
+        if (!!this.state.password) {
             data.password = this.state.password
         }
-        if(!this.id) {
+        if (!this.id) {
             this.api.post(this.config.GET_USER_URL, data).then(response => {
                     this.setState({toHomescreen: true});
                 }
             ).catch();
         } else {
             this.api.patch(this.config.EDIT_USER + "/" + this.id, JSON.stringify(data)).then(response => {
-                this.setState({toHomescreen: true});
-            }
+                    this.setState({toHomescreen: true});
+                }
             ).catch();
         }
     };
@@ -118,11 +118,12 @@ export default class EditUser extends Component {
             }
         ).catch();
     }
+
     render() {
         let buttonDisabled = !this.validateForm()
 
-        if(this.state.toHomescreen === true) {
-            return <Redirect to='/' />
+        if (this.state.toHomescreen === true) {
+            return <Redirect to='/'/>
         }
         return (
             <div className="Login">
@@ -131,7 +132,7 @@ export default class EditUser extends Component {
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
                         <Form.Control
-                            className= {this.errors.email ? "error" : ""}
+                            className={this.errors.email ? "error" : ""}
                             autoFocus
                             type="email"
                             value={this.state.email}
@@ -143,7 +144,7 @@ export default class EditUser extends Component {
                             <Form.Group controlId="password" bsSize="large">
                                 <Form.Label> Password: </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.password ? "error" : ""}
+                                    className={this.errors.password ? "error" : ""}
                                     value={this.state.password}
                                     onChange={this.handleChange}
                                     type="password"
@@ -154,7 +155,7 @@ export default class EditUser extends Component {
                             <Form.Group controlId="repeatPassword" bsSize="large">
                                 <Form.Label> Repeat password: </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.repeatPassword ? "error" : ""}
+                                    className={this.errors.repeatPassword ? "error" : ""}
                                     value={this.state.repeatPassword}
                                     onChange={this.handleChange}
                                     type="password"
@@ -163,9 +164,9 @@ export default class EditUser extends Component {
                         </Col>
                     </Row>
                     <Form.Group controlId="phone" bsSize="large">
-                        <Form.Label> Phone number (+421 xxx xxx xxx)</Form.Label>
+                        <Form.Label> Phone number (+421123456789)</Form.Label>
                         <Form.Control
-                            className= {this.errors.phone ? "error" : ""}
+                            className={this.errors.phone ? "error" : ""}
                             value={this.state.phone}
                             onChange={this.handleChange}
                             type="text"
@@ -177,7 +178,7 @@ export default class EditUser extends Component {
                             <Form.Group controlId="street" bsSize="large">
                                 <Form.Label> Street </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.street ? "error" : ""}
+                                    className={this.errors.street ? "error" : ""}
                                     value={this.state.street}
                                     onChange={this.handleChange}
                                     type="text"
@@ -188,7 +189,7 @@ export default class EditUser extends Component {
                             <Form.Group controlId="city" bsSize="large">
                                 <Form.Label> City </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.city ? "error" : ""}
+                                    className={this.errors.city ? "error" : ""}
                                     value={this.state.city}
                                     onChange={this.handleChange}
                                     type="text"
@@ -198,31 +199,33 @@ export default class EditUser extends Component {
                     </Row>
                     <Row>
                         <Col>
-                    <label> Type </label>
-                    {isAdmin() && <Select id="type" options = {usertypes} onChange={this.typeChange} value = {{label: this.state.type, value: this.state.type}} />}
+                            <label> Type </label>
+                            {isAdmin() && <Select id="type" options={usertypes} onChange={this.typeChange}
+                                                  value={{label: this.state.type, value: this.state.type}}/>}
                         </Col>
 
                     </Row>
                     <br/>
 
-                            <Button
-                                block
-                                variant="primary"
-                                bsSize="large"
-                                disabled={buttonDisabled}
-                                type="submit"
-                            >
-                                {this.id? "CHANGE" : "CREATE"}
-                            </Button>
+                    <Button
+                        block
+                        variant="primary"
+                        bsSize="large"
+                        disabled={buttonDisabled}
+                        type="submit"
+                    >
+                        {!!this.id && "Change info" || "Create user"}
 
-                            <Button
-                                block
-                                variant="danger"
-                                bsSize="large"
-                                onClick = { this.deleteUser.bind(this)}
-                            >
-                                DELETE
-                            </Button>
+                    </Button>
+
+                    <Button
+                        block
+                        variant="danger"
+                        bsSize="large"
+                        onClick={this.deleteUser.bind(this)}
+                    >
+                        DELETE
+                    </Button>
 
                 </Form>
             </div>

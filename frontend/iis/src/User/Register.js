@@ -1,14 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Bootstrap, {Col, Row} from "react-bootstrap";
-import './Register.css';
-import Configuration from "./Network/Configuration";
-import NetworkService from "./Network/NetworkService";
+import '../Styles/Register.css';
+import Configuration from "../Network/Configuration";
+import NetworkService from "../Network/NetworkService";
 import {Redirect} from "react-router";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {isAuthenticated} from "./Network/Authentication";
-import {validateemail, validatePassword, validatePhone, validateRequiredField} from "./Validation";
+import {validateemail, validatePassword, validatePhone, validateRequiredField} from "../Validation";
 
 class Register extends Component {
     constructor(props) {
@@ -38,7 +37,7 @@ class Register extends Component {
 
     componentDidMount() {
         let temp = localStorage.getItem("temp_user");
-        if(!temp) return;
+        if (!temp) return;
         let user = JSON.parse(temp);
         this.setState({
             street: user.street,
@@ -50,7 +49,7 @@ class Register extends Component {
 
     validateForm() {
         this.errors = {
-            email: validateemail(this.state.email) ,
+            email: validateemail(this.state.email),
             password: validatePassword(this.state.password),
             validatePassword: this.state.password !== this.state.repeatPassword,
             street: validateRequiredField(this.state.street),
@@ -69,7 +68,7 @@ class Register extends Component {
     render() {
         let buttonDisabled = !this.validateForm()
 
-        if(this.state.redirect === true) {
+        if (this.state.redirect === true) {
             return (
                 <Redirect to="/"/>
             )
@@ -78,11 +77,11 @@ class Register extends Component {
             <div className="Register">
 
                 <Form onSubmit={this.handleSubmit}>
-                    <p><b>Info</b> </p>
+                    <p><b>Info</b></p>
                     <Form.Group controlId="email" bsSize="large">
                         <Form.Label> Email: </Form.Label>
                         <Form.Control
-                            className= {this.errors.email ? "error" : ""}
+                            className={this.errors.email ? "error" : ""}
                             autoFocus
                             type="email"
                             placeholder="Enter email"
@@ -95,7 +94,7 @@ class Register extends Component {
                             <Form.Group controlId="password" bsSize="large">
                                 <Form.Label> Password: </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.password ? "error" : ""}
+                                    className={this.errors.password ? "error" : ""}
                                     value={this.state.password}
                                     onChange={this.handleChange}
                                     type="password"
@@ -107,7 +106,7 @@ class Register extends Component {
                             <Form.Group controlId="repeatPassword" bsSize="large">
                                 <Form.Label> Repeat password: </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.repeatPassword ? "error" : ""}
+                                    className={this.errors.repeatPassword ? "error" : ""}
                                     value={this.state.repeatPassword}
                                     onChange={this.handleChange}
                                     type="password"
@@ -117,22 +116,22 @@ class Register extends Component {
                         </Col>
                     </Row>
                     <Form.Group controlId="phone" bsSize="large">
-                        <Form.Label> Phone number (+421 xxx xxx xxx): </Form.Label>
+                        <Form.Label> Phone number (+421123456789): </Form.Label>
                         <Form.Control
-                            className= {this.errors.phone ? "error" : ""}
+                            className={this.errors.phone ? "error" : ""}
                             value={this.state.phone}
                             onChange={this.handleChange}
                             type="text"
                             placeholder="Enter phone number"
                         />
                     </Form.Group>
-                    <p><b>Address</b> </p>
+                    <p><b>Address</b></p>
                     <Row>
                         <Col>
                             <Form.Group controlId="street" bsSize="large">
                                 <Form.Label> Street </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.street ? "error" : ""}
+                                    className={this.errors.street ? "error" : ""}
                                     value={this.state.street}
                                     onChange={this.handleChange}
                                     type="text"
@@ -144,7 +143,7 @@ class Register extends Component {
                             <Form.Group controlId="city" bsSize="large">
                                 <Form.Label> City </Form.Label>
                                 <Form.Control
-                                    className= {this.errors.city ? "error" : ""}
+                                    className={this.errors.city ? "error" : ""}
                                     value={this.state.city}
                                     onChange={this.handleChange}
                                     type="text"
@@ -170,7 +169,7 @@ class Register extends Component {
                                 </Button>
                             </Col>
                             <Col> </Col>
-                    </Row>
+                        </Row>
                     </div>
                 </Form>
             </div>
@@ -189,8 +188,10 @@ class Register extends Component {
             phone: this.state.phone
         });
 
-            this.api.post(this.config.REGISTER_URL, data).then(result => {
-                this.setState({redirect: true});
-            }).catch()
+        this.api.post(this.config.REGISTER_URL, data).then(result => {
+            this.setState({redirect: true});
+        }).catch()
     };
-} export default Register;
+}
+
+export default Register;

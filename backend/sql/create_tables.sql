@@ -311,3 +311,5 @@ values (1,
         1,
         current_timestamp,
         current_timestamp);
+
+select * from "user";

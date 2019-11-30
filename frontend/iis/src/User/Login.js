@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import {login, loginBody} from "./Network/Authentication";
+import {login, loginBody} from "../Network/Authentication";
 import {NavLink, Redirect} from "react-router-dom";
-import './login.css';
-import NetworkService from "./Network/NetworkService";
-import Configuration from "./Network/Configuration";
+import '../Styles/login.css';
+import NetworkService from "../Network/NetworkService";
+import Configuration from "../Network/Configuration";
 import {withRouter} from "react-router";
-import {validateemail, validatePassword} from "./Validation";
+import {validateemail, validatePassword} from "../Validation";
 import {Col, Row} from "react-bootstrap";
 
 class Login extends Component {
@@ -56,10 +56,10 @@ class Login extends Component {
             localStorage.setItem("user_type", response.User.role);
             localStorage.setItem("access_token", response.AuthToken.access_token);
             localStorage.setItem("access_token_expires_in", response.AuthToken.expires_in);
-        }).then(r =>{
+        }).then(r => {
             this.setState({toHomescreen: true})
         }).catch(error => {
-            if(!!error && error.response.status === 403) {
+            if (!!error && error.response.status === 403) {
                 this.setState({wrongCredentials: true})
             }
         })
@@ -68,8 +68,8 @@ class Login extends Component {
     render() {
         let buttonDisabled = !this.validateForm()
 
-        if(this.state.toHomescreen === true) {
-            return <Redirect to='/' />
+        if (this.state.toHomescreen === true) {
+            return <Redirect to='/'/>
         }
         return (
             <div className="Login-start">
@@ -79,7 +79,7 @@ class Login extends Component {
                         <Form.Label> Email: </Form.Label>
 
                         <Form.Control
-                            className= {this.errors.email ? "error" : ""}
+                            className={this.errors.email ? "error" : ""}
                             autoFocus
                             type="text"
                             value={this.state.email}
@@ -89,29 +89,31 @@ class Login extends Component {
                     <Form.Group controlId="password" bsSize="large">
                         <Form.Label> Password: </Form.Label>
                         <Form.Control
-                            className= {this.errors.password ? "error" : ""}
+                            className={this.errors.password ? "error" : ""}
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
                         />
                     </Form.Group>
-                <Row>
-                    <Col> </Col>
+                    <Row>
+                        <Col> </Col>
                         <Col>
-                        <Button
-                            block
-                            variant="primary"
-                            bsSize="large"
-                            disabled={buttonDisabled}
-                            type="submit"
-                        >
-                            Login
-                        </Button>
+                            <Button
+                                block
+                                variant="primary"
+                                bsSize="large"
+                                disabled={buttonDisabled}
+                                type="submit"
+                            >
+                                Login
+                            </Button>
                         </Col>
-                    <Col> </Col>
-                </Row>
+                        <Col> </Col>
+                    </Row>
                 </Form>
             </div>
         );
     }
-} export default withRouter(Login);
+}
+
+export default withRouter(Login);

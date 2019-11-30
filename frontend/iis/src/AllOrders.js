@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './index.css';
+import React, {Component} from 'react';
+import './Styles/index.css';
 import Configuration from "./Network/Configuration";
 import NetworkService from "./Network/NetworkService";
 import {Button, Jumbotron} from "react-bootstrap";
@@ -7,10 +7,10 @@ import {NavLink} from "react-router-dom";
 import {getUserID, getUserType, isCourier, isOperator} from "./Network/Authentication";
 import AsyncSelect from "react-select/async/dist/react-select.esm";
 import Form from "react-bootstrap/Form";
-import {usertypes} from "./EditUSer";
+import {usertypes} from "./User/EditUSer";
 import Select from 'react-select';
-import './AllOrders.css';
-import Order from "./Order";
+import './Styles/AllOrders.css';
+import Order from "./Order/Order";
 
 export const stateOptions = [
     {label: "new", value: "new"},
@@ -32,7 +32,7 @@ class AllOrders extends Component {
 
     componentWillMount() {
         let url = this.config.GET_ALL_ORDERS;
-        if(getUserType() === "courier") {
+        if (getUserType() === "courier") {
             url += "/courier"
         }
         this.api.loadData(url).then(items => {
@@ -42,18 +42,16 @@ class AllOrders extends Component {
     }
 
 
-
     render() {
-        if(this.state.items === undefined) return "";
+        if (this.state.items === undefined) return "";
 
-        if(this.state.items === null || this.state.items === "" ) {
+        if (this.state.items === null || this.state.items === "") {
             return (
                 <h3> There are no orders</h3>
             )
         }
         const listItems = this.state.items.map((item) =>
             <Order order={item}/>
-
         );
         return (
             <div className="AllOrders">
@@ -64,4 +62,6 @@ class AllOrders extends Component {
         );
     }
 
-} export default AllOrders;
+}
+
+export default AllOrders;

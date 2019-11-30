@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import NetworkService from "./Network/NetworkService";
+import NetworkService from "../Network/NetworkService";
 import {Button, Col, Jumbotron, Row} from "react-bootstrap";
-import ErrorScreen from "./ErrorScreen";
-import Configuration from "./Network/Configuration";
-import {getUserID} from "./Network/Authentication";
+import ErrorScreen from "../ErrorScreen";
+import Configuration from "../Network/Configuration";
 import {NavLink} from "react-router-dom";
-import './UserProfile.css'
+import '../Styles/UserProfile.css'
+import {getUserID} from "../Network/Authentication";
 
 export default class UserProfile extends Component {
     constructor(props) {
@@ -26,17 +26,17 @@ export default class UserProfile extends Component {
     }
 
     render() {
-        if(this.state.loading) return "";
-        if(!this.state.user) return (
+        if (this.state.loading) return "";
+        if (!this.state.user) return (
             <ErrorScreen/>
         );
-        return(
+        return (
 
-            <div className= "profileCard" key={this.state.user.id} onClick={() => {
-            } }>
+            <div className="profileCard" key={this.state.user.id} onClick={() => {
+            }}>
                 <Jumbotron>
                     <h1>My profile</h1>
-                    <div className="striped-border"> </div>
+                    <div className="striped-border"></div>
                     <p><b> Info</b></p>
                     <Row>
                         <Col>
@@ -48,7 +48,7 @@ export default class UserProfile extends Component {
                     </Row>
                     <p><b>Phone:</b> {this.state.user.phone}</p>
                     <br/>
-                    <div className="striped-border"> </div>
+                    <div className="striped-border"></div>
                     <p><b> My address</b></p>
                     <Row>
                         <Col>
@@ -58,9 +58,9 @@ export default class UserProfile extends Component {
                             <p><b>City:</b> {this.state.user.Address.city}</p>
                         </Col>
                     </Row>
-                        <NavLink to={"/edituser/" + this.id} className="link">
-                            <Button variant="primary"> Edit info</Button>
-                        </NavLink>
+                    <NavLink to={"/edituser/" + this.id} className="link">
+                        <Button variant="primary"> Edit info</Button>
+                    </NavLink>
                 </Jumbotron>
             </div>
         );

@@ -54,13 +54,6 @@ nav {
   float: left;
   width: 30%;
 }
-
-.navbar {
-  padding-bottom: 50px;
-}
-.fixed-top {
-  top: -50px; /* you'll have to figure out the exact number here */
-}
 section:after {
   content: "";
   display: table;
