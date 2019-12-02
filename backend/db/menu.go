@@ -45,3 +45,12 @@ func (db *Database) UpdateMenu(menu *model.Menu) error {
 func (db *Database) DeleteMenu(menu *model.Menu) error {
 	return errors.Wrap(db.Delete(menu).Error, "unable to delete menu")
 }
+
+func (db *Database) GetMenuByFoodId(id uint) (*model.Menu, error) {
+	var menu *model.Menu
+	if err := db.Where("food_id=? and menu.deleted_at is null", id).Find(&menu).Error; err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return menu, nil
+}

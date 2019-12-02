@@ -49,7 +49,7 @@ func (ctx *Context) GetAllFoodsByOrderId(id uint) ([]model.Food, error) {
 	}
 	var foods []model.Food
 	for _, orderFood := range orderFoods {
-		foods = append(foods, orderFood.Menu.Food)
+		foods = append(foods, orderFood.Food)
 	}
 
 	return foods, nil

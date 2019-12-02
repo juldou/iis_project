@@ -25,9 +25,8 @@ func (db *Database) GetAllFoodsByOrderId(orderId uint) ([]*model.OrderFood, erro
 		return nil, err
 	}
 	for _, orderFood := range orderFoods {
-		orderFood.Menu.ID = orderFood.FoodId
-		db.First(&orderFood.Menu)
-		db.First(&orderFood.Menu.Food)
+		orderFood.Food.ID = orderFood.FoodId
+		db.First(&orderFood.Food)
 	}
 	return orderFoods, nil
 }
