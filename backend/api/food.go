@@ -71,12 +71,42 @@ func (a *API) GetAllOrdersAssignedToCourier(ctx *app.Context, w http.ResponseWri
 }
 
 func (a *API) GetAllOrdersByUser(ctx *app.Context, w http.ResponseWriter, r *http.Request) error {
+	//id := getIdFromRequest(r)
+
 	orders, err := ctx.GetAllOrdersForUser()
 	if err != nil {
 		return err
 	}
 
-	data, err := json.Marshal(orders)
+	var ordersAdapted []OrdersAdapter
+	for _, order := range orders {
+		foods, err := ctx.GetAllFoodsByOrderId(order.ID)
+		if err != nil {
+			return err
+		}
+		address, err := ctx.GetAddressById(order.AddressId)
+		if err != nil {
+			return err
+		}
+		courier, err := ctx.GetUserById(order.CourierId)
+		if err != nil {
+			return err
+		}
+		orderAdapted := OrdersAdapter{
+			ID:        order.ID,
+			State:     order.State,
+			UserId:    order.UserId,
+			CourierId: order.CourierId,
+			AddressId: order.AddressId,
+			Address:   address,
+			Courier:   courier,
+			Phone:     order.Phone,
+			Foods:     foods,
+		}
+		ordersAdapted = append(ordersAdapted, orderAdapted)
+	}
+
+	data, err := json.Marshal(ordersAdapted)
 	if err != nil {
 		return err
 	}
@@ -141,7 +171,7 @@ func (a *API) CreateFood(ctx *app.Context, w http.ResponseWriter, r *http.Reques
 	}
 	if !found {
 		foodCategory := &model.FoodCategory{
-			Name:  input.Category,
+			Name: input.Category,
 		}
 		if err := ctx.CreateFoodCategory(foodCategory); err != nil {
 			return err
@@ -255,6 +285,12 @@ func (a *API) DeleteFoodById(ctx *app.Context, w http.ResponseWriter, r *http.Re
 	if err := ctx.DeleteFood(existingFood); err != nil {
 		return err
 	}
+	menu, err := ctx.GetMenuByFoodId(id)
+	if err != nil {
+		return err
+	}
+	err = ctx.DeleteMenu(menu)
+
 	return err
 }
 

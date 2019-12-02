@@ -18,6 +18,6 @@ type OrderFood struct {
 
 	Order   Order `gorm:"association_foreignkey:ID"`
 	OrderId uint  `json:"order_id"`
-	Menu    Menu  `gorm:"association_foreignkey:ID"`
+	Food    Food  `gorm:"association_foreignkey:ID"`
 	FoodId  uint  `json:"food_id"`
 }

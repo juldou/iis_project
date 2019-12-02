@@ -1,7 +1,7 @@
 class Configuration {
     SERVER_API_URL = "http://78.128.250.217:9092/api";
     LOCAL_API_URL = "http://localhost:9092/api";
-    API_URL = this.SERVER_API_URL;
+    API_URL = this.LOCAL_API_URL;
     RESTAURANT_LIST_URL = this.API_URL + "/restaurants";
     RESTAURANT_DETAIL_URL = this.API_URL + "/restaurant";
     GET_RESTAURANT_URL = this.API_URL + "/restaurant";

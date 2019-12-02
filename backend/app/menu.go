@@ -58,3 +58,15 @@ func (ctx *Context) DeleteMenu(menu *model.Menu) error {
 	//}
 	return ctx.Database.DeleteMenu(menu)
 }
+
+func (ctx *Context) GetMenuByFoodId(foodId uint) (*model.Menu, error) {
+	//if ctx.User == nil {
+	//	return nil, ctx.AuthorizationError()
+	//}
+	menu, err := ctx.Database.GetMenuByFoodId(foodId)
+	if err != nil {
+		return nil, err
+	}
+
+	return menu, nil
+}
