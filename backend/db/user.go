@@ -21,7 +21,16 @@ func (db *Database) GetUserById(id uint) (*model.User, error) {
 
 func (db *Database) GetUsers() ([]*model.User, error) {
 	var users []*model.User
-	return users, errors.Wrap(db.Find(&users).Error, "unable to get users")
+	err := db.Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	for _, user := range users {
+		user.Address.ID = user.AddressId
+		db.First(&user.Address)
+
+	}
+	return users, nil
 }
 
 func (db *Database) GetUserByEmail(email string) (*model.User, error) {

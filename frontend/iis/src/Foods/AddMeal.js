@@ -257,7 +257,7 @@ class AddMeal extends Component {
     }
 
     deleteMeal() {
-        this.api.delete(this.config.API_URL + "/food/" + this.props.match.params.id).then(response => {
+        this.api.delete(this.config.API_URL + "/menu/" + this.props.match.params.id).then(response => {
             this.setState({homeScreen: true})
         }).catch()
     }
